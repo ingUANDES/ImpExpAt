@@ -1,0 +1,1111 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+\usepackage[spanish]{babel}
+\usepackage{multirow} 
+\usepackage{multicol} 
+\usepackage{subfig}
+\usepackage{amsmath} % for \text{}
+\usepackage{amssymb}
+\usepackage{textcomp, gensymb}
+\usepackage{float}
+\usepackage{mathrsfs} 
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{newapa}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{fadings}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{shapes}
+
+
+\let\oldsection\section
+\renewcommand\section{\clearpage\oldsection}
+
+\title{Plantilla Informe}
+  
+% $Rev: 5 $
+\input{common.tex}
+\renewcommand{\baselinestretch}{1.5}
+
+\pagestyle{fancy}
+\begin{document}
+
+<<plots,echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE>>=
+library(knitr)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+
+data <- read_excel("../data/filteredData.xlsx", sheet = "Analysis (2)")
+dataSQM <- read_excel("../data/filteredData.xlsx", sheet = "SQM")
+dataITUB4 <- read_excel("../data/filteredData.xlsx", sheet = "ITUB4")
+
+create_plot <- function(df, period) {
+  filtered_data <- df[df$Period == period,]
+  
+  if (nrow(filtered_data) > 0) {
+    plot <- ggplot(filtered_data, aes(x = normSP, y = return*100, label = Ticker)) +
+      geom_point(aes(size = desvSP, colour = desvReturn)) +
+      scale_colour_gradient(low = "darkred", high = "red", name = "Desviación\nRetorno") +
+      geom_text(vjust = -1.5, hjust = 1.5) +
+      scale_size(range = c(3, 10), name = "Desviación\nASG S&P") +
+      scale_x_continuous("Métrica ASG S&P", limits = c(0, 1)) +
+      scale_y_continuous("Retorno (%)", limits = c(-25, 40)) +
+      labs(
+        caption = "Fuente: Bloomberg"
+      ) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
+        plot.subtitle = element_text(size = 14, hjust = 0.5),
+        plot.caption = element_text(size = 10, hjust = 0)
+      )
+    return(plot)
+  } else {
+    return(NULL)
+  }
+}
+
+
+
+create_plot_combined <- function(df, period) {
+  filtered_data <- df[df$Period == period,]
+  
+  if (nrow(filtered_data) > 0) {
+    plot <- ggplot(filtered_data, aes(x = ESGPond, y = return*100, label = Ticker)) +
+      geom_point(aes(size = desvPond, colour = desvReturn)) +
+      scale_colour_gradient(low = "darkred", high = "red", name = "Desviación\nRetorno") +
+      geom_text(vjust = -1.5, hjust = 1.5) +
+      scale_size(range = c(3, 10), name = "Desviación\nASG") +
+      scale_x_continuous("Promedio Métricas Bloomberg y S&P", limits = c(0, 1)) +
+      scale_y_continuous("Retorno (%)", limits = c(-25, 40)) +
+      labs(
+        caption = "Fuente: Bloomberg"
+      ) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
+        plot.subtitle = element_text(size = 14, hjust = 0.5),
+        plot.caption = element_text(size = 10, hjust = 0)
+      )
+    return(plot)
+  } else {
+    return(NULL)
+  }
+}
+
+periods <- unique(data$Period)
+plots <- lapply(periods, function(period) create_plot(data, period))
+names(plots) <- periods
+plotsCombined <- lapply(periods, function(period) create_plot_combined(data, period))
+names(plotsCombined) <- periods
+@
+
+
+%% COMIENZO PORTADA-----------------------------------------
+
+\begin{titlepage}
+
+\begin{center}
+\includegraphics[scale=0.3]{Log.png}\\
+% Incrementamos el interlineado:
+\vspace{1.0cm} {\LARGE Implementación de un experimento de inatención racional con métricas de dilatación pupilar\\ Ingenier\'ia Civil Industrial UANDES}\\
+
+\vspace{1.5cm} \LARGE{Por:\\ Julio Tejero Caballero \\ Gu\'ia: \\ Sebasti\'an Cea}
+
+\vspace{2.3cm}
+
+\vspace{.5cm} \today
+
+\end{center}
+\end{titlepage}
+
+ %%%% FIN PORTADA ------------------------------------------
+
+\begin{center}
+    \section*{Agradecimientos}
+\end{center}
+
+\begin{center}
+    \section*{Resumen}
+\end{center}
+
+\tableofcontents
+\newpage
+
+\listoffigures
+\newpage
+
+\listoftables
+\newpage
+
+\section{Introducción}
+
+En el ámbito financiero la disponibilidad de información ha experimentado un aumento considerable a lo largo de los años, especialmente en el último siglo  debido a la digitalización. Para los inversionistas existen muchos factores que deben ser considerados a la hora de tomar una decisión, algunos de los más usados son el \textit{ROI}, \textit{ROE}, \textit{EBIT}, \textit{EBITDA}, entre muchos otros. Para estos individuos, informarse de toda la gama de estas métricas es costoso en tiempo y muy complicado de analizar y entender en profundidad, cómo consecuencia, han debido dejar de lado algunas y centrarse en las que más interés les traen según sus preferencias. 
+
+
+\subsection{SRI (\textit{socially responsible investments})}
+Con el tiempo las métricas han evolucionado, apareciendo nuevas, incluso algunas no pecuniarias, es decir, no tienen un valor monetario directo sobre ellas. Las métricas no pecuniarias han tomado un protagonismo importante durante el último siglo influenciadas principalmente por el SRI (\textit{socially responsible investments}). 
+
+\textbf{AGREGAR POCO DE HISTORIA DE SRI}
+
+Una de las mas importantes es la métrica ASG (Ambiental, Social y Gobernanza) o, en sus siglas en ingles ESG (\textit{Enviromental, Social and Governance}). Los factores ASG son los encargados de mostrar cómo una empresa se desempeña o impacta en su entorno. Los parámetros ASG son reportados por una amplia gama de empresas, en especial las de mayor tamaño, las cuales vienen marcando tendencia reportándolas periódicamente. Es más, en algunos lugares del mundo ya no es una opción dar a conocer las medidas ASG, sino una obligación debido a las nuevas regulaciones. Esto es claro en Europa, continente líder en este ámbito.
+
+En adelante, se profundizara en varios aspectos claves de este trabajo, comenzando por los criterios ASG y cada uno de sus componentes para posteriormente abordar la inatención racional. Luego se introduce el marco teórico principal de la memoria, el cual se basa en literatura sobre inatención racional. Esta teoría da una base sólida para explorar como los tomadores de decisiones (o DM por el acrónimo de Decision Maker en inglés) procesan la información en un entorno financiero saturado de datos. Se abordará cómo esta teoría se relaciona en especifico con los indicadores ASG y su influencia en las posiciones tomadas por los inversionistas.
+
+\subsection{Criterios ASG}
+Los criterios ASG se dividen según sus siglas; en primer lugar el criterio ambiental, luego el criterio Social y por último el de Governanza. A continuación se explica en detalle qué abarca cada uno de estos criterios.
+
+\subsubsection{Criterio Ambiental (A)}
+El factor Ambiental dentro de los criterios ASG se enfoca en cómo una organización impacta y actúa frente al medio ambiente. Este criterio es de suma importancia dado a la creciente preocupación a nivel global de la sostenibilidad ambiental y el cambio climático. Algunos aspectos cruciales que se incluyen en este criterio son; emisiones de carbono, la gestión de recursos naturales, reducción de la contaminación generada en las actividades de la organización, gestión de residuos, entre otros. La relevancia de este factor ambiental radica en expresar cómo una empresa impacta en el medio ambiente y contribuye a la sostenibilidad a largo plazo. 
+Las empresas que se comprometen objetivos con los factores ambientales muestran resiliencia y mayor adaptabilidad a las nuevas regulaciones ambientales, lo que a la larga significa una mayor estabilidad de la organización y una mejor reputación.
+
+Los temas ambientales han tomado tal importancia que desarrollar soluciones para desafíos ambientales es crucial para proteger nuestro planeta y sentar las bases de un crecimiento económico sostenible a largo plazo. Debido a esto el sector financiero tiene un rol importante que desempeñar. Especialmente en movilizar el capital necesario para efectuar una transición hacia nuevas tecnologías y construir infraestructuras sostenibles \cite{jpmorgan_chase_2021_2021}.
+
+\subsubsection{Criterio Social (S)}
+El aspecto Social de los criterios ASG expresa las relaciones de una empresa con sus entorno social, es decir, con sus empleados, proveedores, clientes y comunidades. Dentro de este factor se abarcan temas como los derechos humanos , derechos del trabajo, diversidad, inclusión, participación en la comunidad, salud, practicas ética, entre varios más.
+
+La importancia de este criterio radica en su capacidad de expresar como una organización se relaciona con sus grupos de interés. Un buen indicador social es crucial, ya que usualmente significa un buen ambiente laboral, lealtad con los empleados y clientes y en general una imagen pública positiva.
+ 
+En general, una organización preocupada de este criterio muestra mayor estabilidad laboral a largo plazo, menos conflictos laborales y una buena imagen.
+
+\subsubsection{Criterio Governanza (G)}
+La forma en que una empresa se gobierna, sus prácticas empresariales y su impacto en accionistas y demás partes interesadas son abordados por el componente final de los criterios ASG denominado gobernanza. Se deben tener en cuenta componentes tales como diseño organizacional paritario e inclusivo, directrices éticas transparentes, estructura organizacional, remuneraciones justas además  de también resguardar adecuados derechos a todos quienes posean acciones. La relevancia de la gobernanza reside en su impacto en la durabilidad y los resultados futuros que obtenga una organización. Un buen gobierno corporativo basado en principios fuertes que garanticen transparencia es capaz no sólo generar seguridad para posibles inversores sino también prevenir situaciones no deseadas; asimismo ayuda a lograr un mejor enlace por parte del equipo directivo tanto con las metas empresariales como con aquellos que poseen acciones. Cuando las empresas incorporan prácticas fuertes de gobernanza se perciben como más confiables y responsables, aspectos que pueden impactar positivamente su posición competitiva en el mercado e incrementar la disposición para invertir en ellas.
+
+
+\subsection{Inatención Racional}
+
+La inatención racional se estudia desde el punto de vista de la economía conductual y la psicología cognitiva. Se sustenta sobre la teoría de que frente a la abundancia de información disponible, los individuos son selectivos en cuanto a qué datos prestamos atención mediante una elección estratégica y deliberada, tomando en consideración solo algunos de los factores disponibles. Se requiere evaluar los costos involucrados en la obtención y procesamiento de información adicional frente a los posibles beneficios que esta pueda proporcionar. Asimismo, se basa en la noción de que un individuo tiene una capacidad cognitiva limitada, por lo tanto no puede procesar toda la información existente en su totalidad. Por consiguiente, las personas eligen poner atención a ciertos aspectos que consideran más relevantes o cruciales para lograr maximizar su beneficio; esto suele estar fundamentado en experiencias anteriores propias de cada individuo así como también de acuerdo a lo que creen y esperan. No se debe confundir esto con aleatoriedad en las decisiones sino que más bien es una combinación entre la necesidad de tomar decisiones correctamente ponderadas y la dificultad práctica para tener en cuenta toda el conjunto disponible. Esto aplica con la abundancia de información a la que se enfrentan los inversionistas, donde utilizar toda es muy difícil por lo que son selectivos en que métricas consideran a la hora de tomar sus decisiones.
+
+
+\subsection{Motivación}
+La motivación detrás de este experimento se centra en la intersección de dos temáticas de interés personal; las finanzas y la racionalidad en la toma de decisiones. Abordar estos dos tópicos, desde una perspectiva de finanzas responsables permite poder relacionar las dos áreas, en un ambiente en el que los inversionistas  cada vez se encuentran más preocupados por el impacto de sus decisiones en la sostenibilidad y responsabilidad corporativa.
+Asimismo, la información disponible sobre los indicadores medioambientales requieren que los tomadores de decisión entiendan e interpreten algo que a menudo es complejo e incompleto, desafío dificil de enfrentar, aún más cuando existe una sobrecarga de información, pero que sin duda les puede proporcionar una oportunidad tanto a corto como a largo plazo, por lo que abordar este tópico con un enfoque de inatención racional agrega valor a la investigación.
+Por ultimo, el estudio de temática es relevante al aumento de interés en las inversiones ASG, por ende, es esencial identificar qué rol toman los DM y si realmente consideran factores que no le traen un mayor beneficio económico.
+
+\subsection{Problema}
+El problema que aborda esta tesis radica no sólo en la necesidad de entender cómo los inversionistas utilizan la información ASG disponible, sino también entender como un factor no pecuniario influye en las decisiones que toma un inversionista, en especial en un ecosistema donde el compromiso con la inversión ética y sostenible va en aumento. 
+
+Asimismo los diferentes estándares en las métricas ASG y su complejidad hacen que la información disponible sobre estos criterios sean difíciles de entender y procesar, es en esta parte donde a los individuos se les presentará un escenario sencillo y fácil de entender para que puedan tomar una decisión sin que afecte las habilidades de interpretación de la métrica.
+
+Este experimento sigue la linea de la tesis de Ezequiel Ortiz, sin embargo la implementación de eyetracker lleva esta investigación un paso mas allá, acercándose a datos reales y analizables en un ecosistema de inversión real. Mientras la tesis de Ortiz sentó las bases y una aproximación a los resultados, este experimento busca poder saber cuanta atención realmente le ponen los DM a los criterios ASG al momento de comparalo con el retorno del activo.
+
+\section{Revisión Bibliográfica}
+
+\subsection{Experimental Test of Rational Inattention}
+El paper "\textit{Experimental Tests of Rational Inattention}" realizado por Mark Dean y Nathaniel Neligh \cite{dean_experimental_2023}, aborda el tema de cómo los individuos enfocan su atención y esfuerzo cognitivo al tomar decisiones en entornos económicos, específicamente bajo el marco de la teoría de la inatención racional. La investigación se centra en el balance que hacen los individuos entre los costos de adquirir información y los potenciales beneficios derivados de hacer elecciones más informadas. A través de una serie de experimentos, los autores exploran cómo los sujetos ajustan su atención en función de cambios en los incentivos, así abordando el modelo de inatención racional.
+
+Dean y Neligh consideran un tomador de decisiones (DM) que elige entre acciones, cuyos resultados dependen de un número finito de estados $\omega \in \Omega$ ocurre. La utilidad de la acción $a$ en el estado $\omega$ se denota por $u(a, \omega)$. Un problema de decisión se define por un conjunto de acciones disponibles $A$ y un estado previo del mundo $\mu \in \Delta(\omega)$, los cuales pueden ser elegidos por el experimentador. Los datos observados de un problema de decisión particular generan una función de elección estocástica dependiente del estado (SDSC), que describe la probabilidad de elegir cada acción disponible en cada estado del mundo. Para un problema de decisión $(\mu, A)$ usamos $P(\mu,A)$ para referirnos a la función SDSC asociada, siendo $P(\mu,A)(a|\omega)$ la probabilidad de que la acción $a \in A$ se haya elegido en el estado $\omega \in \Omega$. Se debe de tener en cuenta que una función SDSC también implica, a través de la regla de Bayes, un conjunto de "posteriores revelados", es decir, la distribución de probabilidad condicional sobre estados, $\gamma a$, asociada con cada acción $a \in A$ que se elige con probabilidad positiva.
+
+Una de las contribuciones más significativas del estudio es su su cuestionamiento a la suposición comúnmente aceptada de que los costos de información son lineales en el modelo de Shannon. Los descubrimientos de la investigación dejan en evidencia que, si bien los sujetos sí ajustan su atención en respuesta a los incentivos de manera que es consistente con el modelo de inatención racional, el comportamiento observado no concuerda con un modelo donde los costos de información sean estrictamente lineales como lo planteado en el modelo de Shannon. Esto indica que la relación entre los costos de adquirir información y la cantidad de información adquirida puede ser más compleja y no lineal, requiriendo una generalización del modelo de Shannon para abordar adecuadamente este tema.
+
+Finalmente, el estudio revela que una generalización del modelo de Shannon, que permite respuestas más flexibles a los incentivos y reconoce que algunos estados del mundo pueden ser más difíciles de distinguir que otros, proporciona un acercamiento más preciso a los datos experimentales. Esto es relevante porque sugiere que los modelos de toma de decisiones deben incorporar no solo la cantidad de información disponible sino también la calidad y la forma de presentación de esa información para predecir con precisión cómo las personas dirigirán su atención.
+
+Las conclusiones del paper presentan la necesidad de repensar cómo modelamos los costos de información en la teoría económica. Asimismo, indica que el modelo de inatención racional, aunque en si ya es poderoso, puede beneficiarse significativamente de ser extendido para abordar las complejidades del procesamiento de información de los tomadores de decisión. Con esto, pueden desarrollar predicciones más precisas sobre el comportamiento y la toma de decisiones.
+
+
+\subsection{Integration of ESG Information Into Individual Investors' Corporate Investment Decisions}
+\citeA{park_integration_2022} llevaron a cabo una investigación que se centra en la integración de la información ASG en las decisiones de inversión de individuos en el mercado. El enfoque de este estudio es el uso del marco teórico UTAUT (\textit{Unified Theory of Acceptance and Use of Technology)} para examinar las razones y formas las cuales los inversionistas integran consideraciones ASG en sus estrategias de inversión. Este enfoque permite comprender los mecanismos subyacentes que afectan la integración de la información ASG, un área que ha sido relativamente poco explorada, especialmente desde el punto de vista de los inversionistas individuales.
+
+Los autores señalan en su estudio que las dimensiones de expectativa de rendimiento, expectativa de esfuerzo, influencia social y condiciones facilitadoras son determinantes clave en la decisión de incorporar información ASG en la evaluación de inversiones. El estudio muestra cómo los inversores valoran la información ASG no solo por su posible impacto en el rendimiento financiero a largo plazo, sino también por su consonancia con valores personales, responsabilidad social y la manera que esta información se les presenta.
+
+La importancia del rendimiento esperado como motivación para la integración de la información ASG es uno de los descubrimientos más significativos. Los inversionistas consideran que las inversiones con altos estándares ASG podrían ofrecer rendimientos superiores a largo plazo debido a su atención en la sostenibilidad y el manejo de riesgos asociados con aspectos sociales y ambientales, lo que a la larga traería estabilidad en la organización. La literatura usada en el paper respalda esta percepción al sugerir una correlación positiva entre las sólidas prácticas de ASG y el rendimiento financiero.
+
+Sin embargo, el uso de medidas ASG presenta un desafío significativo: El procesamiento y análisis de la información ASG tiene un costo, esto es debido a la falta de estandarización en los informes ASG y a la variabilidad en la calidad y comparabilidad de los datos disponibles, lo que resulta en dificultades para interpretar la información por parte de los inversores. Por ende, es crucial estandarizar los informes ASG para reducir costos y facilitar la integración de criterios ASG en las decisiones de inversión.
+
+\subsection{Inequality, Income, and Well-Being}
+El trabajo de \citeA{decancq_chapter_2015}. proporciona un visión teorica de la conceptualización y medición del bienestar, abordando la complejidad inherente a la evaluación más allá de los indicadores económicos convencionales. En el documento, se aborda la pregunta de "¿qué es lo que deberíamos igualar?" en el contexto de la igualdad y el bienestar, lo que lleva a una discusión sobre el bienestar individual entendido a través de diversas lentes: Habilidades y desempeño, satisfacción y valor equivalente (indiferencia).
+
+La función de bienestar es el centro del análisis, tomando en cuenta no solo los ingresos o consumos sino también aspectos más amplios de la vida que tienen un impacto directo en la calidad de vida de las personas. Esto muestra un cambio significativo hacia una evaluación del bienestar que considera múltiples dimensiones, como la salud, la educación y las relaciones sociales, reconociéndolos como elementos esenciales para el bienestar general de una persona. Es debido a esto que este estudio es de suma importancia para este proyecto en particular, donde se evaluará un aspecto no monetario (ASG) pero que trae otro tipo de beneficios.
+
+El tratamiento de la "función de satisfacción" busca medir el bienestar subjetivo al tener en cuenta la evaluación que los individuos hacen de sus propias vidas. Reconocer la subjetividad inherente al bienestar es crucial, ya que distingue entre "utilidad experimentada" y "utilidad de decisión" para abordar las discrepancias entre cómo las personas anticipan sus decisiones y cómo realmente experimentan sus consecuencias. 
+
+\subsection{Investing in Socially Responsible Mutual Funds}
+El paper \textit{Investing in Socially Responsible Mutual Funds} de \citeA{geczy_investing_2003} trabaja el análisis de la inversión en fondos mutuos que siguen objetivos de inversión socialmente responsables (SRI). En el documento se evalúa el costo de incluir una restricción de SRI junto con la búsqueda del arrió de Sharpe más alto posible. 
+
+El análisis revela que el costo percibido al agregar restricciones SRI depende fuertemente del modelo de valorización que el inversor utilice. Por ejemplo, para un inversor que confía plenamente en el modelo Modelo de Precios de Activos de Capital (CAPM) y no considera la habilidad del \textit{portaolio manager}, el costo de adherirse a inversiones SRI es mínimo, contabilizándose en tan solo unos pocos puntos base al mes. Sin embargo, el costo aumenta considerablemente, en al menos 30 puntos puntos base, para aquellos inversores que consideren modelos de valorización de activos que vinculen mayores retornos con exposiciones a factores de tamaño, valor y \textit{momentum}. Este costo de una restricción SRI en fondos mutuos es considerado una medida de perdida de rendimiento potencial que enfrentaran los inversores al limitar sus opciones únicamente fondos con objetivos SRI.
+
+\section{Marco Teórico}
+
+Los principios de este proyecto se basan en lo planteado por \citeA{decancq_chapter_2015}, el cual considera el bienestar de uno o varios individuos dependiendo de dos factores, otorgándole distintas opciones para denotar su preferencia frente a situaciones.
+
+\subsection{Bienestar del Individuo}
+ En el experimento, se definen un conjunto de alternativas $\mathcal{L}$ en la que cada elemento, $\ell\in\mathcal{L}$, es un par ordenado, por ejemplo, $(x^{ASG}$, $x^{\$})$. El primer elemento del par corresponde al retorno o métrica ASG del activo en cuestión y el segundo corresponde al retorno monetario del mismo activo. Estos dos factores son considerados como las dimensiones en las que se trabajará el experimento, siguiendo a \citeA{decancq_chapter_2015}. Por ejemplo, diremos que $\mathcal{L} = \left((0.34; 0.21), (0.29; 0.25), ..., (x^{ASG}_n; x^{\$}_n)\right)$ en el que $A:=(\ell,\ell')$ son pares de datos que se le presentarán a los tomadores de decisión para que tomen una postura con respecto a sus preferencias.
+
+ Siguiendo lo propuesto por los autores, se define una función de bienestar (o \emph{well-being} en inglés), la cual depende de las dimensiones mencionadas anteriormente y del ingreso del individuo. Si se continúa la notación de los autores mencionados, se tiene que la función de bienestar del agente $i$ se define como: 
+
+ \begin{equation}
+     WB(\ell,R_i,S_i)=v_i(\ell),
+ \end{equation}
+
+ en el cual $\ell$ corresponde a un elemento del conjunto $\mathcal{L}$, como por ejemplo $(x^{ASG}$; $x^{\$})$; a su vez $R_i$ es un ordenamiento de preferencias sobre $\mathcal{L}$. Por su parte, $S_i$ es la función de satisfacción subjetiva. La función de bienestar descrita anteriormente podría expresarse como una función lineal de la siguiente manera:
+
+ \begin{equation}
+     v\left((x^{ASG}_n; x^{\$})\right) = P^{ASG}\cdot x^{ASG} + P^{\$}\cdot x^{\$}. 
+ \end{equation}
+
+El ingreso equivalente se denota por $x^{\$}_*$ y se define como el valor que resuelve la siguiente ecuación para una alternativa $(x^{ASG};x^{\$})$ respecto de un valor de referencia $\tilde x^{ASG}$:
+
+$$P^{ASG}\cdot x^{ASG} + P^{\$}\cdot x^{\$}=P^{ASG}\cdot \tilde x^{ASG} + P^{\$}\cdot x^{\$}_*.$$
+
+En este ejemplo en particular, ese valor es:
+
+$$x^{\$}_*\left((x^{ASG};x^{\$}),x^{ASG}\right)=\frac{(P^{ASG}\cdot x^{ASG} + P^{\$}\cdot x^{\$})-P^{ASG}\cdot \tilde x^{ASG}}{P^{\$}}.$$
+
+ 
+
+%Ecuación que dado un ingreso $I$ del individuo, debe satisfacer la siguiente condición:
+
+%\begin{equation}
+%    u([x^{ASG}_n; x^{\$}_n]) \leq I
+%\end{equation}
+
+\subsection{Preferencias}
+Frente a dos opciones de activos $\ell$ y $\ell'$, cada una con distintos retornos, un individuo puede preferir uno sobre otro ($\ell \succeq \ell'$, $\ell' \succeq \ell$) o ser indiferente entre ambos ($\ell \equiv \ell'$). La preferencia de una situación sobre otra se puede denotar de dos maneras \cite{decancq_chapter_2015}; $\ell R \ell'$ lo que significa una preferencia débil de la opción $\ell$ sobre $\ell'$, y $\ell P \ell'$ lo que muestra una preferencia fuerte entre las alternativas. Asimismo, estos autores denotan la indiferencia entre ambas opciones como $\ell I \ell'$.
+
+Para el experimento se asume completitud de preferencia, lo que significa que los individuos son capaces de definir preferencias entre las dos opciones presentadas. Este supuesto permite trabajar con curvas de indiferencia en vez de conjuntos \emph{contour}. 
+
+La curva de indiferencia muestra las combinaciones entre la dimensión 1 y dimensión 2 de las alternativas, en este caso $\ell=(x^{ASG}$, $x^{\$})$, que le entregan al individuo el mismo nivel de utilidad. A continuación se presenta la gráfica de las curvas de indiferencia expuesta por \citeA{burone_measuring_2023} para dos individuos distintos ($i$ y $j$):
+
+\begin{figure}
+    \centering
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,310); %set diagram left start at 0, and has height of 310
+
+%Shape: Axis 2D [id:dp13395617326038134] 
+\draw  (63.29,240.77) -- (317,240.77)(88.66,15) -- (88.66,265.86) (310,235.77) -- (317,240.77) -- (310,245.77) (83.66,22) -- (88.66,15) -- (93.66,22)  ;
+%Curve Lines [id:da4183460986445604] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (99.5,50.2) .. controls (109.6,152.2) and (196.4,177.4) .. (289.5,175.2) ;
+%Curve Lines [id:da5242566714116654] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (132.25,20) .. controls (133.75,124.5) and (160,220.6) .. (260.25,230.5) ;
+
+% Text Node
+\draw (49.9,11.2) node [anchor=north west][inner sep=0.75pt]    {$x{^{\ }}^{\$}$};
+% Text Node
+\draw (292.5,250.5) node [anchor=north west][inner sep=0.75pt]    {$x{^{\ }}^{ASG}$};
+% Text Node
+\draw (105.3,43) node [anchor=north west][inner sep=0.75pt]    {$\ell _{j}$};
+% Text Node
+\draw (123.2,-14.4) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {.};
+% Text Node
+\draw (240.8,128.8) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {.};
+% Text Node
+\draw (91.6,20.4) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {.};
+% Text Node
+\draw (222.8,180.8) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {.};
+% Text Node
+\draw (250.5,145.4) node [anchor=north west][inner sep=0.75pt]    {$\ell '_{j}$};
+% Text Node
+\draw (138.9,13.4) node [anchor=north west][inner sep=0.75pt]    {$\ell _{i}$};
+% Text Node
+\draw (234.9,199.8) node [anchor=north west][inner sep=0.75pt]    {$\ell '_{i}$};
+
+
+\end{tikzpicture}
+    \caption{Caption}
+    Fuente: Elaboración propia
+    \label{fig:enter-label}
+\end{figure}
+
+
+Cabe notar que cada individuo puede tener distintas valoraciones de las dimensiones, cada una representa las preferencias individuales. Por ejemplo, un tomador de decisión puede valorar más la sustentabilidad que otro, lo que significa que estaría dispuesto a sacrificar más retorno monetario por retorno ASG que un tomador de decisión que solo busca rentabilidad monetaria. Esta variabilidad de las valoraciones complica la interpretación y comparación entre individuos, por lo que en muchos casos se utiliza una función de valoración común en el experimento \cite{decancq_chapter_2015}, que es lo que se hará en este caso.
+
+\subsection{Costo de Cambio}
+En un experimento de este tipo, se presenta un costo de cambio que, en el fondo, es cuánto está dispuesto a sacrificar el inversionista en términos de retornos monetarios por aumentar el indicador ASG. \citeA{geczy_investing_2003} tratan este tema en específico con fondos mutuos, en los que se consideran distintos fondos mutuos con objetivos que incluyen el \textit{SRI}. Según estos autores, el costo de una inversión socialmente responsable depende de manera principal de las opiniones del inversor sobre los modelos de valoración de activos y de las habilidades de selección de activos de los administradores del fondo. Por ejemplo, para un tomador de decisión que cree firmemente en el uso del modelo de CAPM (\textit{Capital Asset Pricing Model}) el costo de una inversión sustentable es solo de unos pocos puntos base por mes. No así con modelos que cuentan factores de \textit{momentum}, tamaños y valor como Fama-French de tres factores o el modelo Carhart, en el que una inversión de este tipo es mucho más costosa, cuyo costo es, por lo menos, de  30 puntos base por mes.
+
+\subsection{Prueba de Reflexión Cognitiva}
+La Prueba de Reflexión Cognitiva, más conocida por sus siglas en inglés `CRT` (\emph{Cognitive Reflection Test}), mide la decisión de un individuo tomador de decisiones ante una respuesta intuitiva pero incorrecta y al mismo tiempo de participar en una reflexión cognitiva al resolver un conjunto de problemas matemáticos \cite{frederick_cognitive_2005}.
+
+El mejor ejemplo de la prueba es la pregunta del bate y la pelota (\textit{Bat and ball problem}), en el cual se presenta la siguiente pregunta:
+
+\begin{center}
+    Un bate y una pelota cuestan $\$1.10$ en total. El bate cuesta $\$1.00$ más que una pelota ¿Cuánto cuesta la pelota?
+\end{center}
+
+La primera respuesta que se viene a la mente es $\$0.10$, pero esta respuesta intuitiva es incorrecta. Si se analiza con mayor detención el problema se puede reconocer que la diferencia entre $\$1.00$ y $\$0.10$ es de $\$0.90$ y no de $\$1.00$ como dice el enunciado. Con una mejor reflexión se llega a la respuesta correcta: $\$1.05$.
+
+Existen 3 maneras discutidas por \citeA{sirota_effect_2018}  de llevar a cabo este test, la primera llamada \textit{open-ended}, la segunda \textit{two-option} y, la última, \textit{four-option}. En el primer caso el tomador de decisión ingresa de manera manual el resultado que él cree correcto, es decir, sin alternativas. En los otros dos casos al tomador de decisión se le presentan dos y cuatro alternativas respectivamente.
+
+\citeA{sirota_effect_2018} no encontraron evidencia, lo que favorece a la hipótesis de equivalencia entre las tres maneras estudiadas de llevara a cabo la prueba. 
+
+\subsection{Implementación del Marco Teórico en Elección de Activos con Información ASG}
+
+Dada la situación en que el activo $j$ contiene la siguiente información: con probabilidad $\pi_0$, $(ASG_0,\$_0)$, con probabilidad $\pi_1$, $(ASG_1,\$_0)$ y con probabilidad $1-\pi_0-\pi_1$, $(ASG_2,\$_0)$. El valor esperado del componente ASG del activo $j$ para esa probabilidad se denota como $\bar x^{ASG}_\pi$. 
+
+
+\begin{figure}
+    \centering
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,403); %set diagram left start at 0, and has height of 403
+
+%Shape: Axis 2D [id:dp44817206223413786] 
+\draw [line width=0.75]  (86.1,346.95) -- (397.28,346.95)(117.22,70.03) -- (117.22,377.72) (390.28,341.95) -- (397.28,346.95) -- (390.28,351.95) (112.22,77.03) -- (117.22,70.03) -- (122.22,77.03)  ;
+%Straight Lines [id:da2635177468922987] 
+\draw    (111.99,122.04) -- (122.05,122.04) ;
+%Straight Lines [id:da12445618867563701] 
+\draw    (111.99,281) -- (122.05,281) ;
+%Straight Lines [id:da10735169417411794] 
+\draw    (111.5,202.5) -- (121.56,202.5) ;
+%Straight Lines [id:da3662912069748514] 
+\draw    (184.11,341.83) -- (183.86,351.16) ;
+%Straight Lines [id:da23171967171945718] 
+\draw    (254.76,342.33) -- (254.51,351.65) ;
+%Straight Lines [id:da14001372701656223] 
+\draw    (322.95,342.33) -- (322.71,351.65) ;
+%Straight Lines [id:da36090377200564694] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.13 ]   (111.99,122.04) -- (386.24,123.51) ;
+%Straight Lines [id:da7470745746754253] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.13 ]   (111.5,202.5) -- (386.24,203.24) ;
+%Straight Lines [id:da0014179812149808235] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.13 ]   (111.99,281) -- (387.47,281.73) ;
+%Straight Lines [id:da21484429021982154] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.14 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.36 ]   (183.86,83.04) -- (183.46,115.91) -- (183.86,351.16) ;
+%Straight Lines [id:da4031975643793815] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.14 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.36 ]   (255.25,83.53) -- (254.51,351.65) ;
+%Straight Lines [id:da1102018710260293] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.14 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.36 ]   (322.46,84.26) -- (322.71,351.65) ;
+%Shape: Ellipse [id:dp211780464841973] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (250.62,122.53) .. controls (250.62,119.95) and (252.7,117.86) .. (255.28,117.86) .. controls (257.85,117.86) and (259.94,119.95) .. (259.94,122.53) .. controls (259.94,125.1) and (257.85,127.19) .. (255.28,127.19) .. controls (252.7,127.19) and (250.62,125.1) .. (250.62,122.53) -- cycle ;
+%Straight Lines [id:da2776117172154504] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.14 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.36 ]   (386.24,85.49) -- (386.49,349.19) ;
+%Shape: Ellipse [id:dp2845497497287104] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (178.8,122.07) .. controls (178.8,119.49) and (180.88,117.41) .. (183.46,117.41) .. controls (186.03,117.41) and (188.12,119.49) .. (188.12,122.07) .. controls (188.12,124.64) and (186.03,126.73) .. (183.46,126.73) .. controls (180.88,126.73) and (178.8,124.64) .. (178.8,122.07) -- cycle ;
+%Shape: Ellipse [id:dp7185708332857657] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (317.62,122.78) .. controls (317.62,120.2) and (319.7,118.11) .. (322.28,118.11) .. controls (324.85,118.11) and (326.94,120.2) .. (326.94,122.78) .. controls (326.94,125.35) and (324.85,127.44) .. (322.28,127.44) .. controls (319.7,127.44) and (317.62,125.35) .. (317.62,122.78) -- cycle ;
+%Straight Lines [id:da39438243366551085] 
+\draw    (149,108) -- (175.09,116.2) ;
+\draw [shift={(177,116.8)}, rotate = 197.45] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da9350322459927463] 
+\draw    (255.4,151.6) -- (255.04,132.8) ;
+\draw [shift={(255,130.8)}, rotate = 88.9] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da12424881203312133] 
+\draw    (341.4,100.8) -- (329.83,115.62) ;
+\draw [shift={(328.6,117.2)}, rotate = 307.97] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Ellipse [id:dp8242722172613586] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] (221.2,122.32) .. controls (221.2,119.74) and (223.28,117.66) .. (225.86,117.66) .. controls (228.43,117.66) and (230.52,119.74) .. (230.52,122.32) .. controls (230.52,124.89) and (228.43,126.98) .. (225.86,126.98) .. controls (223.28,126.98) and (221.2,124.89) .. (221.2,122.32) -- cycle ;
+%Straight Lines [id:da9059451496762971] 
+\draw    (225.25,210.75) -- (225.98,132.5) ;
+\draw [shift={(226,130.5)}, rotate = 90.54] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (72.39,68.54) node [anchor=north west][inner sep=0.75pt]    {$x{^{\ }}^{\$}$};
+% Text Node
+\draw (372.1,362.06) node [anchor=north west][inner sep=0.75pt]    {$x{^{\ }}^{ASG}$};
+% Text Node
+\draw (171.96,358.03) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle ASG_{0}}$};
+% Text Node
+\draw (242.61,358.03) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle ASG_{1}}$};
+% Text Node
+\draw (312.27,357.04) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle ASG_{2}}$};
+% Text Node
+\draw (94.97,115.17) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle \$_{0}}$};
+% Text Node
+\draw (94.05,195.51) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle \$_{1}}$};
+% Text Node
+\draw (92.69,273.09) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle \$_{2}}$};
+% Text Node
+\draw (216.94,92.68) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$( ASG_{1} ,\ \$_{0} \ )$};
+% Text Node
+\draw (285.19,138.79) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$( ASG_{2} ,\ \$_{0} \ )$};
+% Text Node
+\draw (144.39,136.59) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$( ASG_{0} ,\ \$_{0} \ )$};
+% Text Node
+\draw (130.79,87.39) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$P=\pi _{0}$};
+% Text Node
+\draw (236.39,148.99) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$P=\pi _{1}$};
+% Text Node
+\draw (312.79,81.79) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$P=1-\pi _{0} -\pi _{1}$};
+% Text Node
+\draw (131.39,209.09) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$ \begin{array}{l}
+( ASG_{0} *\pi _{0} +ASG_{1} *\pi _{1} +ASG_{2} *( 1-\pi _{0} -\pi _{1}) ,\\
+\ \$_{0} *\pi _{0} +\$_{1} *\pi _{1} +\$_{2} *( 1-\pi _{0} -\pi _{1}) \ )
+\end{array}$};
+
+
+\end{tikzpicture}
+    \caption{Ejemplo activo $j$}
+    Fuente: Elaboración propia
+    \label{fig:enter-label2}
+\end{figure}
+
+Ahora bien, se supone que se tiene información para otro activo $j'$ con la misma estructura. Es decir, un retorno económico constante e incertidumbre en el retorno ASG. Se debe suponer que el retorno económico es el mismo entre $j$ y $j'$. Sin embargo, los retornos ASG son diferentes y el valor esperado de ASG para $j'$ se denota por $\hat x^{ASG}$. Si $\hat x^{ASG}<\bar x^{ASG}$. Entonces, es objetivamente óptimo invertir en el activo $j$.
+
+Entonces, que sucede si se compara el activo $j$ con un activo que tiene un retorno económico menor. Podría tener valor esperado de ASG más alto que $j$ o más bajo. Si tiene valor más alto, el tomador de decisión podría estar indiferente entre elegir uno u otro activo. Sin embargo, si el valor esperado ASG es más bajo, la elección racional es una sola. Esa elección sería la respuesta correcta. La situación anterior se encuentra representada en la Figura~\ref{fig:Elección-racional}, en la cual la decisión entre ambos objetos rellenos es evidente; el circulo trae mayor beneficio. No así es la decisión entre el punto $(ASG_1, \$_0)$ y el cuadrado $(ASG_2, \$_1)$, ya que esa decisión tiene un costo de cambio en el cual un inversionista puede denotar una preferencia.
+
+    
+
+
+
+\begin{figure}
+    \centering
+
+
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,403); %set diagram left start at 0, and has height of 403
+
+%Shape: Axis 2D [id:dp3246899411999373] 
+\draw [line width=0.75]  (89.51,345.49) -- (387.51,345.49)(119.31,78.25) -- (119.31,375.18) (380.51,340.49) -- (387.51,345.49) -- (380.51,350.49) (114.31,85.25) -- (119.31,78.25) -- (124.31,85.25)  ;
+%Straight Lines [id:da4737928031477663] 
+\draw    (114.31,128.44) -- (123.94,128.44) ;
+%Straight Lines [id:da5903596568191973] 
+\draw    (114.31,281.84) -- (123.94,281.84) ;
+%Straight Lines [id:da8640009403551276] 
+\draw    (113.84,206.09) -- (123.47,206.09) ;
+%Straight Lines [id:da9430660881953894] 
+\draw    (183.37,340.55) -- (183.14,349.54) ;
+%Straight Lines [id:da8226400608463318] 
+\draw    (251.03,341.02) -- (250.79,350.02) ;
+%Straight Lines [id:da45641199831736334] 
+\draw    (316.33,341.02) -- (316.1,350.02) ;
+%Straight Lines [id:da36133679662915164] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.13 ]   (114.31,128.44) -- (376.94,129.86) ;
+%Straight Lines [id:da4972916495598063] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.13 ]   (113.84,206.09) -- (376.94,206.8) ;
+%Straight Lines [id:da1665976651084411] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.13 ]   (114.31,281.84) -- (378.11,282.55) ;
+%Straight Lines [id:da9591292665562383] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.14 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.36 ]   (183.14,90.8) -- (182.75,122.52) -- (183.14,349.54) ;
+%Straight Lines [id:da35795861694368547] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.14 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.36 ]   (251.5,91.27) -- (250.79,350.02) ;
+%Straight Lines [id:da5432042056443906] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.14 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.36 ]   (315.86,91.98) -- (316.1,350.02) ;
+%Shape: Ellipse [id:dp432140426386187] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (245.62,129.15) .. controls (245.62,126.66) and (247.62,124.65) .. (250.09,124.65) .. controls (252.55,124.65) and (254.55,126.66) .. (254.55,129.15) .. controls (254.55,131.63) and (252.55,133.65) .. (250.09,133.65) .. controls (247.62,133.65) and (245.62,131.63) .. (245.62,129.15) -- cycle ;
+%Shape: Rectangle [id:dp47617261578448566] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (179.32,202.95) -- (186.66,202.95) -- (186.66,210.35) -- (179.32,210.35) -- cycle ;
+%Straight Lines [id:da033853456661186776] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=0.14 ][fill={rgb, 255:red, 128; green, 128; blue, 128 }  ,fill opacity=0.36 ]   (376.94,93.17) -- (377.17,347.65) ;
+%Shape: Rectangle [id:dp14706738738890301] 
+\draw   (312.44,203.34) -- (319.78,203.34) -- (319.78,210.74) -- (312.44,210.74) -- cycle ;
+
+% Text Node
+\draw (75.88,76.32) node [anchor=north west][inner sep=0.75pt]    {$x{^{\ }}^{\$}$};
+% Text Node
+\draw (362.49,359.57) node [anchor=north west][inner sep=0.75pt]    {$x{^{\ }}^{ASG}$};
+% Text Node
+\draw (171.16,355.95) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle ASG_{0}}$};
+% Text Node
+\draw (238.82,355.95) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle ASG_{1}}$};
+% Text Node
+\draw (305.53,355) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle ASG_{2}}$};
+% Text Node
+\draw (97.67,121.58) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle \$_{0}}$};
+% Text Node
+\draw (96.79,199.11) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle \$_{1}}$};
+% Text Node
+\draw (98.56,273.98) node [anchor=north west][inner sep=0.75pt]  [font=\tiny]  {${\displaystyle \$_{2}}$};
+% Text Node
+\draw (213.24,99.76) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$( ASG_{1} ,\ \$_{0} \ )$};
+% Text Node
+\draw (148.88,217.65) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$( ASG_{0} ,\ \$_{1} \ )$};
+% Text Node
+\draw (280.9,220.49) node [anchor=north west][inner sep=0.75pt]  [font=\footnotesize]  {$( ASG_{2} ,\ \$_{1} \ )$};
+
+
+\end{tikzpicture}
+    \caption{Elección racional}
+    Fuente: Elaboración propia
+    \label{fig:Elección-racional}
+\end{figure}
+
+\subsubsection{Selección de Activos}
+Existe una amplia gama de activos que se pueden utilizar para llevar a cabo el experimento, sin embargo, para el desarrollo de este experimento en especifico se determinaron los activos a través del análisis de diversas carteras de fondos chilenos y latinoamericanos con estándares ASG. Se recopiló información de los siguientes fondos:
+
+\begin{itemize}
+    \item Santander Acciones Chilenas ESG (ACAMCAC CI)
+    \item ESG Latam Fund Class Zurich (EAESLEA LX)
+    \item Falcom Latam USD Debt ESG (FALCLDF CI)
+    \item Fondo de Inversión Banchile Blackrock ESG (FOBBEBL CI)
+    \item Fondo de Inversion Larrainvial Deuda LATAM Low Carbon ESG (LVLWCAA CI)
+\end{itemize}
+
+Posteriormente, a través de la Terminal Bloomberg, se recopiló las carteras de los distintos fondos, sin embargo solo dos de los fondos buscados reportaban sus carteras a Bloomberg; Santander Acciones Chilenas ESG y ESG Latam Fund Class Zurich.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{docs/images/ACAMCAC.png}
+  \caption{Cartera fondo Santander Acciones Chilenas ESG}
+  Fuente: Terminal Bloomberg
+  \label{fig:image1}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{docs/images/EAESLEA.png}
+  \caption{Cartera fondo ESG Latam Fund Class Zurich}
+  Fuente: Terminal Bloomberg
+  \label{fig:image2}
+\end{figure}
+
+Con esta información se observó una posición en común de ambos fondos; Sociedad Química y Minera de Chile, en especifico su bono Serie B. Al ser un activo común se utilizará en el experimento, Asimismo, el segundo activo elegidos para el experimento es uno que no tienen en común, pero es el más relevante, en terminos de porcentaje, del fondo de Zurich, es decir, Itaú Unibanco Holding.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{docs/images/compFondos.png}
+  \caption{Comparación de carteras de ambos fondos}
+  Fuente: Terminal Bloomberg
+  \label{fig:image3}
+\end{figure}
+
+El activo en común, abreviado SQM, fue escogido por su representatividad en el mercado ASG y su frecuento inclusión en las carteras de fondos nacionales. A continuación se presenta la información resumida y preliminar que otorga el Terminal Bloomberg para este activo materia de ASG:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{docs/images/SQM_ESG.png}
+  \caption{Información ASG SQM}
+  Fuente: Terminal Bloomberg
+  \label{fig:image4}
+\end{figure}
+
+Por otro lado, el activo elegido que no comparten es Itaú Unibanco Holding, banca establecida en Brasil y el principal activo del fondo de Zurich. La información resumida y preliminar entregada por el Terminal Bloomberg para este activo es la siguiente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{docs/images/ITAU_ESG.png}
+  \caption{Información ASG Itaú Unibanco Holding}
+  Fuente: Terminal Bloomberg
+  \label{fig:image5}
+\end{figure}
+
+\subsubsection{Recolección de Datos}
+La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de Excel en un horizonte de tiempo desde el 2016 hasta el 2023 inclusive. En este caso se obtuvieron variables ASG para ambos activos y de distintos proveedores; Bloomberg, Sustainalytics y Standard \& Poor's (S\&P), asimismo como su retorno. 
+\begin{table}[H]
+    \centering
+    <<tableSQMPre, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+    library(dplyr)
+    library(lubridate)
+    library(knitr)
+
+    data_summary <- dataSQM %>%
+        mutate(Dates = as.Date(Dates, format = "%m/%d/%Y")) %>%
+        filter(Dates <= as.Date("2022-01-06")) %>%
+        mutate(Dates = format(Dates, "%m/%d/%Y")) %>%
+        select(Dates, ESG_SCORE, SP_R_ESG_RANK, PX_LAST) %>%
+        head(6)
+
+    data_summary <- data_summary %>%
+      mutate(
+        ESG_SCORE = ifelse(Dates == "31/12/2021", ESG_SCORE, 'N/A'),
+        SP_R_ESG_RANK = 'N/A'
+      )
+
+    data_summary$Dates <- format(as.Date(data_summary$Dates, format="%m/%d/%Y"), "%d/%m/%Y")
+
+    col_names <- c(
+                   "\\shortstack{Fecha}", 
+                   "\\shortstack{Bloomberg}", 
+                   "\\shortstack{Standard \\& Poor's (S\\&P)}", 
+                   "\\shortstack{Precio}")
+
+    kable(data_summary, format = "latex", booktabs = TRUE, 
+          col.names = col_names, escape = FALSE)
+    @
+    \caption{Problema de Continuidad de los Datos ASG para SQM}
+    Fuente: Bloomberg
+\end{table}
+
+
+
+
+\begin{table}[H]
+    \centering
+    <<tableITUB4Pre, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+    library(dplyr)
+    library(lubridate)
+    library(knitr)
+
+    data_summary <- dataITUB4 %>%
+        mutate(Dates = as.Date(Dates, format = "%m/%d/%Y")) %>%
+        filter(Dates <= as.Date("2022-01-06")) %>%
+        mutate(Dates = format(Dates, "%m/%d/%Y")) %>%
+        select(Dates, ESG_SCORE, SP_R_ESG_RANK, PX_LAST) %>%
+        head(6)
+
+    data_summary <- data_summary %>%
+      mutate(
+        ESG_SCORE = ifelse(Dates == "12/31/2021", ESG_SCORE, 'N/A'),
+        SP_R_ESG_RANK = 'N/A'
+      )
+
+    data_summary$Dates <- format(as.Date(data_summary$Dates, format="%m/%d/%Y"), "%d/%m/%Y")
+
+    col_names <- c(
+                   "\\shortstack{Fecha}", 
+                   "\\shortstack{Bloomberg}", 
+                   "\\shortstack{Standard \\& Poor's (S\\&P)}", 
+                   "\\shortstack{Precio}")
+
+    # Output the table
+    kable(data_summary, format = "latex", booktabs = TRUE, 
+          col.names = col_names, escape = FALSE)
+    @
+    \caption{Problema de Continuidad de los Datos ASG para IYUB4}
+    Fuente: Bloomberg
+\end{table}
+
+
+Se puede observar de la tabla anterior que muchos datos aparecen como $N/A$, esto es debido a que las metricas ASG no son calculadas diariamente, sino que cada cierto tiempo. Debido a esto, se procedió a modificar los datos de manera que los valores desconocidos fueran cambiados a su valor más reciente, es decir, a la ultima medición ASG que hubiera disponible, de esta manera las tablas quedaron de la siguiente manera:
+
+\begin{table}[H]
+    \centering
+    <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.height='225px'>>=
+    library(dplyr)
+    library(lubridate)
+    library(knitr)
+
+    data_summary <- dataSQM %>%
+        mutate(Dates = as.Date(Dates, format = "%m/%d/%Y")) %>%
+        filter(Dates <= as.Date("2022-01-06")) %>%
+        mutate(Dates = format(Dates, "%m/%d/%Y")) %>%
+        select(Dates, ESG_SCORE, SP_R_ESG_RANK, PX_LAST) %>%
+        head(6)
+
+    data_summary$Dates <- format(as.Date(data_summary$Dates, format="%m/%d/%Y"), "%d/%m/%Y")
+
+    col_names <- c(
+                   "\\shortstack{Fecha}", 
+                   "\\shortstack{Bloomberg}", 
+                   "\\shortstack{Standard \\& Poor's (S\\&P)}", 
+                   "\\shortstack{Precio}")
+
+    kable(data_summary, format = "latex", booktabs = TRUE, 
+          col.names = col_names, escape = FALSE)
+    @
+    \caption{Solución al Problema de Continuidad de los Datos ASG para SQM}
+    Fuente: Bloomberg
+\end{table}
+
+\begin{table}[H]
+    \centering
+    <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.height='225px'>>=
+    library(dplyr)
+    library(lubridate)
+    library(knitr)
+
+    data_summary <- dataITUB4 %>%
+        mutate(Dates = as.Date(Dates, format = "%m/%d/%Y")) %>%
+        filter(Dates <= as.Date("2022-01-06")) %>%
+        mutate(Dates = format(Dates, "%m/%d/%Y")) %>%
+        select(Dates, ESG_SCORE, SP_R_ESG_RANK, PX_LAST) %>%
+        head(6)
+
+    data_summary$Dates <- format(as.Date(data_summary$Dates, format="%m/%d/%Y"), "%d/%m/%Y")
+
+    col_names <- c(
+                   "\\shortstack{Fecha}", 
+                   "\\shortstack{Bloomberg}",  
+                   "\\shortstack{Standard \\& Poor's (S\\&P)}", 
+                   "\\shortstack{Precio}")
+
+    kable(data_summary, format = "latex", booktabs = TRUE, 
+          col.names = col_names, escape = FALSE)
+    @
+    \caption{Solución al Problema de Continuidad de los Datos ASG para 
+    ITUB4}
+    Fuente: Bloomberg
+\end{table}
+
+\subsubsection{Normalización de los Datos}
+Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por esto que se seleccionaron los dos provedores que se utilizarían en el experimento, Bloomberg y Standard \& Poor's (S\&P), para posteriormente normalizar sus puntuaciones para poder compararlas. En el caso de la primera medida, el rango varía entre 0 y 10, mientras que para S\&P va de 0 a 100, a continuación se presenta un resumen de los datos normalizados:
+\begin{table}[H]
+    \centering
+    <<tableSumSQM, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+    # Load and select data
+    data_summary <- dataSQM %>%
+      mutate(Year = lubridate::year(Dates)) %>%
+      group_by(Year) %>%
+      slice(1) %>%
+      ungroup() %>%
+      select(Dates, Normalized_ESG_SCORE, Normalized_SP, PX_LAST)
+     data_summary$Dates <- format(as.Date(data_summary$Dates, format="%Y-%m-%d"), "%d/%m/%Y")
+    # Output the table
+    kable(data_summary, format = "latex", booktabs = TRUE, 
+          col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
+    @
+    \caption{Resumen de datos ASG normalizados para SQM}
+    Fuente: Elaboración propia
+\end{table}
+
+\begin{table}[H]
+    \centering
+    <<tableSumITUB4, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+    library(dplyr)
+    library(lubridate)
+    library(knitr)
+
+    data_summary <- dataITUB4 %>%
+      mutate(Year = year(Dates)) %>%
+      filter(!is.na(PX_LAST)) %>%
+      group_by(Year) %>%
+      slice_max(order_by = Dates, with_ties = FALSE) %>%
+      ungroup() %>%
+      select(Dates, Normalized_ESG_SCORE, Normalized_SP, PX_LAST)
+        
+    data_summary$Dates <- format(as.Date(data_summary$Dates, format="%Y-%m-%d"), "%d/%m/%Y")
+    kable(data_summary, format = "latex", booktabs = TRUE, 
+          col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
+    @
+    \caption{Resumen de datos ASG normalizados para IYUB4}
+    Fuente: Elaboración propia
+\end{table}
+
+
+\subsubsection{Resumen de los Datos}
+Con estos datos se procedió a calcular el retorno, promedio y desviación estándar tanto del factor de Bloomberg normalizado, como del parámetro ASG de S\&P normalizado en distintos intervalos de tiempo; 7 años a la fecha, 6 años a la fecha, 5 años a la fecha, 4 años a la fecha, 3 años a la fecha, 2 años a la fecha y 1 año a la fecha. A continuación se presentan el resultado de estos cálculos:
+
+\begin{table}[H]
+    \centering
+    <<tableAnalysis, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+    library(dplyr)
+    library(lubridate)
+    library(knitr)
+    
+    data_summary <- data %>%
+      select(Period, Ticker, normBloomberg, desvBloomberg, normSP, desvSP, return, desvReturn)
+
+    # Column names with line breaks using \shortstack
+    col_names <- c("Periodo", "Nemo", 
+                   "\\shortstack{Normalizado \\\\ Bloomberg}", 
+                   "\\shortstack{Desviación \\\\ Estándar \\\\ Bloomberg}", 
+                   "\\shortstack{Normalizado \\\\ S\\&P}", 
+                   "\\shortstack{Desviación \\\\ Estándar \\\\ S\\&P}", 
+                   "Retorno", 
+                   "\\shortstack{Desviación \\\\ Estándar \\\\ del Retorno}")
+
+    # Output the table
+    kable(data_summary, format = "latex", booktabs = TRUE, 
+          col.names = col_names, escape = FALSE)
+    @
+    \caption{Datos por periodos de tiempo}
+    Fuente: Elaboración propia
+\end{table}
+
+
+Luego, se crearon los gráficos que se le presentarán a los individuos para que tomen una posición con respecto a los activos. En primera instancia se utilizaron solo dos métricas, la medida ASG de Standard and Poor's y el porcentaje de retorno del activo. Cada figura mostrada a continuación representa un horizonte de tiempo determinado y se muestran los dos puntos correspondiente cada uno a un activo. El tamaño del punto varía según la desviación estándar de la medida ASG, en este caso la de S\&P, asimismo, el color varía según la desviación estándar del retorno.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<7YTD, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plots[['7YTD']])
+  @
+  \caption{Retorno vs Norm S\&P para (7 años)}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<6YTD, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plots[['6YTD']])
+  @
+  \caption{Retorno vs Norm S\&P para (6 años)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<5YTD, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plots[['5YTD']])
+  @
+  \caption{Retorno vs Norm S\&P para (5 años)}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<4YTD, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+  print(plots[['4YTD']])
+  @
+  \caption{Retorno vs Norm S\&P para (4 años)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<3YTD, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+  print(plots[['3YTD']])
+  @
+  \caption{Retorno vs Norm S\&P para (3 años)}
+  \label{fig:3YTD_S&P}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<2YTD, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+  print(plots[['2YTD']])
+  @
+  \caption{Retorno vs Norm S\&P para (2 años)}
+  \label{fig:2YTD_S&P}
+\end{minipage}
+\end{figure}
+
+
+\begin{figure}[H]
+\centering
+  <<1YTD, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plots[['3YTD']])
+  @
+  \caption{Retorno vs Norm S\&P para (1 años)}
+\end{figure}
+
+Por otro lado, para agregar más información al experimento, se agregó una segunda medida ASG, la que entrega Bloomberg, haciendo entre ambas medidas un ponderado y una desviación estándar conjunta como se presenta enseguida:
+
+\begin{table}[H]
+\centering
+    <<tableAnalysisCombined, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+    library(dplyr)
+    library(lubridate)
+    library(knitr)
+    
+    data_summary <- data %>%
+      select(Period, Ticker, ESGPond, desvPond, return, desvReturn)
+
+    # Column names with line breaks using \shortstack
+    col_names <- c("Periodo", "Nemotécnico", 
+                   "\\shortstack{ASG\\\\ Normalizado\\\\ Combinado}", 
+                   "\\shortstack{Desviación\\\\ Estándar\\\\ Combinada}", 
+                   "Retorno", 
+                   "\\shortstack{Desviación\\\\ Estándar\\\\ del Retorno}")
+
+    # Output the table
+    kable(data_summary, format = "latex", booktabs = TRUE,
+          col.names = col_names, escape = FALSE)
+    @
+    \caption{Datos por periodos de tiempo combinados}
+    Fuente: Elaboración propia
+\end{table}
+
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<7YTDComb, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+  print(plotsCombined[['7YTD']])
+  @
+  \caption{Retorno vs ASG Combinado (7 años)}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<6YTDComb, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plotsCombined[['6YTD']])
+  @
+  \caption{Retorno vs ASG Combinado (6 años)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<5YTDComb, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plotsCombined[['5YTD']])
+  @
+  \caption{Retorno vs ASG Combinado (5 años)}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<4YTDComb, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plotsCombined[['4YTD']])
+  @
+  \caption{Retorno vs ASG Combinado (4 años)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<3YTDComb, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plotsCombined[['3YTD']])
+  @
+  \caption{Retorno vs ASG Combinado (3 años)}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+  <<2YTDComb, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plotsCombined[['2YTD']])
+  @
+  \caption{Retorno vs ASG Combinado (2 años)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  <<1YTDComb, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='225px', out.height='225px'>>=
+  print(plotsCombined[['1YTD']])
+  @
+  \caption{Retorno vs ASG Combinado (1 años)}
+\end{figure}
+
+
+\subsubsection{Análisis Previo al Experimento}
+\subsubsection{Correlación entre Proveedores}
+
+Se calcularon las correlaciones entre la medida ASG entregada por S\&P y Bloomberg para ambos activos. Para esto, se utilizó la formula de correlación de Pearson. La fórmula para calcular la correlación de Pearson entre dos variables \(X\) y \(Y\) es la siguiente:
+
+\[
+r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}}
+\]
+
+donde:
+\begin{itemize}
+    \item \(r\) es el coeficiente de correlación de Pearson.
+    \item \(x_i\) y \(y_i\) son los valores individuales de las variables \(X\) y \(Y\).
+    \item \(\bar{x}\) y \(\bar{y}\) son las medias de las variables \(X\) y \(Y\).
+    \item \(n\) es el número de pares de valores.
+\end{itemize}
+
+<<calculate_correlation, echo=FALSE, results='hide', message=FALSE, warning=FALSE>>=
+
+cor_sqm <- cor(dataSQM$Normalized_ESG_SCORE, dataSQM$Normalized_SP, use = "complete.obs")
+
+cor_itub4 <- cor(dataITUB4$Normalized_ESG_SCORE, dataITUB4$Normalized_SP, use = "complete.obs")
+@
+
+Aplicando esta formula para los datos obtenidos, SQM obtuvo una correlación entre variables de \Sexpr{cor_sqm} y ITUB4 de \Sexpr{cor_itub4}.
+
+En el primer caso se presencia una correlación positiva fuerte, lo que significa que a medida que una variable aumente, la otra también lo hace en similar escala, esto puede ser resultado de que ambos capturan de manera similar la sostenibilidad de SQM. Por otro lado, ITUB4 tiene una correlación positiva moderada e inferior a la de SQM, de igual manera para este caso, si una variable aumenta la otra igual lo hace pero no de manera tan consistente como el escenario del otro activo.
+
+En el caso de SQM, la fuerte correlación puede resultar en que las decisiones de inversión basadas en las puntuaciones ASG de uno de los proveedores probablemente no cambien si se utilizara el otro proveedor. No obstante, en la situación de Itaú Unibanco es mas probable una discrepancia entre decisiones de inversión si se considera uno o el otro proveedor.
+
+
+\subsubsection{Análisis de Figuras}
+De las figuras mostradas anteriormente se pueden observar algunos escenarios relevantes a analizar y que además, se cruzan con lo revisado dentro del Marco Teórico de este trabajo.
+
+Por ejemplo en la Figura~\ref{fig:Elección-racional} se mostraba el caso de una decisión correcta, es decir, caso en el que tanto la medida ASG como el retorno monetario eran mayor en un activo que en el otro. Es en este escenario donde un tomador de decisión racional preferiría, bajo la información presentada, el con un beneficio más alto, es decir, la respuesta correcta. Este caso también se ve reflejado en algunas figuras creadas en la sección anterior, como por ejemplo, la Figura~\ref{fig:2YTD_S&P}, donde la elección por el activo ITUB4 sería la correcta y con un mayor beneficio sobre SQM.
+
+Asimismo, con las gráficas presentadas previamente se puede notar que cuando se considera solo el proveedor S\&P para la métrica ASG, SQM se muestra peor posicionado que ITUB4 en todos los casos, sin embargo, al ponderar las medidas esto cambia, en 4 de 7 casos se presencia lo mismo, es decir, SQM es inferior que ITUB4 en temas de sustentabilidad, en el resto sucede el caso inverso. Esto significa que los proveedores tienen se diferencian en sus medidas, posiblemente debido a distintos métodos de evaluación de componentes ASG. 
+
+\section{Diseño Experimental}
+
+Siguiendo el diseño de \citeA{chan_cost-effective_2023}, a cada individuo se le entregara un ficha de \hyperref[sec:consentimiento]{consentimiento informado} previo al inicio del experimento, el cual debe leer y devolver firmado. Posteriormente, proceden a responder un cuestionario entregando información sobre datos básicos (edad, sexo, etc.), de experiencia o conocimiento financiero, un test de atención tipo \emph{Cognitive Reflection} y una valorización contingente sobre un determinado porcentaje de retorno ASG. Este paso se llevará a cabo para contextualizar los resultados del estudio y con le fin de explorar cómo diferentes perfiles demográficos y distintos niveles de experiencia reaccionan a las opciones de inversión presentadas. La Prueba de Reflexión Cognitiva permitirá medir el nivel de atención del individuo auto-reportada para compararlo con lo que se observe en el comportamiento revelado durante las tareas del experimento.
+
+La valorización contingente o Elección Dicotómica Limitada Doble se utiliza para evaluar las preferencias de los participantes entre activos con diferentes rendimientos e impactos ASG. Esta metodología permite entender las compensaciones que los individuos están dispuestos a hacer entre el retorno financiero y el beneficio ASG. Siguiendo la pregunta realizada por \citeA{PwC} ``\textit{Are you willing to accept a lower rate of return in exchange for societal or environmental benefit}", se le preguntará al participante si está dispuesto a aceptar un porcentaje menos de retorno monetario a cambio de un aumento en puntuación ASG; si responde de manera afirmativa, se sigue a la experiencia Bloomberg; en caso negativo, se le formula la siguiente pregunta; ¿cuánto porcentaje de retorno monetario estarías dispuesto a perder por aumentar la puntuación ASG de un activo?.
+
+En concreto, Los participantes deberán responder 20 preguntas de información básica en formato de alternativas y texto, y 17 preguntas de decisión. Los participantes no recibirán beneficios monetarios por la realización del experimento.
+
+En las preguntas de decisión se presentarán pares de activos en un plano cartesiano, en que los participantes evalúan las alternativas de inversión representadas en el, contrastando rendimientos financieros con puntuaciones ASG. Cada uno de estos puntos representa un activo que contiene, por un lado retorno monetario (eje Y del plano) y, por el otro una puntuación ASG (eje X del plano). A cada uno de estos puntos se le asignará una alternativa para que el tomador de decisión seleccione cuál de aquellas prefiere (la que le trae mayor bienestar). Esta comparación visual directa ayuda a los participantes a realizar elecciones informadas, basadas en sus preferencias personales por rendimientos financieros versus impactos ASG.
+
+Durante todo el experimento se utilizará un sistema de seguimiento ocular, también conocido como \textit{eye-tracker}. La finalidad de esto es tener los datos de la dilatación pupilar del individuo y la posición de la mirada mientras se recolectan los datos.
+
+\section{Conclusiones}
+
+%\section{Bibliografía}
+
+\bibliographystyle{newapa}
+\bibliography{references}
+
+%\noindent M. and Neligh, N.N. (2023) ‘Experimental Tests of Rational Inattention’, Journal of Political Economy [Preprint]. Available at: https://doi.org/10.1086/725174.\\
+
+%\noindent Chase, Jpm. (2021) ‘Environmental Social \& Governance Report’.\\
+
+%\noindent Park, S.R. and Oh, K.-S. (2022) ‘Integration of ESG Information Into Individual Investors’ Corporate Investment Decisions: Utilizing the UTAUT Framework’, Frontiers in Psychology, 13, p. 899480. Available at: https://doi.org/10.3389/fpsyg.2022.899480.\\
+
+\section{Apéndice}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{docs/images/apendix/ACAMCAC_ESG.png}
+  \caption{Resumen ASG fondo Santander Acciones Chilenas ESG}
+  Fuente: Terminal Bloomberg
+  \label{fig:image6}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{docs/images/apendix/EAESLEA_ESG.png}
+  \caption{Resumen ASG fondo ESG Latam Fund Class Zurich}
+  Fuente: Terminal Bloomberg
+  \label{fig:image7}
+\end{figure}
+
+\subsection{Consentimiento Informado}
+\label{sec:consentimiento}
+\includepdf[pages=-]{data/consentimiento_informado.pdf}
+
+
+\vspace{3cm}
+
+
+Nota (escala 1 a 7): 
+\vspace{3cm}
+Observaciones
+
+
+
+\centering Firma Guía
+
+
+
+    
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%ejemplo Plantilla
+
+
+
+\end{document}
+https://www.overleaf.com/project/62b5d06662bca87393f4c7d7
+Co-authored-by: sebacea <seba.cea.echenique@gmail.com>
