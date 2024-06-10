@@ -44,6 +44,7 @@ library(ggplot2)
 data <- read_excel("../data/filteredData.xlsx", sheet = "Analysis (2)")
 dataSQM <- read_excel("../data/filteredData.xlsx", sheet = "SQM")
 dataITUB4 <- read_excel("../data/filteredData.xlsx", sheet = "ITUB4")
+dataCuestionario <- read_excel("../data/respuestasCuestionario.xlsx", sheet = "data")
 
 create_plot <- function(df, period) {
   filtered_data <- df[df$Period == period,]
@@ -311,7 +312,7 @@ La curva de indiferencia muestra las combinaciones entre la dimensión 1 y dimen
 
 \end{tikzpicture}
     \caption{Caption}
-    Fuente: Elaboración propia
+    Elaboración propia
     \label{fig:enter-label}
 \end{figure}
 
@@ -435,7 +436,7 @@ Dada la situación en que el activo $j$ contiene la siguiente información: con 
 
 \end{tikzpicture}
     \caption{Ejemplo activo $j$}
-    Fuente: Elaboración propia
+    Elaboración propia
     \label{fig:enter-label2}
 \end{figure}
 
@@ -519,7 +520,7 @@ Entonces, que sucede si se compara el activo $j$ con un activo que tiene un reto
 
 \end{tikzpicture}
     \caption{Elección racional}
-    Fuente: Elaboración propia
+    Elaboración propia
     \label{fig:Elección-racional}
 \end{figure}
 
@@ -540,7 +541,7 @@ Posteriormente, a través de la Terminal Bloomberg, se recopiló las carteras de
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/ACAMCAC.png}
   \caption{Cartera fondo Santander Acciones Chilenas ESG}
-  Fuente: Terminal Bloomberg
+  Fuente: Bloomberg
   \label{fig:image1}
 \end{figure}
 
@@ -548,7 +549,7 @@ Posteriormente, a través de la Terminal Bloomberg, se recopiló las carteras de
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/EAESLEA.png}
   \caption{Cartera fondo ESG Latam Fund Class Zurich}
-  Fuente: Terminal Bloomberg
+  Fuente: Bloomberg
   \label{fig:image2}
 \end{figure}
 
@@ -558,7 +559,7 @@ Con esta información se observó una posición en común de ambos fondos; Socie
   \centering
   \includegraphics[width=1\textwidth]{docs/images/compFondos.png}
   \caption{Comparación de carteras de ambos fondos}
-  Fuente: Terminal Bloomberg
+  Fuente: Bloomberg
   \label{fig:image3}
 \end{figure}
 
@@ -567,7 +568,7 @@ El activo en común, abreviado SQM, fue escogido por su representatividad en el 
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/SQM_ESG.png}
   \caption{Información ASG SQM}
-  Fuente: Terminal Bloomberg
+  Fuente: Bloomberg
   \label{fig:image4}
 \end{figure}
 
@@ -576,7 +577,7 @@ Por otro lado, el activo elegido que no comparten es Itaú Unibanco Holding, ban
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/ITAU_ESG.png}
   \caption{Información ASG Itaú Unibanco Holding}
-  Fuente: Terminal Bloomberg
+  Fuente: Bloomberg
   \label{fig:image5}
 \end{figure}
 
@@ -736,7 +737,7 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por e
           col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
     @
     \caption{Resumen de datos ASG normalizados para SQM}
-    Fuente: Elaboración propia
+    Elaboración propia
 \end{table}
 
 \begin{table}[H]
@@ -759,7 +760,7 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por e
           col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
     @
     \caption{Resumen de datos ASG normalizados para IYUB4}
-    Fuente: Elaboración propia
+    Elaboración propia
 \end{table}
 
 
@@ -772,6 +773,7 @@ Con estos datos se procedió a calcular el retorno, promedio y desviación está
     library(dplyr)
     library(lubridate)
     library(knitr)
+
     
     data_summary <- data %>%
       select(Period, Ticker, normBloomberg, desvBloomberg, normSP, desvSP, return, desvReturn)
@@ -790,7 +792,7 @@ Con estos datos se procedió a calcular el retorno, promedio y desviación está
           col.names = col_names, escape = FALSE)
     @
     \caption{Datos por periodos de tiempo}
-    Fuente: Elaboración propia
+    Elaboración propia
 \end{table}
 
 
@@ -885,7 +887,7 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
           col.names = col_names, escape = FALSE)
     @
     \caption{Datos por periodos de tiempo combinados}
-    Fuente: Elaboración propia
+    Elaboración propia
 \end{table}
 
 
@@ -990,7 +992,9 @@ Por ejemplo en la Figura~\ref{fig:Elección-racional} se mostraba el caso de una
 
 Asimismo, con las gráficas presentadas previamente se puede notar que cuando se considera solo el proveedor S\&P para la métrica ASG, SQM se muestra peor posicionado que ITUB4 en todos los casos, sin embargo, al ponderar las medidas esto cambia, en 4 de 7 casos se presencia lo mismo, es decir, SQM es inferior que ITUB4 en temas de sustentabilidad, en el resto sucede el caso inverso. Esto significa que los proveedores tienen se diferencian en sus medidas, posiblemente debido a distintos métodos de evaluación de componentes ASG. 
 
-\section{Diseño Experimental}
+\section{Experimento}
+
+\subsection{Diseño Experimental}
 
 Siguiendo el diseño de \citeA{chan_cost-effective_2023}, a cada individuo se le entregara un ficha de \hyperref[sec:consentimiento]{consentimiento informado} previo al inicio del experimento, el cual debe leer y devolver firmado. Posteriormente, proceden a responder un cuestionario entregando información sobre datos básicos (edad, sexo, etc.), de experiencia o conocimiento financiero, un test de atención tipo \emph{Cognitive Reflection} y una valorización contingente sobre un determinado porcentaje de retorno ASG. Este paso se llevará a cabo para contextualizar los resultados del estudio y con le fin de explorar cómo diferentes perfiles demográficos y distintos niveles de experiencia reaccionan a las opciones de inversión presentadas. La Prueba de Reflexión Cognitiva permitirá medir el nivel de atención del individuo auto-reportada para compararlo con lo que se observe en el comportamiento revelado durante las tareas del experimento.
 
@@ -1001,6 +1005,235 @@ En concreto, Los participantes deberán responder 20 preguntas de información b
 En las preguntas de decisión se presentarán pares de activos en un plano cartesiano, en que los participantes evalúan las alternativas de inversión representadas en el, contrastando rendimientos financieros con puntuaciones ASG. Cada uno de estos puntos representa un activo que contiene, por un lado retorno monetario (eje Y del plano) y, por el otro una puntuación ASG (eje X del plano). A cada uno de estos puntos se le asignará una alternativa para que el tomador de decisión seleccione cuál de aquellas prefiere (la que le trae mayor bienestar). Esta comparación visual directa ayuda a los participantes a realizar elecciones informadas, basadas en sus preferencias personales por rendimientos financieros versus impactos ASG.
 
 Durante todo el experimento se utilizará un sistema de seguimiento ocular, también conocido como \textit{eye-tracker}. La finalidad de esto es tener los datos de la dilatación pupilar del individuo y la posición de la mirada mientras se recolectan los datos.
+
+\subsection{Realización del Experimento}
+
+El ensayo se tomó entre los días 29 de mayo del 2024 y 6 de junio del mismo año en la oficina 308 de la Facultad de Ingeniería de la Universidad de Los Andes. 
+
+La invitación a tomar el experimento fue de carácter abierta y se hizo llegar mediante correo electrónico a profesores y alumnos de la Universidad de los Andes. 
+
+\subsubsection{Descripción de los Participantes}
+
+<<numeroParticipantes, include=FALSE, cache=FALSE>>=
+
+# Calcula la cantidad de participantrd
+count_participantes <- dataCuestionario %>%
+  summarise(count = n()) %>%
+  pull(count)
+count_masculino <- dataCuestionario %>%
+  filter(genero == "Masculino") %>%
+  summarise(count = n()) %>%
+  pull(count)
+count_femenino <- dataCuestionario %>%
+  filter(genero == "Femenino") %>%
+  summarise(count = n()) %>%
+  pull(count)
+@
+En el piloto de este experimento participaron \Sexpr{count_participantes} personas, de las cuales \Sexpr{count_masculino} se identificaron con el genero masculino y \Sexpr{count_femenino} con genero femenino. En la Figura~\ref{fig:edadGenero} se puede observar como están distribuidas las edads según el genero de los participantes.
+
+\begin{figure}[H]
+    \centering
+        <<generoEdad, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='250px', out.height='250px'>>=
+    
+        # Crea el gráfico de pirámide de población con porcentajes
+        generoEdad <- ggplot(dataCuestionario, aes(x = edad, fill = genero)) +
+        geom_histogram(binwidth = 5, position = "dodge", alpha = 0.7) +
+        labs(
+               x = "Edad",
+               y = "Frecuencia") +
+        theme_minimal() +
+        scale_fill_manual(values = c("#468189", "#77ACA2")) 
+        print(generoEdad)
+        @
+    \caption{Distribución de Edades por Genero}
+    Elaboración Propia
+    \label{fig:edadGenero}
+\end{figure}
+
+Asimismo, los participes se identificaron con tres niveles distintos de estudios; universitario y posgrado. Esto lo hicieron con la distribución que muestra la Figura~\ref{fig:nivelEdu}.
+
+\begin{figure}[H]
+    \centering
+        <<nivelEdu, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='250px', out.height='250px'>>=
+    
+        # Calcula la frecuencia de cada nivel de educación
+        frecuencia_nivel_educacion <- dataCuestionario %>%
+          group_by(nivel_educacion) %>%
+          summarise(frecuencia = n())
+        
+        # Crea el gráfico de barras
+        nivelEdu <- ggplot(frecuencia_nivel_educacion, aes(x = nivel_educacion, y = frecuencia, fill = nivel_educacion)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Nivel de Educación",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(nivelEdu)
+          @
+    \caption{Distribución por Nivel de Educación}
+    Elaboración Propia
+    \label{fig:nivelEdu}
+\end{figure}
+
+En términos de ocupación, se estuvieron presente solo tres de las opciones presentadas; estudiante y empleado/a, la frecuencia de estas se detallaen la Figura~\ref{fig:ocupacion}.
+
+\begin{figure}[H]
+    \centering
+        <<ocupacion, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='250px', out.height='250px'>>=
+    
+        # Calcula la frecuencia de cada nivel de educación
+        frecuencia_ocupacion <- dataCuestionario %>%
+          group_by(ocupacion) %>%
+          summarise(frecuencia = n())
+        
+        # Crea el gráfico de barras
+        ocupacion <- ggplot(frecuencia_ocupacion, aes(x = ocupacion, y = frecuencia, fill = ocupacion)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Ocupacion",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(ocupacion)
+          @
+    \caption{Distribución por ocupacion}
+    Elaboración Propia
+    \label{fig:ocupacion}
+\end{figure}
+
+Por ultimo, 12 de los 14 participantes tienen inversiones al momento de someterse al experimento, lo que se asume como individuos que han tomado una decisión de inversión en el pasado considerando los aspectos que ellos hayan estimado convenientes y suficientes en ese momento.
+
+\subsubsection{Conocimiento ASG de los Participantes}
+En el cuestionario previo, a los participantes se les hicieron preguntas sobre una conocimiento y importancia que le dan ellos a los factores ASG. 
+En primer lugar, se les preguntó si están familiarizados con el concepto de ASG, obteniendo la distribución observada en la Figura~\ref{fig:conceptoASG}
+
+\begin{figure}[H]
+    \centering
+        <<conceptoASG, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='250px', out.height='250px'>>=
+    
+        # Calcula la frecuencia de cada nivel de educación
+        frecuencia_conceptoASG <- dataCuestionario %>%
+          group_by(concepto_asg) %>%
+          summarise(frecuencia = n())
+        
+        frecuencia_conceptoASG$concepto_asg <- factor(frecuencia_conceptoASG$concepto_asg,
+                                              levels = c("Muy familiarizado", "Algo familiarizado", "Poco familiarizado", "Nada familiarizado"))
+        # Crea el gráfico de barras
+        conceptoASG <- ggplot(frecuencia_conceptoASG, aes(x = concepto_asg, y = frecuencia, fill = concepto_asg)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Familiarizado",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#031926", "#468189", "#77ACA2", "#9DBEBB")) +
+          theme(legend.position = "none")
+          print(conceptoASG)
+          @
+    \caption{Distribución por concepto ASG}
+    Elaboración Propia
+    \label{fig:conceptoASG}
+\end{figure}
+
+
+También se les preguntó que tan interesados estaban en invertir en empresas que siguen practicas ASG, obteniendo los resultados observados en la Figura~\ref{fig:empresasASG}.
+
+\begin{figure}[H]
+    \centering
+        <<empresasASG, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='250px', out.height='250px'>>=
+    
+        # Calcula la frecuencia de cada nivel de educación
+        frecuencia_empresasASG <- dataCuestionario %>%
+          group_by(interes_empresas_asg) %>%
+          summarise(frecuencia = n())
+        
+        frecuencia_empresasASG$interes_empresas_asg <- factor(frecuencia_empresasASG$interes_empresas_asg,
+                                              levels = c("Muy interesado/a", "Algo interesado/a", "Poco interesado/a", "Nada interesado/a"))
+        # Crea el gráfico de barras
+        empresasASG <- ggplot(frecuencia_empresasASG, aes(x = interes_empresas_asg, y = frecuencia, fill = interes_empresas_asg)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Interés",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#031926", "#468189", "#77ACA2", "#9DBEBB")) +
+          theme(legend.position = "none")
+          print(empresasASG)
+          @
+    \caption{Distribución por Interés en Empresas con Prácticas ASG}
+    Elaboración Propia
+    \label{fig:empresasASG}
+\end{figure}
+
+<<importanciaASG, include=FALSE, cache=FALSE>>=
+
+# Calcula la cantidad de respuestas 'Muy importante'
+count_muy_importante_asg <- dataCuestionario %>%
+  filter(importancia_asg == "Muy importantes") %>%
+  summarise(count = n()) %>%
+  pull(count)
+count_algo_importante_asg <- dataCuestionario %>%
+  filter(importancia_asg == "Algo importantes") %>%
+  summarise(count = n()) %>%
+  pull(count)
+count_poco_importante_asg <- dataCuestionario %>%
+  filter(importancia_asg == "Poco importantes") %>%
+  summarise(count = n()) %>%
+  pull(count)
+  count_nada_importante_asg <- dataCuestionario %>%
+  filter(importancia_asg == "Nada importantes") %>%
+  summarise(count = n()) %>%
+  pull(count)
+@
+
+Por último, se les preguntó a los participantes si consideraban las prácticas ASG importantes tanto para el futuro de la economía como para el futuro de la sociedad, a lo que \Sexpr{count_muy_importante_asg} respondieron 'muy importantes', \Sexpr{count_algo_importante_asg} respondieron 'algo importantes', \Sexpr{count_poco_importante_asg} respondieron 'poco importantes' y \Sexpr{count_nada_importante_asg} respondieron 'nada importantes'.
+
+\subsubsection{Valoración Contingente}
+<<rentabilidadASG, include=FALSE, cache=FALSE>>=
+    # Calcula la cantidad de respuestas 'Mayor a la media del mercado'
+    count_mayor_media <- dataCuestionario %>%
+      filter(rentabilidad_asg == "Mayor que la media del mercado") %>%
+      summarise(count = n()) %>%
+      pull(count)
+    count_mayor_media_first_si <- dataCuestionario %>%
+      filter(rentabilidad_asg == "Mayor que la media del mercado") %>% 
+       filter(first_dicotomic == "Si, hasta un 0,6%") %>%
+      summarise(count = n()) %>%
+      pull(count)
+    count_mayor_media_first_no <- dataCuestionario %>%
+      filter(rentabilidad_asg == "Mayor que la media del mercado") %>% 
+       filter(first_dicotomic == "No, más de un 0,6%") %>%
+      summarise(count = n()) %>%
+      pull(count)
+    # Calcula la cantidad de respuestas 'Mayor a la media del mercado'
+    count_menor_media <- dataCuestionario %>%
+      filter(rentabilidad_asg == "Menor que la media del mercado") %>%
+      summarise(count = n()) %>%
+      pull(count)
+  count_menor_media_first_si <- dataCuestionario %>%
+      filter(rentabilidad_asg == "Menor que la media del mercado") %>% 
+       filter(first_dicotomic == "Si") %>%
+      summarise(count = n()) %>%
+      pull(count)
+    count_menor_media_first_no <- dataCuestionario %>%
+      filter(rentabilidad_asg == "Menor que la media del mercado") %>% 
+        filter(first_dicotomic == "No") %>%
+      summarise(count = n()) %>%
+      pull(count)
+@
+
+En el experimento se realizaron dos tipos de valorizaciones contingentes a los participantes, dependiendo de su respuesta a la pregunta: "¿Qué nivel de rentabilidad esperas de tus inversiones en empresas con prácticas ASG?", en donde tenían la posibilidad de responder 'Mayor a la media del mercado' o 'Menor a la media del mercado'. En los resultados, \Sexpr{count_mayor_media} respondieron la primera opción, mientras que \Sexpr{count_menor_media} respondieron la segunda.
+
+En el primer caso, se les planteó la siguiente pregunta; ¿Crees que puedes ganar un 0,6\% de retorno monetario por aumentar en un 1\% el retorno ASG?, \Sexpr{count_mayor_media_first_si} respondieron 'si, hasta un 0,6\%', mientras que \Sexpr{count_mayor_media_first_no} respondieron 'no, más de un 0,6\%'. A estos últimos se les preguntó; ¿Hasta cuánto esperarías que aumente el retorno monetario con un aumento del 1\% de retorno ASG?, cuyas respuestas fueron: 1,5\%; 0,7\% y 10\%.
+
+En el segundo caso, donde respondieron 'Menor a la media del mercado' a la pregunta inicial se siguió un procedimiento equivalente pero presentandole un costo de cambio. La primera pregunta de la Valorización Continte fue; ¿Estarías dispuesto a perder un 12,3\% de rentabilidad monetaria a cambio de un 44\% adicional de retorno ASG?, a lo que \Sexpr{count_menor_media_first_si} respindió que sí estaría dispuesto, mientras que \Sexpr{count_menor_media_first_no}, respondió que no estaría dispuesto. A estos últimos se les preguntó; ¿Cuánto retorno monetario estarías dispuesto a perder a cambio de aumentar en el mismo 44\% el retorno ASG?, respondiendo: 0\%; 0,2\%; 3\%, 5\%, 5\% y 10\%.
+
+\section{Análisis de Resultados}
+
+
+
 
 \section{Conclusiones}
 
@@ -1021,7 +1254,7 @@ Durante todo el experimento se utilizará un sistema de seguimiento ocular, tamb
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/apendix/ACAMCAC_ESG.png}
   \caption{Resumen ASG fondo Santander Acciones Chilenas ESG}
-  Fuente: Terminal Bloomberg
+  Fuente: Bloomberg
   \label{fig:image6}
 \end{figure}
 
@@ -1029,7 +1262,7 @@ Durante todo el experimento se utilizará un sistema de seguimiento ocular, tamb
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/apendix/EAESLEA_ESG.png}
   \caption{Resumen ASG fondo ESG Latam Fund Class Zurich}
-  Fuente: Terminal Bloomberg
+  Fuente: Bloomberg
   \label{fig:image7}
 \end{figure}
 
