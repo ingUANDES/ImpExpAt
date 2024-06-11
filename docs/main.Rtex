@@ -115,9 +115,12 @@ names(plotsCombined) <- periods
 \begin{center}
 \includegraphics[scale=0.3]{Log.png}\\
 % Incrementamos el interlineado:
-\vspace{1.0cm} {\LARGE Implementación de un experimento de inatención racional con métricas de dilatación pupilar\\ Ingenier\'ia Civil Industrial UANDES}\\
+\vspace{1.0cm} {\LARGE Implementación de Experimento de Atención Racional con Métricas de Dilatación Pupilar en Decisiones Financieras
+\newline
+\\Ingeniería Civil Industrial UANDES}\\
+Universidad de los Andes
 
-\vspace{1.5cm} \LARGE{Por:\\ Julio Tejero Caballero \\ Gu\'ia: \\ Sebasti\'an Cea}
+\vspace{1.5cm} \LARGE{Por:\\ Vicente Tejero \\ Guía: \\ Sebastián Cea}
 
 \vspace{2.3cm}
 
@@ -127,7 +130,6 @@ names(plotsCombined) <- periods
 \end{titlepage}
 
  %%%% FIN PORTADA ------------------------------------------
-
 \begin{center}
     \section*{Agradecimientos}
 \end{center}
@@ -150,12 +152,11 @@ names(plotsCombined) <- periods
 En el ámbito financiero la disponibilidad de información ha experimentado un aumento considerable a lo largo de los años, especialmente en el último siglo  debido a la digitalización. Para los inversionistas existen muchos factores que deben ser considerados a la hora de tomar una decisión, algunos de los más usados son el \textit{ROI}, \textit{ROE}, \textit{EBIT}, \textit{EBITDA}, entre muchos otros. Para estos individuos, informarse de toda la gama de estas métricas es costoso en tiempo y muy complicado de analizar y entender en profundidad, cómo consecuencia, han debido dejar de lado algunas y centrarse en las que más interés les traen según sus preferencias. 
 
 
-\subsection{SRI (\textit{socially responsible investments})}
-Con el tiempo las métricas han evolucionado, apareciendo nuevas, incluso algunas no pecuniarias, es decir, no tienen un valor monetario directo sobre ellas. Las métricas no pecuniarias han tomado un protagonismo importante durante el último siglo influenciadas principalmente por el SRI (\textit{socially responsible investments}). 
+\subsection{SRI (\textit{Socially Responsible Investments})}
+Con el tiempo las métricas han evolucionado, apareciendo nuevas, incluso algunas no pecuniarias, es decir, no tienen un valor monetario directo sobre ellas. El concepto SRI por sus siglas en inglés o inversión socialmente responsable en español, hace referencia a inversiones que no solo toman en consideración las métricas de retornos monetarias comunes, sino se caracterizan por también considerar el impacto de la inversión en la sociedad. Es bajo esta idea que muchas métricas no pecuniarias han tomado un protagonismo importante, donde los algunos inversionistas, consideran la sostenibilidad en sus posiciones de inversión un factor relevante y a tomar en cuenta. 
 
-\textbf{AGREGAR POCO DE HISTORIA DE SRI}
 
-Una de las mas importantes es la métrica ASG (Ambiental, Social y Gobernanza) o, en sus siglas en ingles ESG (\textit{Enviromental, Social and Governance}). Los factores ASG son los encargados de mostrar cómo una empresa se desempeña o impacta en su entorno. Los parámetros ASG son reportados por una amplia gama de empresas, en especial las de mayor tamaño, las cuales vienen marcando tendencia reportándolas periódicamente. Es más, en algunos lugares del mundo ya no es una opción dar a conocer las medidas ASG, sino una obligación debido a las nuevas regulaciones. Esto es claro en Europa, continente líder en este ámbito.
+Uno de los criterios más usados son los ESG (\textit{Enviromental, Social and Governance}) o, en sus siglas en español ASG (Ambiental, Social y Gobernanza) . Los factores ASG son los encargados de mostrar cómo una empresa se desempeña o impacta en su entorno. Los parámetros ASG son reportados por una amplia gama de empresas, en especial las de mayor tamaño, las cuales vienen marcando tendencia reportándolas periódicamente. Es más, en algunos lugares del mundo ya no es una opción dar a conocer las medidas ASG, sino una obligación debido a las nuevas regulaciones. Esto es claro en Europa, continente líder en este ámbito.
 
 En adelante, se profundizara en varios aspectos claves de este trabajo, comenzando por los criterios ASG y cada uno de sus componentes para posteriormente abordar la inatención racional. Luego se introduce el marco teórico principal de la memoria, el cual se basa en literatura sobre inatención racional. Esta teoría da una base sólida para explorar como los tomadores de decisiones (o DM por el acrónimo de Decision Maker en inglés) procesan la información en un entorno financiero saturado de datos. Se abordará cómo esta teoría se relaciona en especifico con los indicadores ASG y su influencia en las posiciones tomadas por los inversionistas.
 
@@ -164,7 +165,6 @@ Los criterios ASG se dividen según sus siglas; en primer lugar el criterio ambi
 
 \subsubsection{Criterio Ambiental (A)}
 El factor Ambiental dentro de los criterios ASG se enfoca en cómo una organización impacta y actúa frente al medio ambiente. Este criterio es de suma importancia dado a la creciente preocupación a nivel global de la sostenibilidad ambiental y el cambio climático. Algunos aspectos cruciales que se incluyen en este criterio son; emisiones de carbono, la gestión de recursos naturales, reducción de la contaminación generada en las actividades de la organización, gestión de residuos, entre otros. La relevancia de este factor ambiental radica en expresar cómo una empresa impacta en el medio ambiente y contribuye a la sostenibilidad a largo plazo. 
-Las empresas que se comprometen objetivos con los factores ambientales muestran resiliencia y mayor adaptabilidad a las nuevas regulaciones ambientales, lo que a la larga significa una mayor estabilidad de la organización y una mejor reputación.
 
 Los temas ambientales han tomado tal importancia que desarrollar soluciones para desafíos ambientales es crucial para proteger nuestro planeta y sentar las bases de un crecimiento económico sostenible a largo plazo. Debido a esto el sector financiero tiene un rol importante que desempeñar. Especialmente en movilizar el capital necesario para efectuar una transición hacia nuevas tecnologías y construir infraestructuras sostenibles \cite{jpmorgan_chase_2021_2021}.
 
@@ -172,11 +172,11 @@ Los temas ambientales han tomado tal importancia que desarrollar soluciones para
 El aspecto Social de los criterios ASG expresa las relaciones de una empresa con sus entorno social, es decir, con sus empleados, proveedores, clientes y comunidades. Dentro de este factor se abarcan temas como los derechos humanos , derechos del trabajo, diversidad, inclusión, participación en la comunidad, salud, practicas ética, entre varios más.
 
 La importancia de este criterio radica en su capacidad de expresar como una organización se relaciona con sus grupos de interés. Un buen indicador social es crucial, ya que usualmente significa un buen ambiente laboral, lealtad con los empleados y clientes y en general una imagen pública positiva.
- 
-En general, una organización preocupada de este criterio muestra mayor estabilidad laboral a largo plazo, menos conflictos laborales y una buena imagen.
 
 \subsubsection{Criterio Governanza (G)}
 La forma en que una empresa se gobierna, sus prácticas empresariales y su impacto en accionistas y demás partes interesadas son abordados por el componente final de los criterios ASG denominado gobernanza. Se deben tener en cuenta componentes tales como diseño organizacional paritario e inclusivo, directrices éticas transparentes, estructura organizacional, remuneraciones justas además  de también resguardar adecuados derechos a todos quienes posean acciones. La relevancia de la gobernanza reside en su impacto en la durabilidad y los resultados futuros que obtenga una organización. Un buen gobierno corporativo basado en principios fuertes que garanticen transparencia es capaz no sólo generar seguridad para posibles inversores sino también prevenir situaciones no deseadas; asimismo ayuda a lograr un mejor enlace por parte del equipo directivo tanto con las metas empresariales como con aquellos que poseen acciones. Cuando las empresas incorporan prácticas fuertes de gobernanza se perciben como más confiables y responsables, aspectos que pueden impactar positivamente su posición competitiva en el mercado e incrementar la disposición para invertir en ellas.
+
+Sin embargo, el estudio \textit{Sustainable Signals: Understanding Corporates Sustainability Priorities and Challenges} \cite{morgan_stanley_institute_for_sustainable_investing_sustainable_2024} revela en su encuesta que las principales razones por la que las organizaciones adoptan practicas sostenibles no es por mejorar su funcionamiento en sí, sino que es crear valor para la empresa (50\%), cumplir con las normativas gubernamentales (48\%) y la obligación moral de hacer lo correcto para las personas y el planeta (47\%). Es recién en el cuarto lugar con un 46\% que mencionan que "la sostenibilidad es un reto importante para nuestro modelo de negocio, por lo que tenemos que reaccionar".
 
 
 \subsection{Inatención Racional}
@@ -185,16 +185,14 @@ La inatención racional se estudia desde el punto de vista de la economía condu
 
 
 \subsection{Motivación}
-La motivación detrás de este experimento se centra en la intersección de dos temáticas de interés personal; las finanzas y la racionalidad en la toma de decisiones. Abordar estos dos tópicos, desde una perspectiva de finanzas responsables permite poder relacionar las dos áreas, en un ambiente en el que los inversionistas  cada vez se encuentran más preocupados por el impacto de sus decisiones en la sostenibilidad y responsabilidad corporativa.
-Asimismo, la información disponible sobre los indicadores medioambientales requieren que los tomadores de decisión entiendan e interpreten algo que a menudo es complejo e incompleto, desafío dificil de enfrentar, aún más cuando existe una sobrecarga de información, pero que sin duda les puede proporcionar una oportunidad tanto a corto como a largo plazo, por lo que abordar este tópico con un enfoque de inatención racional agrega valor a la investigación.
-Por ultimo, el estudio de temática es relevante al aumento de interés en las inversiones ASG, por ende, es esencial identificar qué rol toman los DM y si realmente consideran factores que no le traen un mayor beneficio económico.
+La motivación detrás de este experimento se centra en la intersección de dos temáticas de interés personal; las finanzas y la racionalidad en la toma de decisiones. Abordar estos dos tópicos, desde una perspectiva de finanzas responsables permite poder relacionar las dos áreas, en un ambiente en el que los inversionistas cada vez se encuentran más preocupados por el impacto de sus decisiones en la sostenibilidad y responsabilidad corporativa.
+Asimismo, la información disponible sobre los indicadores medioambientales requieren que los tomadores de decisión entiendan e interpreten algo que a menudo es complejo e incompleto, desafío difícil de enfrentar, aún más cuando existe una sobrecarga de información, pero que sin duda les puede proporcionar una oportunidad tanto a corto como a largo plazo, por lo que abordar este tópico con un enfoque de inatención racional agrega valor a la investigación.
+Por último, el estudio de temática es relevante al aumento de interés en las inversiones ASG, por ende, es esencial identificar qué rol toman los DM y si realmente consideran factores que no le traen un mayor beneficio económico.
 
 \subsection{Problema}
-El problema que aborda esta tesis radica no sólo en la necesidad de entender cómo los inversionistas utilizan la información ASG disponible, sino también entender como un factor no pecuniario influye en las decisiones que toma un inversionista, en especial en un ecosistema donde el compromiso con la inversión ética y sostenible va en aumento. 
-
+El problema que aborda esta tesis radica no sólo en la necesidad de entender cómo los inversionistas utilizan la información ASG disponible, sino también entender como un factor no pecuniario influye en las decisiones que toma un inversionista, en especial en un ecosistema donde en la última década el compromiso con la inversión ética y sostenible ha aumentado. 
 Asimismo los diferentes estándares en las métricas ASG y su complejidad hacen que la información disponible sobre estos criterios sean difíciles de entender y procesar, es en esta parte donde a los individuos se les presentará un escenario sencillo y fácil de entender para que puedan tomar una decisión sin que afecte las habilidades de interpretación de la métrica.
-
-Este experimento sigue la linea de la tesis de Ezequiel Ortiz, sin embargo la implementación de eyetracker lleva esta investigación un paso mas allá, acercándose a datos reales y analizables en un ecosistema de inversión real. Mientras la tesis de Ortiz sentó las bases y una aproximación a los resultados, este experimento busca poder saber cuanta atención realmente le ponen los DM a los criterios ASG al momento de comparalo con el retorno del activo.
+Este experimento sigue la linea de la tesis de Ezequiel Ortiz, sin embargo la implementación de eyetracker lleva esta investigación un paso mas allá, acercándose a datos reales y analizables. Mientras la tesis de Ortiz sentó las bases y una aproximación a los resultados, este experimento busca poder saber cuanta atención realmente le ponen los tomadores de decisión a los criterios ASG al momento de compáralo con el retorno del activo.
 
 \section{Revisión Bibliográfica}
 
@@ -236,7 +234,7 @@ El análisis revela que el costo percibido al agregar restricciones SRI depende 
 Los principios de este proyecto se basan en lo planteado por \citeA{decancq_chapter_2015}, el cual considera el bienestar de uno o varios individuos dependiendo de dos factores, otorgándole distintas opciones para denotar su preferencia frente a situaciones.
 
 \subsection{Bienestar del Individuo}
- En el experimento, se definen un conjunto de alternativas $\mathcal{L}$ en la que cada elemento, $\ell\in\mathcal{L}$, es un par ordenado, por ejemplo, $(x^{ASG}$, $x^{\$})$. El primer elemento del par corresponde al retorno o métrica ASG del activo en cuestión y el segundo corresponde al retorno monetario del mismo activo. Estos dos factores son considerados como las dimensiones en las que se trabajará el experimento, siguiendo a \citeA{decancq_chapter_2015}. Por ejemplo, diremos que $\mathcal{L} = \left((0.34; 0.21), (0.29; 0.25), ..., (x^{ASG}_n; x^{\$}_n)\right)$ en el que $A:=(\ell,\ell')$ son pares de datos que se le presentarán a los tomadores de decisión para que tomen una postura con respecto a sus preferencias.
+ En el experimento, se definen un conjunto de alternativas $\mathcal{L}$ en la que cada elemento, $\ell\in\mathcal{L}$, es un par ordenado, por ejemplo, $(ASG$; $\$)$. El primer elemento del par corresponde al retorno o métrica ASG del activo en cuestión y el segundo corresponde al retorno monetario del mismo activo. Siguiendo a \citeA{decancq_chapter_2015}, estos dos factores son los considerados como dimensiones en las que se trabajará el experimento. Por ejemplo, diremos que $\mathcal{L} = \left((0.34; 0.21), (0.29; 0.25), ..., (ASG_n; \$_n)\right)$ en el que $A:=(\ell,\ell')$ son pares de datos que se le presentarán a los tomadores de decisión para que tomen una postura con respecto a sus preferencias.
 
  Siguiendo lo propuesto por los autores, se define una función de bienestar (o \emph{well-being} en inglés), la cual depende de las dimensiones mencionadas anteriormente y del ingreso del individuo. Si se continúa la notación de los autores mencionados, se tiene que la función de bienestar del agente $i$ se define como: 
 
@@ -244,19 +242,19 @@ Los principios de este proyecto se basan en lo planteado por \citeA{decancq_chap
      WB(\ell,R_i,S_i)=v_i(\ell),
  \end{equation}
 
- en el cual $\ell$ corresponde a un elemento del conjunto $\mathcal{L}$, como por ejemplo $(x^{ASG}$; $x^{\$})$; a su vez $R_i$ es un ordenamiento de preferencias sobre $\mathcal{L}$. Por su parte, $S_i$ es la función de satisfacción subjetiva. La función de bienestar descrita anteriormente podría expresarse como una función lineal de la siguiente manera:
+ en el cual $\ell$ corresponde a un elemento del conjunto $\mathcal{L}$, como por ejemplo $(ASG$; $\$)$; a su vez $R_i$ es un ordenamiento de preferencias sobre $\mathcal{L}$. Por su parte, $S_i$ es la función de satisfacción subjetiva. La función de bienestar descrita anteriormente podría expresarse como una función lineal de la siguiente manera:
 
  \begin{equation}
-     v\left((x^{ASG}_n; x^{\$})\right) = P^{ASG}\cdot x^{ASG} + P^{\$}\cdot x^{\$}. 
+     v\left((ASG_n; \$)\right) = P^{ASG}\cdot ASG + P^{\$}\cdot \$
  \end{equation}
 
 El ingreso equivalente se denota por $x^{\$}_*$ y se define como el valor que resuelve la siguiente ecuación para una alternativa $(x^{ASG};x^{\$})$ respecto de un valor de referencia $\tilde x^{ASG}$:
 
-$$P^{ASG}\cdot x^{ASG} + P^{\$}\cdot x^{\$}=P^{ASG}\cdot \tilde x^{ASG} + P^{\$}\cdot x^{\$}_*.$$
+$$P^{ASG}\cdot ASG + P^{\$}\cdot \$=P^{ASG}\cdot \tilde {ASG} + P^{\$}\cdot \$_*$$
 
 En este ejemplo en particular, ese valor es:
 
-$$x^{\$}_*\left((x^{ASG};x^{\$}),x^{ASG}\right)=\frac{(P^{ASG}\cdot x^{ASG} + P^{\$}\cdot x^{\$})-P^{ASG}\cdot \tilde x^{ASG}}{P^{\$}}.$$
+$$\$_*\left((ASG;\$),ASG\right)=\frac{(P^{ASG}\cdot ASG + P^{\$}\cdot \$)-P^{ASG}\cdot \tilde {ASG}}{P^{\$}}$$
 
  
 
@@ -273,7 +271,7 @@ Para el experimento se asume completitud de preferencia, lo que significa que lo
 
 La curva de indiferencia muestra las combinaciones entre la dimensión 1 y dimensión 2 de las alternativas, en este caso $\ell=(x^{ASG}$, $x^{\$})$, que le entregan al individuo el mismo nivel de utilidad. A continuación se presenta la gráfica de las curvas de indiferencia expuesta por \citeA{burone_measuring_2023} para dos individuos distintos ($i$ y $j$):
 
-\begin{figure}
+\begin{figure}[H]
     \centering
 
 \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
@@ -289,9 +287,9 @@ La curva de indiferencia muestra las combinaciones entre la dimensión 1 y dimen
 \draw  [dash pattern={on 0.84pt off 2.51pt}]  (132.25,20) .. controls (133.75,124.5) and (160,220.6) .. (260.25,230.5) ;
 
 % Text Node
-\draw (49.9,11.2) node [anchor=north west][inner sep=0.75pt]    {$x{^{\ }}^{\$}$};
+\draw (49.9,11.2) node [anchor=north west][inner sep=0.75pt]    {$\$$};
 % Text Node
-\draw (292.5,250.5) node [anchor=north west][inner sep=0.75pt]    {$x{^{\ }}^{ASG}$};
+\draw (292.5,250.5) node [anchor=north west][inner sep=0.75pt]    {$ASG$};
 % Text Node
 \draw (105.3,43) node [anchor=north west][inner sep=0.75pt]    {$\ell _{j}$};
 % Text Node
@@ -317,10 +315,10 @@ La curva de indiferencia muestra las combinaciones entre la dimensión 1 y dimen
 \end{figure}
 
 
-Cabe notar que cada individuo puede tener distintas valoraciones de las dimensiones, cada una representa las preferencias individuales. Por ejemplo, un tomador de decisión puede valorar más la sustentabilidad que otro, lo que significa que estaría dispuesto a sacrificar más retorno monetario por retorno ASG que un tomador de decisión que solo busca rentabilidad monetaria. Esta variabilidad de las valoraciones complica la interpretación y comparación entre individuos, por lo que en muchos casos se utiliza una función de valoración común en el experimento \cite{decancq_chapter_2015}, que es lo que se hará en este caso.
+Cabe notar que cada individuo puede tener distintas valoraciones de las dimensiones, cada una representa las preferencias individuales. Por ejemplo, un tomador de decisión puede valorar más la sostenibilidad que otro, lo que significa que estaría dispuesto a sacrificar más retorno monetario por retorno ASG que un tomador de decisión que solo busca rentabilidad monetaria. Esta variabilidad de las valoraciones complica la interpretación y comparación entre individuos, por lo que en muchos casos se utiliza una función de valoración común en el experimento de \citeA{decancq_chapter_2015}, que es lo mismo que se hará en este caso.
 
 \subsection{Costo de Cambio}
-En un experimento de este tipo, se presenta un costo de cambio que, en el fondo, es cuánto está dispuesto a sacrificar el inversionista en términos de retornos monetarios por aumentar el indicador ASG. \citeA{geczy_investing_2003} tratan este tema en específico con fondos mutuos, en los que se consideran distintos fondos mutuos con objetivos que incluyen el \textit{SRI}. Según estos autores, el costo de una inversión socialmente responsable depende de manera principal de las opiniones del inversor sobre los modelos de valoración de activos y de las habilidades de selección de activos de los administradores del fondo. Por ejemplo, para un tomador de decisión que cree firmemente en el uso del modelo de CAPM (\textit{Capital Asset Pricing Model}) el costo de una inversión sustentable es solo de unos pocos puntos base por mes. No así con modelos que cuentan factores de \textit{momentum}, tamaños y valor como Fama-French de tres factores o el modelo Carhart, en el que una inversión de este tipo es mucho más costosa, cuyo costo es, por lo menos, de  30 puntos base por mes.
+En un experimento de este tipo, se presenta un costo de cambio que, en el fondo, es cuánto está dispuesto a sacrificar el inversionista en términos de retornos monetarios por aumentar el indicador ASG. \citeA{geczy_investing_2003} tratan este tema en específico con fondos mutuos, en los que se consideran distintos fondos mutuos con objetivos que incluyen el inversiones \textit{SRI}. Según estos autores, el costo de una inversión socialmente responsable depende de manera principal de las opiniones del inversor sobre los modelos de valoración de activos y de las habilidades de selección de activos de los administradores del fondo. Por ejemplo, para un tomador de decisión que cree firmemente en el uso del modelo de CAPM (\textit{Capital Asset Pricing Model}) el costo de una inversión sostenible es solo de unos pocos puntos base por mes. No así con modelos que cuentan factores de \textit{momentum}, tamaños y valor como Fama-French de tres factores o el modelo Carhart, en el que una inversión de este tipo es mucho más costosa, cuyo costo es, por lo menos, de  30 puntos base por mes.
 
 \subsection{Prueba de Reflexión Cognitiva}
 La Prueba de Reflexión Cognitiva, más conocida por sus siglas en inglés `CRT` (\emph{Cognitive Reflection Test}), mide la decisión de un individuo tomador de decisiones ante una respuesta intuitiva pero incorrecta y al mismo tiempo de participar en una reflexión cognitiva al resolver un conjunto de problemas matemáticos \cite{frederick_cognitive_2005}.
@@ -342,7 +340,7 @@ Existen 3 maneras discutidas por \citeA{sirota_effect_2018}  de llevar a cabo es
 Dada la situación en que el activo $j$ contiene la siguiente información: con probabilidad $\pi_0$, $(ASG_0,\$_0)$, con probabilidad $\pi_1$, $(ASG_1,\$_0)$ y con probabilidad $1-\pi_0-\pi_1$, $(ASG_2,\$_0)$. El valor esperado del componente ASG del activo $j$ para esa probabilidad se denota como $\bar x^{ASG}_\pi$. 
 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
 
 \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
@@ -448,11 +446,8 @@ Entonces, que sucede si se compara el activo $j$ con un activo que tiene un reto
 
 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
-
-
-
 
 \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
 
@@ -537,7 +532,7 @@ Existe una amplia gama de activos que se pueden utilizar para llevar a cabo el e
 
 Posteriormente, a través de la Terminal Bloomberg, se recopiló las carteras de los distintos fondos, sin embargo solo dos de los fondos buscados reportaban sus carteras a Bloomberg; Santander Acciones Chilenas ESG y ESG Latam Fund Class Zurich.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/ACAMCAC.png}
   \caption{Cartera fondo Santander Acciones Chilenas ESG}
@@ -545,7 +540,7 @@ Posteriormente, a través de la Terminal Bloomberg, se recopiló las carteras de
   \label{fig:image1}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/EAESLEA.png}
   \caption{Cartera fondo ESG Latam Fund Class Zurich}
@@ -553,7 +548,7 @@ Posteriormente, a través de la Terminal Bloomberg, se recopiló las carteras de
   \label{fig:image2}
 \end{figure}
 
-Con esta información se observó una posición en común de ambos fondos; Sociedad Química y Minera de Chile, en especifico su bono Serie B. Al ser un activo común se utilizará en el experimento, Asimismo, el segundo activo elegidos para el experimento es uno que no tienen en común, pero es el más relevante, en terminos de porcentaje, del fondo de Zurich, es decir, Itaú Unibanco Holding.
+Con esta información se observó una posición en común de ambos fondos; Sociedad Química y Minera de Chile, en especifico su bono Serie B. Al ser un activo común se utilizará en el experimento. Asimismo, el segundo activo elegidos para el experimento es uno que no tienen en común, pero es el más relevante, en terminos de porcentaje, del fondo de Zurich, es decir, Itaú Unibanco Holding.
 
 \begin{figure}[H]
   \centering
@@ -582,7 +577,7 @@ Por otro lado, el activo elegido que no comparten es Itaú Unibanco Holding, ban
 \end{figure}
 
 \subsubsection{Recolección de Datos}
-La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de Excel en un horizonte de tiempo desde el 2016 hasta el 2023 inclusive. En este caso se obtuvieron variables ASG para ambos activos y de distintos proveedores; Bloomberg, Sustainalytics y Standard \& Poor's (S\&P), asimismo como su retorno. 
+La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de Excel en un horizonte de tiempo desde el 2016 hasta el 2023 inclusive. En este caso se obtuvieron variables ASG para ambos activos y de dos distintos proveedores; Bloomberg y Standard \& Poor's (S\&P). Además se obtuvo el precio de cierre del activo diario. 
 \begin{table}[H]
     \centering
     <<tableSQMPre, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
@@ -720,7 +715,7 @@ Se puede observar de la tabla anterior que muchos datos aparecen como $N/A$, est
 \end{table}
 
 \subsubsection{Normalización de los Datos}
-Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por esto que se seleccionaron los dos provedores que se utilizarían en el experimento, Bloomberg y Standard \& Poor's (S\&P), para posteriormente normalizar sus puntuaciones para poder compararlas. En el caso de la primera medida, el rango varía entre 0 y 10, mientras que para S\&P va de 0 a 100, a continuación se presenta un resumen de los datos normalizados:
+Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por esto que para los dos provedores que se usarán en el experimento, Bloomberg y Standard \& Poor's (S\&P), se normalizar sus puntuaciones para poder compararlas. En el caso de la primera medida, el rango varía entre 0 y 10, mientras que para S\&P va de 0 a 100, a continuación se presenta un resumen de los datos normalizados:
 \begin{table}[H]
     \centering
     <<tableSumSQM, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
@@ -759,13 +754,13 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por e
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
     @
-    \caption{Resumen de datos ASG normalizados para IYUB4}
+    \caption{Resumen de datos ASG normalizados para ITUB4}
     Elaboración propia
 \end{table}
 
 
 \subsubsection{Resumen de los Datos}
-Con estos datos se procedió a calcular el retorno, promedio y desviación estándar tanto del factor de Bloomberg normalizado, como del parámetro ASG de S\&P normalizado en distintos intervalos de tiempo; 7 años a la fecha, 6 años a la fecha, 5 años a la fecha, 4 años a la fecha, 3 años a la fecha, 2 años a la fecha y 1 año a la fecha. A continuación se presentan el resultado de estos cálculos:
+Con estos datos se procedió a calcular el retorno, promedio y desviación estándar tanto del factor de Bloomberg normalizado, como del parámetro ASG de S\&P normalizado en distintos intervalos de tiempo; a 7 años , 6 años , 5 años , 4 años , 3 años , 2 años  y 1 año . A continuación se presentan el resultado de estos cálculos:
 
 \begin{table}[H]
     \centering
@@ -796,7 +791,7 @@ Con estos datos se procedió a calcular el retorno, promedio y desviación está
 \end{table}
 
 
-Luego, se crearon los gráficos que se le presentarán a los individuos para que tomen una posición con respecto a los activos. En primera instancia se utilizaron solo dos métricas, la medida ASG de Standard and Poor's y el porcentaje de retorno del activo. Cada figura mostrada a continuación representa un horizonte de tiempo determinado y se muestran los dos puntos correspondiente cada uno a un activo. El tamaño del punto varía según la desviación estándar de la medida ASG, en este caso la de S\&P, asimismo, el color varía según la desviación estándar del retorno.
+Luego, se crearon los gráficos que se le presentarán a los individuos para que tomen una decisión sobre en que activo elegirían invertir. En primera instancia se presenta, la medida ASG de Standard and Poor's (eje X) y el porcentaje de retorno del activo (eje Y). Cada figura mostrada a continuación representa un horizonte de tiempo determinado y se muestran los dos puntos correspondiente cada uno a un activo. El tamaño del punto varía según la desviación estándar de la medida ASG, en este caso la de S\&P, asimismo, el color varía según la desviación estándar del retorno.
 
 \begin{figure}[H]
 \centering
@@ -990,7 +985,7 @@ De las figuras mostradas anteriormente se pueden observar algunos escenarios rel
 
 Por ejemplo en la Figura~\ref{fig:Elección-racional} se mostraba el caso de una decisión correcta, es decir, caso en el que tanto la medida ASG como el retorno monetario eran mayor en un activo que en el otro. Es en este escenario donde un tomador de decisión racional preferiría, bajo la información presentada, el con un beneficio más alto, es decir, la respuesta correcta. Este caso también se ve reflejado en algunas figuras creadas en la sección anterior, como por ejemplo, la Figura~\ref{fig:2YTD_S&P}, donde la elección por el activo ITUB4 sería la correcta y con un mayor beneficio sobre SQM.
 
-Asimismo, con las gráficas presentadas previamente se puede notar que cuando se considera solo el proveedor S\&P para la métrica ASG, SQM se muestra peor posicionado que ITUB4 en todos los casos, sin embargo, al ponderar las medidas esto cambia, en 4 de 7 casos se presencia lo mismo, es decir, SQM es inferior que ITUB4 en temas de sustentabilidad, en el resto sucede el caso inverso. Esto significa que los proveedores tienen se diferencian en sus medidas, posiblemente debido a distintos métodos de evaluación de componentes ASG. 
+Asimismo, con las gráficas presentadas previamente se puede notar que cuando se considera solo el proveedor S\&P para la métrica ASG, SQM se muestra peor posicionado que ITUB4 en todos los casos, sin embargo, al ponderar las medidas esto cambia, en 4 de 7 casos se presencia lo mismo, es decir, SQM es inferior que ITUB4 en temas de sostenibilidad, en el resto sucede el caso inverso. Esto significa que los proveedores tienen se diferencian en sus medidas, posiblemente debido a distintos métodos de evaluación de componentes ASG. 
 
 \section{Experimento}
 
@@ -998,7 +993,7 @@ Asimismo, con las gráficas presentadas previamente se puede notar que cuando se
 
 Siguiendo el diseño de \citeA{chan_cost-effective_2023}, a cada individuo se le entregara un ficha de \hyperref[sec:consentimiento]{consentimiento informado} previo al inicio del experimento, el cual debe leer y devolver firmado. Posteriormente, proceden a responder un cuestionario entregando información sobre datos básicos (edad, sexo, etc.), de experiencia o conocimiento financiero, un test de atención tipo \emph{Cognitive Reflection} y una valorización contingente sobre un determinado porcentaje de retorno ASG. Este paso se llevará a cabo para contextualizar los resultados del estudio y con le fin de explorar cómo diferentes perfiles demográficos y distintos niveles de experiencia reaccionan a las opciones de inversión presentadas. La Prueba de Reflexión Cognitiva permitirá medir el nivel de atención del individuo auto-reportada para compararlo con lo que se observe en el comportamiento revelado durante las tareas del experimento.
 
-La valorización contingente o Elección Dicotómica Limitada Doble se utiliza para evaluar las preferencias de los participantes entre activos con diferentes rendimientos e impactos ASG. Esta metodología permite entender las compensaciones que los individuos están dispuestos a hacer entre el retorno financiero y el beneficio ASG. Siguiendo la pregunta realizada por \citeA{PwC} ``\textit{Are you willing to accept a lower rate of return in exchange for societal or environmental benefit}", se le preguntará al participante si está dispuesto a aceptar un porcentaje menos de retorno monetario a cambio de un aumento en puntuación ASG; si responde de manera afirmativa, se sigue a la experiencia Bloomberg; en caso negativo, se le formula la siguiente pregunta; ¿cuánto porcentaje de retorno monetario estarías dispuesto a perder por aumentar la puntuación ASG de un activo?.
+La valorización contingente o Elección Dicotómica Doble se utiliza para evaluar las preferencias de los participantes entre activos con diferentes rendimientos e impactos ASG. Esta metodología permite entender las compensaciones que los individuos están dispuestos a hacer entre el retorno financiero y el beneficio ASG. Siguiendo la pregunta realizada por \citeA{PwC} ``\textit{Are you willing to accept a lower rate of return in exchange for societal or environmental benefit}", se le preguntará al participante si está dispuesto a aceptar un porcentaje menos de retorno monetario a cambio de un aumento en puntuación ASG; si responde de manera afirmativa, se sigue a la experiencia Bloomberg; en caso negativo, se le formula la siguiente pregunta; ¿cuánto porcentaje de retorno monetario estarías dispuesto a perder por aumentar la puntuación ASG de un activo?.
 
 En concreto, Los participantes deberán responder 20 preguntas de información básica en formato de alternativas y texto, y 17 preguntas de decisión. Los participantes no recibirán beneficios monetarios por la realización del experimento.
 
@@ -1006,13 +1001,16 @@ En las preguntas de decisión se presentarán pares de activos en un plano carte
 
 Durante todo el experimento se utilizará un sistema de seguimiento ocular, también conocido como \textit{eye-tracker}. La finalidad de esto es tener los datos de la dilatación pupilar del individuo y la posición de la mirada mientras se recolectan los datos.
 
-\subsection{Realización del Experimento}
+
+
+
+\section{Resultados}
 
 El ensayo se tomó entre los días 29 de mayo del 2024 y 6 de junio del mismo año en la oficina 308 de la Facultad de Ingeniería de la Universidad de Los Andes. 
 
 La invitación a tomar el experimento fue de carácter abierta y se hizo llegar mediante correo electrónico a profesores y alumnos de la Universidad de los Andes. 
 
-\subsubsection{Descripción de los Participantes}
+\subsection{Descripción de los Participantes}
 
 <<numeroParticipantes, include=FALSE, cache=FALSE>>=
 
@@ -1106,9 +1104,9 @@ En términos de ocupación, se estuvieron presente solo tres de las opciones pre
 
 Por ultimo, 12 de los 14 participantes tienen inversiones al momento de someterse al experimento, lo que se asume como individuos que han tomado una decisión de inversión en el pasado considerando los aspectos que ellos hayan estimado convenientes y suficientes en ese momento.
 
-\subsubsection{Conocimiento ASG de los Participantes}
-En el cuestionario previo, a los participantes se les hicieron preguntas sobre una conocimiento y importancia que le dan ellos a los factores ASG. 
-En primer lugar, se les preguntó si están familiarizados con el concepto de ASG, obteniendo la distribución observada en la Figura~\ref{fig:conceptoASG}
+\subsection{Conocimiento ASG de los Participantes}
+En el cuestionario previo, a los participantes se les hicieron preguntas sobre el conocimiento e importancia que le dan ellos a los factores ASG. 
+En primer lugar, se les preguntó si están familiarizados con el concepto de ASG, obteniendo la distribución observada en la Figura~\ref{fig:conceptoASG}.
 
 \begin{figure}[H]
     \centering
@@ -1158,7 +1156,7 @@ También se les preguntó que tan interesados estaban en invertir en empresas qu
                x = "Interés",
                y = "Frecuencia") +
           theme_minimal() +
-          scale_fill_manual(values = c("#031926", "#468189", "#77ACA2", "#9DBEBB")) +
+          scale_fill_manual(values = c("#468189", "#77ACA2", "#9DBEBB")) +
           theme(legend.position = "none")
           print(empresasASG)
           @
@@ -1190,7 +1188,9 @@ count_poco_importante_asg <- dataCuestionario %>%
 
 Por último, se les preguntó a los participantes si consideraban las prácticas ASG importantes tanto para el futuro de la economía como para el futuro de la sociedad, a lo que \Sexpr{count_muy_importante_asg} respondieron 'muy importantes', \Sexpr{count_algo_importante_asg} respondieron 'algo importantes', \Sexpr{count_poco_importante_asg} respondieron 'poco importantes' y \Sexpr{count_nada_importante_asg} respondieron 'nada importantes'.
 
-\subsubsection{Valoración Contingente}
+Como se pudo observar con lo presentado anteriormente, los participantes, en su mayoría, tenían por lo menos un básico conocimiento sobre ASG, manifestando en gran medida tener una grado de familiarización con estos. Por otro lado, y luego de presentarles una descripción de los factores de sostenibilidad, los encuestados afirmaron un interés alto en empresas que cumplen objetivos de estas características, lo que es interesante contrastarlo con los datos de pupila que se analizaran más adelante.
+
+\subsection{Valoración Contingente}
 <<rentabilidadASG, include=FALSE, cache=FALSE>>=
     # Calcula la cantidad de respuestas 'Mayor a la media del mercado'
     count_mayor_media <- dataCuestionario %>%
@@ -1226,13 +1226,144 @@ Por último, se les preguntó a los participantes si consideraban las prácticas
 
 En el experimento se realizaron dos tipos de valorizaciones contingentes a los participantes, dependiendo de su respuesta a la pregunta: "¿Qué nivel de rentabilidad esperas de tus inversiones en empresas con prácticas ASG?", en donde tenían la posibilidad de responder 'Mayor a la media del mercado' o 'Menor a la media del mercado'. En los resultados, \Sexpr{count_mayor_media} respondieron la primera opción, mientras que \Sexpr{count_menor_media} respondieron la segunda.
 
-En el primer caso, se les planteó la siguiente pregunta; ¿Crees que puedes ganar un 0,6\% de retorno monetario por aumentar en un 1\% el retorno ASG?, \Sexpr{count_mayor_media_first_si} respondieron 'si, hasta un 0,6\%', mientras que \Sexpr{count_mayor_media_first_no} respondieron 'no, más de un 0,6\%'. A estos últimos se les preguntó; ¿Hasta cuánto esperarías que aumente el retorno monetario con un aumento del 1\% de retorno ASG?, cuyas respuestas fueron: 1,5\%; 0,7\% y 10\%.
+En el primer caso, se les planteó la siguiente pregunta; ¿Crees que puedes ganar un 0,6\% de retorno monetario por aumentar en un 1\% el retorno ASG?, \Sexpr{count_mayor_media_first_si} respondieron 'si, hasta un 0,6\%', mientras que \Sexpr{count_mayor_media_first_no} respondieron 'no, más de un 0,6\%'. A estos últimos se les preguntó; ¿Hasta cuánto esperarías que aumente el retorno monetario con un aumento del 1\% de retorno ASG?, cuyas respuestas fueron:  0,7\%; 1,5\% y 10\%.
 
-En el segundo caso, donde respondieron 'Menor a la media del mercado' a la pregunta inicial se siguió un procedimiento equivalente pero presentandole un costo de cambio. La primera pregunta de la Valorización Continte fue; ¿Estarías dispuesto a perder un 12,3\% de rentabilidad monetaria a cambio de un 44\% adicional de retorno ASG?, a lo que \Sexpr{count_menor_media_first_si} respindió que sí estaría dispuesto, mientras que \Sexpr{count_menor_media_first_no}, respondió que no estaría dispuesto. A estos últimos se les preguntó; ¿Cuánto retorno monetario estarías dispuesto a perder a cambio de aumentar en el mismo 44\% el retorno ASG?, respondiendo: 0\%; 0,2\%; 3\%, 5\%, 5\% y 10\%.
+En el segundo caso, donde respondieron 'Menor a la media del mercado' en la pregunta inicial se siguió un procedimiento equivalente pero presentandole un costo de cambio. La primera pregunta de la valorización continte fue; ¿Estarías dispuesto a perder un 12,3\% de rentabilidad monetaria a cambio de un 44\% adicional de retorno ASG?, a lo que \Sexpr{count_menor_media_first_si} respindió que sí estaría dispuesto, mientras que \Sexpr{count_menor_media_first_no}, respondió que no estaría dispuesto. A estos últimos se les preguntó; ¿Cuánto retorno monetario estarías dispuesto a perder a cambio de aumentar en el mismo 44\% el retorno ASG?, respondiendo: 0\%; 0,2\%; 3\%, 5\%, 5\% y 10\%.
 
-\section{Análisis de Resultados}
+\subsection{Test de Reflexión Cognitiva}
+En el test de reflexión cognitiva (CRT) llevado a cabo en el experimento se le hicieron tres preguntas concecutivas a los participantes:
 
+\begin{enumerate}
+    \item\label{ch:crt1} Un bate y una pelota cuestan \$1.10 en total. El bate cuesta \$1.00 más que la pelota. ¿Cuánto cuesta la pelota? \_\_\_\_\_ centavos.
+    \item\label{ch:crt2} Si 5 máquinas tardan 5 minutos en fabricar 5 \textit{widgets}, ¿cuánto tiempo tardarían 100 máquinas en fabricar 100 {widgets}? \_\_\_\_\_ minutos.
+    \item\label{ch:crt3} En un lago, hay un parche de lirios. Cada día, el parche duplica su tamaño. Si tarda 48 días en cubrir todo el lago, ¿cuánto tiempo tardaría en cubrir la mitad del lago? \_\_\_\_\_ días.
+\end{enumerate}
 
+Para la primera pregunta, la respuesta intuitiva era 10 centavos, sin embargo la respuesta correcta era 5 centavos debido a que con ese precio, el bate costaría \$1.05, siendo \$1.00 mas caro que la pelota.
+En la segunda pregunta, la primera respuesta que se viene a la mente es 100 minutos, sin embargo, la respuesta correcta es 5 minutos, esto debido a que cada maquina se tarda 5 minutos en fabricar 1 \textit{widget}, por lo que 100 maquinas tardarían 5 minutos en fabricar 100 \textit{widgets} (1 \textit{widget} por maquina).
+Por último, la respuesta correcta de la pregunta final es 47 días, ya que al duplicar su tamaño diariamente el parche de lirios crece exponencialmente, sin embargo, la respuesta intuitiva en este caso es 24 días.
+
+Con respecto a la pregunta~\ref{ch:crt1}, los participantes respondieron según la distribución que muestra la Figura~\ref{fig:crt1}
+
+\begin{figure}[H]
+    \centering
+        <<crt1, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='250px', out.height='250px'>>=
+    
+        frecuencia_crt1 <- dataCuestionario %>%
+          group_by(crt_1) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_crt1$crt_1 <- factor(frecuencia_crt1$crt_1)
+        
+        # Crea el gráfico de barras
+        crt1 <- ggplot(frecuencia_crt1, aes(x = crt_1, y = frecuencia, fill = crt_1)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Centavos",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(crt1)
+          @
+    \caption{Respuestas Test de Reflexión Cognitiva: Pregunta~\ref{ch:crt1}}
+    Elaboración Propia
+    \label{fig:crt1}
+\end{figure}
+
+Con respecto a la pregunta~\ref{ch:crt2}, los participantes respondieron según la distribución que muestra la Figura~\ref{fig:crt2}
+
+\begin{figure}[H]
+    \centering
+        <<crt2, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='250px', out.height='250px'>>=
+
+        frecuencia_crt2 <- dataCuestionario %>%
+          group_by(crt_2) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_crt2$crt_2 <- factor(frecuencia_crt2$crt_2)
+        
+        # Crea el gráfico de barras
+        crt2 <- ggplot(frecuencia_crt2, aes(x = crt_2, y = frecuencia, fill = crt_2)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Minutos",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2", "#9DBEBB")) +
+          theme(legend.position = "none")
+          print(crt2)
+          @
+    \caption{Respuestas Test de Reflexión Cognitiva: Pregunta~\ref{ch:crt2}}
+    Elaboración Propia
+    \label{fig:crt2}
+\end{figure}
+
+Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según la distribución que muestra la Figura~\ref{fig:crt3}
+
+\begin{figure}[H]
+    \centering
+        <<crt3, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='250px', out.height='250px'>>=
+
+        frecuencia_crt3 <- dataCuestionario %>%
+          group_by(crt_3) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_crt3$crt_3 <- factor(frecuencia_crt3$crt_3)
+        
+        # Crea el gráfico de barras
+        crt3 <- ggplot(frecuencia_crt3, aes(x = crt_3, y = frecuencia, fill = crt_3)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Días",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2", "#9DBEBB")) +
+          theme(legend.position = "none")
+          print(crt3)
+          @
+    \caption{Respuestas Test de Reflexión Cognitiva: Pregunta~\ref{ch:crt3}}
+    Elaboración Propia
+    \label{fig:crt3}
+
+\end{figure}
+
+\begin{table}[H]
+\centering
+    <<crt, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+    
+    # Calcular los valores necesarios
+    summary_andes <- dataCuestionario %>%
+      summarise(
+        mean_crt = mean(total_crt, na.rm = TRUE),
+        pct_0 = sum(total_crt == 0, na.rm = TRUE) / n() * 100,
+        pct_1 = sum(total_crt == 1, na.rm = TRUE) / n() * 100,
+        pct_2 = sum(total_crt == 2, na.rm = TRUE) / n() * 100,
+        pct_3 = sum(total_crt == 3, na.rm = TRUE) / n() * 100,
+        N = n()
+      )
+    
+    # Crear la tabla usando kable
+    tabla <- summary_andes %>%
+      mutate(
+        `Mean CRT score` = round(mean_crt, 2),
+        `0` = paste0(round(pct_0), "%"),
+        `1` = paste0(round(pct_1), "%"),
+        `2` = paste0(round(pct_2), "%"),
+        `3` = paste0(round(pct_3), "%"),
+        `N` = N
+      ) %>%
+      select(`Mean CRT score`, `0`, `1`, `2`, `3`, `N`)
+    
+    # Definir los nombres de las columnas
+    col_names <- c("Media puntuación CRT", "0", "1", "2", "3", "N")
+    
+    # Output the table
+    kable(tabla, format = "latex", booktabs = TRUE, col.names = col_names)
+    @
+    \caption{Resultados test de Reflexión Cognitiva}
+    Elaboración propia
+\end{table}
 
 
 \section{Conclusiones}
