@@ -17,6 +17,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[table]{xcolor}
 \usepackage{tikz}
+\usepackage{listings}
 \usetikzlibrary{fadings}
 \usetikzlibrary{patterns}
 \usetikzlibrary{shadows.blur}
@@ -57,9 +58,6 @@ create_plot <- function(df, period) {
       scale_size(range = c(3, 10), name = "Desviación\nASG S&P") +
       scale_x_continuous("Métrica ASG S&P", limits = c(0, 1)) +
       scale_y_continuous("Retorno (%)", limits = c(-25, 40)) +
-      labs(
-        caption = "Fuente: Bloomberg"
-      ) +
       theme_minimal() +
       theme(
         plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
@@ -85,9 +83,6 @@ create_plot_combined <- function(df, period) {
       scale_size(range = c(3, 10), name = "Desviación\nASG") +
       scale_x_continuous("Promedio Métricas Bloomberg y S&P", limits = c(0, 1)) +
       scale_y_continuous("Retorno (%)", limits = c(-25, 40)) +
-      labs(
-        caption = "Fuente: Bloomberg"
-      ) +
       theme_minimal() +
       theme(
         plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
@@ -148,7 +143,6 @@ Universidad de los Andes
 \newpage
 
 \section{Introducción}
-
 En el ámbito financiero la disponibilidad de información ha experimentado un aumento considerable a lo largo de los años, especialmente en el último siglo  debido a la digitalización. Para los inversionistas existen muchos factores que deben ser considerados a la hora de tomar una decisión, algunos de los más usados son el \textit{ROI}, \textit{ROE}, \textit{EBIT}, \textit{EBITDA}, entre muchos otros. Para estos individuos, informarse de toda la gama de estas métricas es costoso en tiempo y muy complicado de analizar y entender en profundidad, cómo consecuencia, han debido dejar de lado algunas y centrarse en las que más interés les traen según sus preferencias. 
 
 
@@ -176,7 +170,7 @@ La importancia de este criterio radica en su capacidad de expresar como una orga
 \subsubsection{Criterio Governanza (G)}
 La forma en que una empresa se gobierna, sus prácticas empresariales y su impacto en accionistas y demás partes interesadas son abordados por el componente final de los criterios ASG denominado gobernanza. Se deben tener en cuenta componentes tales como diseño organizacional paritario e inclusivo, directrices éticas transparentes, estructura organizacional, remuneraciones justas además  de también resguardar adecuados derechos a todos quienes posean acciones. La relevancia de la gobernanza reside en su impacto en la durabilidad y los resultados futuros que obtenga una organización. Un buen gobierno corporativo basado en principios fuertes que garanticen transparencia es capaz no sólo generar seguridad para posibles inversores sino también prevenir situaciones no deseadas; asimismo ayuda a lograr un mejor enlace por parte del equipo directivo tanto con las metas empresariales como con aquellos que poseen acciones. Cuando las empresas incorporan prácticas fuertes de gobernanza se perciben como más confiables y responsables, aspectos que pueden impactar positivamente su posición competitiva en el mercado e incrementar la disposición para invertir en ellas.
 
-Sin embargo, el estudio \textit{Sustainable Signals: Understanding Corporates Sustainability Priorities and Challenges} \cite{morgan_stanley_institute_for_sustainable_investing_sustainable_2024} revela en su encuesta que las principales razones por la que las organizaciones adoptan practicas sostenibles no es por mejorar su funcionamiento en sí, sino que es crear valor para la empresa (50\%), cumplir con las normativas gubernamentales (48\%) y la obligación moral de hacer lo correcto para las personas y el planeta (47\%). Es recién en el cuarto lugar con un 46\% que mencionan que "la sostenibilidad es un reto importante para nuestro modelo de negocio, por lo que tenemos que reaccionar".
+Sin embargo, el estudio \textit{Sustainable Signals: Understanding Corporates Sustainability Priorities and Challenges} \cite{morgan_stanley_sustainable_2024} revela en su encuesta que las principales razones por la que las organizaciones adoptan practicas sostenibles no es por mejorar su funcionamiento en sí, sino que es crear valor para la empresa (50\%), cumplir con las normativas gubernamentales (48\%) y la obligación moral de hacer lo correcto para las personas y el planeta (47\%). Es recién en el cuarto lugar con un 46\% que mencionan que "la sostenibilidad es un reto importante para nuestro modelo de negocio, por lo que tenemos que reaccionar".
 
 
 \subsection{Inatención Racional}
@@ -265,11 +259,11 @@ $$\$_*\left((ASG;\$),ASG\right)=\frac{(P^{ASG}\cdot ASG + P^{\$}\cdot \$)-P^{ASG
 %\end{equation}
 
 \subsection{Preferencias}
-Frente a dos opciones de activos $\ell$ y $\ell'$, cada una con distintos retornos, un individuo puede preferir uno sobre otro ($\ell \succeq \ell'$, $\ell' \succeq \ell$) o ser indiferente entre ambos ($\ell \equiv \ell'$). La preferencia de una situación sobre otra se puede denotar de dos maneras \cite{decancq_chapter_2015}; $\ell R \ell'$ lo que significa una preferencia débil de la opción $\ell$ sobre $\ell'$, y $\ell P \ell'$ lo que muestra una preferencia fuerte entre las alternativas. Asimismo, estos autores denotan la indiferencia entre ambas opciones como $\ell I \ell'$.
+Frente a dos opciones de activos $\ell$ y $\ell'$, cada una con distintos retornos, un individuo puede preferir uno sobre otro ($\ell \succeq \ell'$, $\ell' \succeq \ell$) o ser indiferente entre ambos ($\ell \equiv \ell'$). La preferencia de una situación sobre otra se puede denotar de dos maneras \cite{decancq_chapter_2015}: en primer lugar, $\ell R \ell'$, lo que significa una preferencia débil de la opción $\ell$ sobre $\ell'$ y, en segundo lugar, $\ell P \ell'$, lo que muestra una preferencia fuerte entre las alternativas. Asimismo, estos autores denotan la indiferencia entre ambas opciones como $\ell I \ell'$.
 
-Para el experimento se asume completitud de preferencia, lo que significa que los individuos son capaces de definir preferencias entre las dos opciones presentadas. Este supuesto permite trabajar con curvas de indiferencia en vez de conjuntos \emph{contour}. 
+Para el experimento, se asume completitud de preferencia, lo que quiere decir que los individuos son capaces de definir preferencias entre las dos opciones presentadas. Este supuesto permite trabajar con curvas de indiferencia en vez de conjuntos \emph{contour}. 
 
-La curva de indiferencia muestra las combinaciones entre la dimensión 1 y dimensión 2 de las alternativas, en este caso $\ell=(x^{ASG}$, $x^{\$})$, que le entregan al individuo el mismo nivel de utilidad. A continuación se presenta la gráfica de las curvas de indiferencia expuesta por \citeA{burone_measuring_2023} para dos individuos distintos ($i$ y $j$):
+La curva de indiferencia muestra las combinaciones entre la dimensión 1 y la 2 de las alternativas; en este caso, $\ell=(x^{ASG}$, $x^{\$})$, que le entregan al individuo el mismo nivel de utilidad. A continuación se presenta la gráfica de las curvas de indiferencia expuesta por \citeA{burone_measuring_2023} para dos individuos distintos ($i$ y $j$):
 
 \begin{figure}[H]
     \centering
@@ -310,15 +304,15 @@ La curva de indiferencia muestra las combinaciones entre la dimensión 1 y dimen
 
 \end{tikzpicture}
     \caption{Caption}
-    Elaboración propia
+    Fuente: Elaboración propia
     \label{fig:enter-label}
 \end{figure}
 
 
-Cabe notar que cada individuo puede tener distintas valoraciones de las dimensiones, cada una representa las preferencias individuales. Por ejemplo, un tomador de decisión puede valorar más la sostenibilidad que otro, lo que significa que estaría dispuesto a sacrificar más retorno monetario por retorno ASG que un tomador de decisión que solo busca rentabilidad monetaria. Esta variabilidad de las valoraciones complica la interpretación y comparación entre individuos, por lo que en muchos casos se utiliza una función de valoración común en el experimento de \citeA{decancq_chapter_2015}, que es lo mismo que se hará en este caso.
+Cabe notar que cada individuo puede tener distintas valoraciones de las dimensiones, porque cada una representa las preferencias individuales. Por ejemplo, un tomador de decisión puede valorar más la sostenibilidad que otro, lo que significa que estaría dispuesto a sacrificar más retorno monetario por retorno ASG que un tomador de decisión que solo busca rentabilidad monetaria. Esta variabilidad de las valoraciones complica la interpretación y comparación entre individuos, por lo que en muchos casos se utiliza una función de valoración común en el experimento de \citeA{decancq_chapter_2015}, que es lo mismo que se hará en este caso.
 
 \subsection{Costo de Cambio}
-En un experimento de este tipo, se presenta un costo de cambio que, en el fondo, es cuánto está dispuesto a sacrificar el inversionista en términos de retornos monetarios por aumentar el indicador ASG. \citeA{geczy_investing_2003} tratan este tema en específico con fondos mutuos, en los que se consideran distintos fondos mutuos con objetivos que incluyen el inversiones \textit{SRI}. Según estos autores, el costo de una inversión socialmente responsable depende de manera principal de las opiniones del inversor sobre los modelos de valoración de activos y de las habilidades de selección de activos de los administradores del fondo. Por ejemplo, para un tomador de decisión que cree firmemente en el uso del modelo de CAPM (\textit{Capital Asset Pricing Model}) el costo de una inversión sostenible es solo de unos pocos puntos base por mes. No así con modelos que cuentan factores de \textit{momentum}, tamaños y valor como Fama-French de tres factores o el modelo Carhart, en el que una inversión de este tipo es mucho más costosa, cuyo costo es, por lo menos, de  30 puntos base por mes.
+En un experimento de este tipo, se presenta un costo de cambio que, en definitiva, es cuánto está dispuesto a sacrificar el inversionista en términos de retornos monetarios por aumentar el indicador ASG. \citeA{geczy_investing_2003} tratan este tema en específico con fondos mutuos, en los que se consideran distintos fondos mutuos con objetivos que incluyen inversiones \textit{SRI}. Según estos autores, el costo de una inversión socialmente responsable depende de manera principal de las opiniones del inversor sobre los modelos de valoración de activos y de las habilidades de selección de activos de los administradores del fondo. Por ejemplo, para un tomador de decisión que cree firmemente en el uso del modelo de CAPM (\textit{Capital Asset Pricing Model}) el costo de una inversión sostenible es solo de unos pocos puntos base por mes. No así con modelos que cuentan con factores de \textit{momentum}, tamaños y valor como Fama-French de tres factores o el modelo Carhart, en el que una inversión de este tipo es mucho más costosa, esto es de, por lo menos, 30 puntos base por mes.
 
 \subsection{Prueba de Reflexión Cognitiva}
 La Prueba de Reflexión Cognitiva, más conocida por sus siglas en inglés `CRT` (\emph{Cognitive Reflection Test}), mide la decisión de un individuo tomador de decisiones ante una respuesta intuitiva pero incorrecta y al mismo tiempo de participar en una reflexión cognitiva al resolver un conjunto de problemas matemáticos \cite{frederick_cognitive_2005}.
@@ -326,18 +320,18 @@ La Prueba de Reflexión Cognitiva, más conocida por sus siglas en inglés `CRT`
 El mejor ejemplo de la prueba es la pregunta del bate y la pelota (\textit{Bat and ball problem}), en el cual se presenta la siguiente pregunta:
 
 \begin{center}
-    Un bate y una pelota cuestan $\$1.10$ en total. El bate cuesta $\$1.00$ más que una pelota ¿Cuánto cuesta la pelota?
+    Un bate y una pelota cuestan $\$1.10$ en total. El bate cuesta $\$1.00$ más que la pelota ¿Cuánto cuesta la pelota?
 \end{center}
 
-La primera respuesta que se viene a la mente es $\$0.10$, pero esta respuesta intuitiva es incorrecta. Si se analiza con mayor detención el problema se puede reconocer que la diferencia entre $\$1.00$ y $\$0.10$ es de $\$0.90$ y no de $\$1.00$ como dice el enunciado. Con una mejor reflexión se llega a la respuesta correcta: $\$1.05$.
+La primera respuesta más simple es $\$0.10$, pero esta respuesta intuitiva es incorrecta. Si se analiza con mayor detención el problema se puede reconocer que la diferencia entre $\$1.00$ y $\$0.10$ es de $\$0.90$ y no de $\$1.00$ como dice el enunciado. Con una mejor reflexión se llega a la respuesta correcta: $\$1.05$.
 
-Existen 3 maneras discutidas por \citeA{sirota_effect_2018}  de llevar a cabo este test, la primera llamada \textit{open-ended}, la segunda \textit{two-option} y, la última, \textit{four-option}. En el primer caso el tomador de decisión ingresa de manera manual el resultado que él cree correcto, es decir, sin alternativas. En los otros dos casos al tomador de decisión se le presentan dos y cuatro alternativas respectivamente.
+Existen 3 maneras discutidas por \citeA{sirota_effect_2018}  de realizar este test: la primera llamada \textit{open-ended}, la segunda \textit{two-option} y, la última, \textit{four-option}. En el primer caso, el tomador de decisión ingresa de manera manual el resultado que él cree correcto, es decir, sin alternativas. En los otros dos casos al tomador de decisión se le presentan dos y cuatro alternativas respectivamente.
 
-\citeA{sirota_effect_2018} no encontraron evidencia, lo que favorece a la hipótesis de equivalencia entre las tres maneras estudiadas de llevara a cabo la prueba. 
+\citeA{sirota_effect_2018} no encontraron evidencia, lo que favorece a la hipótesis de equivalencia entre las tres maneras estudiadas de llevar a cabo la prueba. 
 
 \subsection{Implementación del Marco Teórico en Elección de Activos con Información ASG}
 
-Dada la situación en que el activo $j$ contiene la siguiente información: con probabilidad $\pi_0$, $(ASG_0,\$_0)$, con probabilidad $\pi_1$, $(ASG_1,\$_0)$ y con probabilidad $1-\pi_0-\pi_1$, $(ASG_2,\$_0)$. El valor esperado del componente ASG del activo $j$ para esa probabilidad se denota como $\bar x^{ASG}_\pi$. 
+Dada la situación en que el activo $j$ contiene la siguiente información: con probabilidad $\pi_0$, $(ASG_0,\$_0)$, con probabilidad $\pi_1$, $(ASG_1,\$_0)$ y con probabilidad $1-\pi_0-\pi_1$, $(ASG_2,\$_0)$. El valor esperado del componente ASG del activo $j$ para esa probabilidad se denota como $\bar x^{ASG}_\pi$:
 
 
 \begin{figure}[H]
@@ -434,13 +428,13 @@ Dada la situación en que el activo $j$ contiene la siguiente información: con 
 
 \end{tikzpicture}
     \caption{Ejemplo activo $j$}
-    Elaboración propia
+    Fuente: Elaboración propia
     \label{fig:enter-label2}
 \end{figure}
 
 Ahora bien, se supone que se tiene información para otro activo $j'$ con la misma estructura. Es decir, un retorno económico constante e incertidumbre en el retorno ASG. Se debe suponer que el retorno económico es el mismo entre $j$ y $j'$. Sin embargo, los retornos ASG son diferentes y el valor esperado de ASG para $j'$ se denota por $\hat x^{ASG}$. Si $\hat x^{ASG}<\bar x^{ASG}$. Entonces, es objetivamente óptimo invertir en el activo $j$.
 
-Entonces, que sucede si se compara el activo $j$ con un activo que tiene un retorno económico menor. Podría tener valor esperado de ASG más alto que $j$ o más bajo. Si tiene valor más alto, el tomador de decisión podría estar indiferente entre elegir uno u otro activo. Sin embargo, si el valor esperado ASG es más bajo, la elección racional es una sola. Esa elección sería la respuesta correcta. La situación anterior se encuentra representada en la Figura~\ref{fig:Elección-racional}, en la cual la decisión entre ambos objetos rellenos es evidente; el circulo trae mayor beneficio. No así es la decisión entre el punto $(ASG_1, \$_0)$ y el cuadrado $(ASG_2, \$_1)$, ya que esa decisión tiene un costo de cambio en el cual un inversionista puede denotar una preferencia.
+Entonces, qué sucede si se compara el activo $j$ con un activo que tiene un retorno económico menor. Podría tener valor esperado de ASG más alto que $j$ o más bajo. Si tiene valor más alto, el tomador de decisión podría estar indiferente entre elegir uno u otro activo. Sin embargo, si el valor esperado ASG es más bajo, la elección racional es una sola. Esa elección sería la respuesta correcta. La situación anterior se encuentra representada en la Figura~\ref{fig:Elección-racional}, en la cual la decisión entre ambos objetos rellenos es evidente; el circulo trae mayor beneficio. No sucede lo mismo con la decisión entre el punto $(ASG_1, \$_0)$ y el cuadrado $(ASG_2, \$_1)$, ya que esa decisión tiene un costo de cambio en el cual un inversionista puede denotar una preferencia.
 
     
 
@@ -515,12 +509,12 @@ Entonces, que sucede si se compara el activo $j$ con un activo que tiene un reto
 
 \end{tikzpicture}
     \caption{Elección racional}
-    Elaboración propia
+    Fuente: Elaboración propia
     \label{fig:Elección-racional}
 \end{figure}
 
 \subsubsection{Selección de Activos}
-Existe una amplia gama de activos que se pueden utilizar para llevar a cabo el experimento, sin embargo, para el desarrollo de este experimento en especifico se determinaron los activos a través del análisis de diversas carteras de fondos chilenos y latinoamericanos con estándares ASG. Se recopiló información de los siguientes fondos:
+Existe una amplia gama de activos que se puede utilizar para llevar a cabo el experimento, sin embargo, especifícamele para el desarrollo de este experimento, se determinaron los activos a través del análisis de diversas carteras de fondos chilenos y latinoamericanos con estándares ASG. Por esta razón, se recopiló información de los siguientes fondos:
 
 \begin{itemize}
     \item Santander Acciones Chilenas ESG (ACAMCAC CI)
@@ -530,13 +524,13 @@ Existe una amplia gama de activos que se pueden utilizar para llevar a cabo el e
     \item Fondo de Inversion Larrainvial Deuda LATAM Low Carbon ESG (LVLWCAA CI)
 \end{itemize}
 
-Posteriormente, a través de la Terminal Bloomberg, se recopiló las carteras de los distintos fondos, sin embargo solo dos de los fondos buscados reportaban sus carteras a Bloomberg; Santander Acciones Chilenas ESG y ESG Latam Fund Class Zurich.
+Posteriormente, a través de la Terminal Bloomberg, se recopilaron las carteras de los distintos fondos, sin , solo dos de ellos reportaban sus carteras a Bloomberg: Santander Acciones Chilenas ESG y ESG Latam Fund Class Zurich.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/ACAMCAC.png}
   \caption{Cartera fondo Santander Acciones Chilenas ESG}
-  Fuente: Bloomberg
+  Fuente: Bloomberg (2024)
   \label{fig:image1}
 \end{figure}
 
@@ -544,26 +538,26 @@ Posteriormente, a través de la Terminal Bloomberg, se recopiló las carteras de
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/EAESLEA.png}
   \caption{Cartera fondo ESG Latam Fund Class Zurich}
-  Fuente: Bloomberg
+  Fuente: Bloomberg (2024)
   \label{fig:image2}
 \end{figure}
 
-Con esta información se observó una posición en común de ambos fondos; Sociedad Química y Minera de Chile, en especifico su bono Serie B. Al ser un activo común se utilizará en el experimento. Asimismo, el segundo activo elegidos para el experimento es uno que no tienen en común, pero es el más relevante, en terminos de porcentaje, del fondo de Zurich, es decir, Itaú Unibanco Holding.
+Con esta información se observó una posición en común de ambos fondos; Sociedad Química y Minera de Chile, en específico su bono Serie B. Como es un activo común, se utilizará en el experimento. Asimismo, el segundo activo elegido para el experimento es uno que no tienen en común ambos fondos, pero es el más relevante, en términos de porcentaje, del fondo de Zurich, es decir, Itaú Unibanco Holding.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=1\textwidth]{docs/images/compFondos.png}
   \caption{Comparación de carteras de ambos fondos}
-  Fuente: Bloomberg
+  Fuente: Bloomberg (2024)
   \label{fig:image3}
 \end{figure}
 
-El activo en común, abreviado SQM, fue escogido por su representatividad en el mercado ASG y su frecuento inclusión en las carteras de fondos nacionales. A continuación se presenta la información resumida y preliminar que otorga el Terminal Bloomberg para este activo materia de ASG:
+El activo en común, abreviado SQM, fue escogido por su representatividad en el mercado ASG y su frecuente inclusión en las carteras de fondos nacionales. A continuación, se presenta los antecedentes resumidos y preliminares que otorga el Terminal Bloomberg para este activo en materia de ASG:
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/SQM_ESG.png}
   \caption{Información ASG SQM}
-  Fuente: Bloomberg
+  Fuente: Bloomberg (2024)
   \label{fig:image4}
 \end{figure}
 
@@ -572,13 +566,15 @@ Por otro lado, el activo elegido que no comparten es Itaú Unibanco Holding, ban
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/ITAU_ESG.png}
   \caption{Información ASG Itaú Unibanco Holding}
-  Fuente: Bloomberg
+  Fuente: Bloomberg (2024)
   \label{fig:image5}
 \end{figure}
 
 \subsubsection{Recolección de Datos}
-La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de Excel en un horizonte de tiempo desde el 2016 hasta el 2023 inclusive. En este caso se obtuvieron variables ASG para ambos activos y de dos distintos proveedores; Bloomberg y Standard \& Poor's (S\&P). Además se obtuvo el precio de cierre del activo diario. 
+La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de Excel en un horizonte de tiempo desde el 2016 hasta el 2023 inclusive. En este caso, se obtuvieron variables ASG para ambos activos y de dos distintos proveedores: Bloomberg y Standard \& Poor's (S\&P). Además, se obtuvo el precio de cierre del activo diario. 
+
 \begin{table}[H]
+    \caption{Problema de Continuidad de los Datos ASG para SQM}
     \centering
     <<tableSQMPre, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
     library(dplyr)
@@ -609,7 +605,6 @@ La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
-    \caption{Problema de Continuidad de los Datos ASG para SQM}
     Fuente: Bloomberg
 \end{table}
 
@@ -617,6 +612,7 @@ La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de
 
 
 \begin{table}[H]
+    \caption{Problema de Continuidad de los Datos ASG para IYUB4}
     \centering
     <<tableITUB4Pre, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
     library(dplyr)
@@ -648,14 +644,14 @@ La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
-    \caption{Problema de Continuidad de los Datos ASG para IYUB4}
     Fuente: Bloomberg
 \end{table}
 
 
-Se puede observar de la tabla anterior que muchos datos aparecen como $N/A$, esto es debido a que las metricas ASG no son calculadas diariamente, sino que cada cierto tiempo. Debido a esto, se procedió a modificar los datos de manera que los valores desconocidos fueran cambiados a su valor más reciente, es decir, a la ultima medición ASG que hubiera disponible, de esta manera las tablas quedaron de la siguiente manera:
+En la tabla 2, se puede observar que muchos datos aparecen como $N/A$, lo cual se debe a que las métricas ASG no son calculadas diariamente, sino cada cierto tiempo. Por este motivo, se procedió a modificar los datos de manera que los valores desconocidos fueran cambiados por su valor más reciente, es decir, a la última medición ASG que hubiera disponible; de esta manera, las tablas quedaron de la siguiente manera:
 
 \begin{table}[H]
+    \caption{Solución al Problema de Continuidad de los Datos ASG para SQM}
     \centering
     <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.height='225px'>>=
     library(dplyr)
@@ -680,11 +676,11 @@ Se puede observar de la tabla anterior que muchos datos aparecen como $N/A$, est
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
-    \caption{Solución al Problema de Continuidad de los Datos ASG para SQM}
     Fuente: Bloomberg
 \end{table}
 
 \begin{table}[H]
+    \caption{Solución al Problema de Continuidad de los Datos ASG para ITUB4}
     \centering
     <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.height='225px'>>=
     library(dplyr)
@@ -709,14 +705,14 @@ Se puede observar de la tabla anterior que muchos datos aparecen como $N/A$, est
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
-    \caption{Solución al Problema de Continuidad de los Datos ASG para 
-    ITUB4}
     Fuente: Bloomberg
 \end{table}
 
 \subsubsection{Normalización de los Datos}
-Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por esto que para los dos provedores que se usarán en el experimento, Bloomberg y Standard \& Poor's (S\&P), se normalizar sus puntuaciones para poder compararlas. En el caso de la primera medida, el rango varía entre 0 y 10, mientras que para S\&P va de 0 a 100, a continuación se presenta un resumen de los datos normalizados:
+Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, por esta razón, para los dos provedores que se usarán en el experimento, Bloomberg y Standard \& Poor's (S\&P), se normalizan sus puntuaciones con el fin de compararlas. En el caso de la primera medida, el rango varía entre 0 y 10, mientras que para S\&P va de 0 a 100; a continuación, se presenta un resumen de los datos normalizados:
+
 \begin{table}[H]
+    \caption{Resumen de datos ASG normalizados para SQM}
     \centering
     <<tableSumSQM, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
     # Load and select data
@@ -731,11 +727,11 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por e
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
     @
-    \caption{Resumen de datos ASG normalizados para SQM}
-    Elaboración propia
+    Fuente: Elaboración propia
 \end{table}
 
 \begin{table}[H]
+    \caption{Resumen de datos ASG normalizados para ITUB4}
     \centering
     <<tableSumITUB4, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
     library(dplyr)
@@ -754,15 +750,15 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, es por e
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
     @
-    \caption{Resumen de datos ASG normalizados para ITUB4}
-    Elaboración propia
+    Fuente: Elaboración propia
 \end{table}
 
 
 \subsubsection{Resumen de los Datos}
-Con estos datos se procedió a calcular el retorno, promedio y desviación estándar tanto del factor de Bloomberg normalizado, como del parámetro ASG de S\&P normalizado en distintos intervalos de tiempo; a 7 años , 6 años , 5 años , 4 años , 3 años , 2 años  y 1 año . A continuación se presentan el resultado de estos cálculos:
+Con estos datos, se procedió a calcular el retorno, promedio y desviación estándar, tanto del factor de Bloomberg, como el ASG de S\&P, ambos normalizado y en distintos intervalos de tiempo; a 7 , 6 , 5 , 4 , 3 , 2  y 1 año . A continuación se presentan el resultado de estos cálculos:
 
 \begin{table}[H]
+    \caption{Datos por periodos de tiempo}
     \centering
     <<tableAnalysis, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
     library(dplyr)
@@ -786,12 +782,11 @@ Con estos datos se procedió a calcular el retorno, promedio y desviación está
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
-    \caption{Datos por periodos de tiempo}
-    Elaboración propia
+    Fuente: Elaboración propia
 \end{table}
 
 
-Luego, se crearon los gráficos que se le presentarán a los individuos para que tomen una decisión sobre en que activo elegirían invertir. En primera instancia se presenta, la medida ASG de Standard and Poor's (eje X) y el porcentaje de retorno del activo (eje Y). Cada figura mostrada a continuación representa un horizonte de tiempo determinado y se muestran los dos puntos correspondiente cada uno a un activo. El tamaño del punto varía según la desviación estándar de la medida ASG, en este caso la de S\&P, asimismo, el color varía según la desviación estándar del retorno.
+Luego, se crearon los gráficos que se presentarán a los individuos para que tomen una decisión: invertir en uno u otro activo. En primera instancia, se da a conocer la medida ASG de Standard \& Poor's (eje X) y el porcentaje de retorno del activo (eje Y). Cada figura, que se muestra a continuación, representa un horizonte de tiempo determinado y se exponen los dos puntos correspondientes a cada uno de los activo. El tamaño del punto varía según la desviación estándar de la medida ASG; en este caso, la de S\&P; asimismo, el color varía según la desviación estándar del retorno.
 
 \begin{figure}[H]
 \centering
@@ -801,6 +796,8 @@ Luego, se crearon los gráficos que se le presentarán a los individuos para que
   print(plots[['7YTD']])
   @
   \caption{Retorno vs Norm S\&P para (7 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:7YTD_S&P}
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
@@ -808,6 +805,8 @@ Luego, se crearon los gráficos que se le presentarán a los individuos para que
   print(plots[['6YTD']])
   @
   \caption{Retorno vs Norm S\&P para (6 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:6YTD_S&P}
 \end{minipage}
 \end{figure}
 
@@ -819,6 +818,8 @@ Luego, se crearon los gráficos que se le presentarán a los individuos para que
   print(plots[['5YTD']])
   @
   \caption{Retorno vs Norm S\&P para (5 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:5YTD_S&P}
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
@@ -826,6 +827,8 @@ Luego, se crearon los gráficos que se le presentarán a los individuos para que
   print(plots[['4YTD']])
   @
   \caption{Retorno vs Norm S\&P para (4 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:4YTD_S&P}
 \end{minipage}
 \end{figure}
 
@@ -837,6 +840,7 @@ Luego, se crearon los gráficos que se le presentarán a los individuos para que
   print(plots[['3YTD']])
   @
   \caption{Retorno vs Norm S\&P para (3 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
   \label{fig:3YTD_S&P}
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
@@ -845,6 +849,7 @@ Luego, se crearon los gráficos que se le presentarán a los individuos para que
   print(plots[['2YTD']])
   @
   \caption{Retorno vs Norm S\&P para (2 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
   \label{fig:2YTD_S&P}
 \end{minipage}
 \end{figure}
@@ -856,11 +861,14 @@ Luego, se crearon los gráficos que se le presentarán a los individuos para que
   print(plots[['3YTD']])
   @
   \caption{Retorno vs Norm S\&P para (1 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:1YTD_S&P}
 \end{figure}
 
 Por otro lado, para agregar más información al experimento, se agregó una segunda medida ASG, la que entrega Bloomberg, haciendo entre ambas medidas un ponderado y una desviación estándar conjunta como se presenta enseguida:
 
 \begin{table}[H]
+\caption{Datos por periodos de tiempo combinados}
 \centering
     <<tableAnalysisCombined, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
     library(dplyr)
@@ -881,8 +889,7 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
     kable(data_summary, format = "latex", booktabs = TRUE,
           col.names = col_names, escape = FALSE)
     @
-    \caption{Datos por periodos de tiempo combinados}
-    Elaboración propia
+    Fuente: Elaboración propia
 \end{table}
 
 
@@ -894,6 +901,8 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
   print(plotsCombined[['7YTD']])
   @
   \caption{Retorno vs ASG Combinado (7 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:combined_7YTD}
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
@@ -901,6 +910,8 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
   print(plotsCombined[['6YTD']])
   @
   \caption{Retorno vs ASG Combinado (6 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:combined_6YTD}
 \end{minipage}
 \end{figure}
 
@@ -912,6 +923,8 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
   print(plotsCombined[['5YTD']])
   @
   \caption{Retorno vs ASG Combinado (5 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:combined_5YTD}
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
@@ -919,6 +932,8 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
   print(plotsCombined[['4YTD']])
   @
   \caption{Retorno vs ASG Combinado (4 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:combined_4YTD}
 \end{minipage}
 \end{figure}
 
@@ -930,6 +945,8 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
   print(plotsCombined[['3YTD']])
   @
   \caption{Retorno vs ASG Combinado (3 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:combined_3YTD}
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
@@ -937,6 +954,8 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
   print(plotsCombined[['2YTD']])
   @
   \caption{Retorno vs ASG Combinado (2 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:combined_2YTD}
 \end{minipage}
 \end{figure}
 
@@ -946,19 +965,22 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
   print(plotsCombined[['1YTD']])
   @
   \caption{Retorno vs ASG Combinado (1 años)}
+  Fuente: Elaboración propia con datos de Bloomberg (2024)
+  \label{fig:combined_1YTD}
 \end{figure}
 
 
 \subsubsection{Análisis Previo al Experimento}
-\subsubsection{Correlación entre Proveedores}
 
-Se calcularon las correlaciones entre la medida ASG entregada por S\&P y Bloomberg para ambos activos. Para esto, se utilizó la formula de correlación de Pearson. La fórmula para calcular la correlación de Pearson entre dos variables \(X\) y \(Y\) es la siguiente:
+\paragraph{Correlación entre Proveedores}
+
+Se calcularon las correlaciones entre la medida ASG entregada por S\&P y Bloomberg para ambos activos. Para esto, se utilizó la fórmula de correlación de Pearson. La fórmula para calcular la correlación de Pearson entre dos variables \(X\) y \(Y\) es la siguiente:
 
 \[
 r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}}
 \]
 
-donde:
+En que:
 \begin{itemize}
     \item \(r\) es el coeficiente de correlación de Pearson.
     \item \(x_i\) y \(y_i\) son los valores individuales de las variables \(X\) y \(Y\).
@@ -973,33 +995,33 @@ cor_sqm <- cor(dataSQM$Normalized_ESG_SCORE, dataSQM$Normalized_SP, use = "compl
 cor_itub4 <- cor(dataITUB4$Normalized_ESG_SCORE, dataITUB4$Normalized_SP, use = "complete.obs")
 @
 
-Aplicando esta formula para los datos obtenidos, SQM obtuvo una correlación entre variables de \Sexpr{cor_sqm} y ITUB4 de \Sexpr{cor_itub4}.
+Aplicando esta fórmula para los datos obtenidos, SQM obtuvo una correlación entre variables de \Sexpr{cor_sqm} y ITUB4 de \Sexpr{cor_itub4}.
 
-En el primer caso se presencia una correlación positiva fuerte, lo que significa que a medida que una variable aumente, la otra también lo hace en similar escala, esto puede ser resultado de que ambos capturan de manera similar la sostenibilidad de SQM. Por otro lado, ITUB4 tiene una correlación positiva moderada e inferior a la de SQM, de igual manera para este caso, si una variable aumenta la otra igual lo hace pero no de manera tan consistente como el escenario del otro activo.
+En el primer caso, se evidencia una correlación positiva fuerte, lo que significa que a medida que una variable aumente, la otra también lo hace en similar escala; esto puede ser resultado de que ambos proveedores de información capturan de manera similar la sostenibilidad de SQM. Por otro lado, ITUB4 tiene una correlación positiva moderada e inferior a la de SQM; de igual manera para este caso, si una variable aumenta la otra igual lo hace pero no de manera tan consistente como el escenario del otro activo.
 
-En el caso de SQM, la fuerte correlación puede resultar en que las decisiones de inversión basadas en las puntuaciones ASG de uno de los proveedores probablemente no cambien si se utilizara el otro proveedor. No obstante, en la situación de Itaú Unibanco es mas probable una discrepancia entre decisiones de inversión si se considera uno o el otro proveedor.
+En el caso de SQM, la fuerte correlación puede resultar en que las decisiones de inversión basadas en las puntuaciones ASG de uno de los proveedores, probablemente, no cambien si se utilizara el otro proveedor. No obstante, en la situación de Itaú Unibanco, es más probable una discrepancia entre decisiones de inversión si se considera uno u otro proveedor.
 
 
-\subsubsection{Análisis de Figuras}
-De las figuras mostradas anteriormente se pueden observar algunos escenarios relevantes a analizar y que además, se cruzan con lo revisado dentro del Marco Teórico de este trabajo.
+\paragraph{Análisis de Figuras}
+De las figuras presentadas anteriormente, se pueden observan algunos escenarios relevantes por analizar y que, además, se cruzan con lo revisado en el Marco Teórico de este trabajo.
 
-Por ejemplo en la Figura~\ref{fig:Elección-racional} se mostraba el caso de una decisión correcta, es decir, caso en el que tanto la medida ASG como el retorno monetario eran mayor en un activo que en el otro. Es en este escenario donde un tomador de decisión racional preferiría, bajo la información presentada, el con un beneficio más alto, es decir, la respuesta correcta. Este caso también se ve reflejado en algunas figuras creadas en la sección anterior, como por ejemplo, la Figura~\ref{fig:2YTD_S&P}, donde la elección por el activo ITUB4 sería la correcta y con un mayor beneficio sobre SQM.
+Por ejemplo, en la Figura~\ref{fig:Elección-racional} se mostraba el caso de una decisión correcta, es decir, un caso en el que tanto la medida ASG como el retorno monetario, eran mayor en un activo que en el otro. Es en este escenario donde un tomador de decisión racional preferiría, con la información presentada, un activo con un beneficio más alto. Este caso también se ve reflejado en algunas figuras creadas en la sección anterior como, por ejemplo, la Figura~\ref{fig:2YTD_S&P}, en la cual la elección por el activo ITUB4 sería la correcta y con un mayor beneficio sobre SQM.
 
-Asimismo, con las gráficas presentadas previamente se puede notar que cuando se considera solo el proveedor S\&P para la métrica ASG, SQM se muestra peor posicionado que ITUB4 en todos los casos, sin embargo, al ponderar las medidas esto cambia, en 4 de 7 casos se presencia lo mismo, es decir, SQM es inferior que ITUB4 en temas de sostenibilidad, en el resto sucede el caso inverso. Esto significa que los proveedores tienen se diferencian en sus medidas, posiblemente debido a distintos métodos de evaluación de componentes ASG. 
+Asimismo, con las gráficas presentadas previamente se puede notar que cuando se considera solo el proveedor S\&P para la métrica ASG, SQM se muestra peor posicionado que ITUB4 en todos los casos. Sin embargo, al ponderar las medidas esto cambia, pues 4 de 7 casos se presencia lo mismo, es decir, SQM es inferior que ITUB4 en temas de sostenibilidad; en los otros ejemplos, sucede el caso inverso. Esto significa que los proveedores se diferencian en sus medidas, posiblemente debido a distintos métodos de evaluación de componentes ASG. 
 
 \section{Experimento}
 
 \subsection{Diseño Experimental}
 
-Siguiendo el diseño de \citeA{chan_cost-effective_2023}, a cada individuo se le entregara un ficha de \hyperref[sec:consentimiento]{consentimiento informado} previo al inicio del experimento, el cual debe leer y devolver firmado. Posteriormente, proceden a responder un cuestionario entregando información sobre datos básicos (edad, sexo, etc.), de experiencia o conocimiento financiero, un test de atención tipo \emph{Cognitive Reflection} y una valorización contingente sobre un determinado porcentaje de retorno ASG. Este paso se llevará a cabo para contextualizar los resultados del estudio y con le fin de explorar cómo diferentes perfiles demográficos y distintos niveles de experiencia reaccionan a las opciones de inversión presentadas. La Prueba de Reflexión Cognitiva permitirá medir el nivel de atención del individuo auto-reportada para compararlo con lo que se observe en el comportamiento revelado durante las tareas del experimento.
+Siguiendo el diseño de \citeA{chan_cost-effective_2024}, a cada individuo se le entregará una ficha de \hyperref[sec:consentimiento]{consentimiento informado} previo al inicio del experimento, que debe leer y devolver firmado. Posteriormente, proceden a responder un cuestionario en el que entregan información sobre datos básicos (edad, sexo, etc.), de experiencia o conocimiento financiero, un test de atención tipo \emph{Cognitive Reflection} y una valorización contingente sobre un determinado porcentaje de retorno ASG. Este paso se realizará con el propósito de contextualizar los resultados del estudio y con el fin de explorar de qué manera diferentes perfiles demográficos y distintos niveles de experiencia reaccionan con las opciones de inversión presentadas. La Prueba de Reflexión Cognitiva autorreportada permitirá medir el nivel de atención del individuo para compararlo con lo que se observe en el comportamiento revelado durante las tareas del experimento.
 
-La valorización contingente o Elección Dicotómica Doble se utiliza para evaluar las preferencias de los participantes entre activos con diferentes rendimientos e impactos ASG. Esta metodología permite entender las compensaciones que los individuos están dispuestos a hacer entre el retorno financiero y el beneficio ASG. Siguiendo la pregunta realizada por \citeA{PwC} ``\textit{Are you willing to accept a lower rate of return in exchange for societal or environmental benefit}", se le preguntará al participante si está dispuesto a aceptar un porcentaje menos de retorno monetario a cambio de un aumento en puntuación ASG; si responde de manera afirmativa, se sigue a la experiencia Bloomberg; en caso negativo, se le formula la siguiente pregunta; ¿cuánto porcentaje de retorno monetario estarías dispuesto a perder por aumentar la puntuación ASG de un activo?.
+La valorización contingente o Elección Dicotómica Doble se utiliza para evaluar las preferencias de los participantes entre activos con diferentes rendimientos e impactos ASG. Esta metodología permite entender las compensaciones que los individuos están dispuestos a hacer entre el retorno financiero y el beneficio ASG. Siguiendo la pregunta realizada por \citeA{chalmer_economic_2021} ``\textit{Are you willing to accept a lower rate of return in exchange for societal or environmental benefit}", se le interrogará al participante si está dispuesto a aceptar un porcentaje menor de retorno monetario a cambio de un aumento en la puntuación ASG; si responde de manera afirmativa, se sigue a la experiencia Bloomberg; en caso negativo, se le formula la siguiente pregunta: ¿cuánto porcentaje de retorno monetario estarías dispuesto a perder por aumentar la puntuación ASG de un activo?
 
-En concreto, Los participantes deberán responder 20 preguntas de información básica en formato de alternativas y texto, y 17 preguntas de decisión. Los participantes no recibirán beneficios monetarios por la realización del experimento.
+En concreto, los participantes deberán responder 20 preguntas de información básica en formato de alternativas y texto, y 17 preguntas de decisión. Asimismo, no recibirán beneficios monetarios por la realización del experimento.
 
-En las preguntas de decisión se presentarán pares de activos en un plano cartesiano, en que los participantes evalúan las alternativas de inversión representadas en el, contrastando rendimientos financieros con puntuaciones ASG. Cada uno de estos puntos representa un activo que contiene, por un lado retorno monetario (eje Y del plano) y, por el otro una puntuación ASG (eje X del plano). A cada uno de estos puntos se le asignará una alternativa para que el tomador de decisión seleccione cuál de aquellas prefiere (la que le trae mayor bienestar). Esta comparación visual directa ayuda a los participantes a realizar elecciones informadas, basadas en sus preferencias personales por rendimientos financieros versus impactos ASG.
+En las preguntas de decisión, se presentarán pares de activos en un plano cartesiano, en que los participantes evalúan las alternativas de inversión representadas en él, y se contrastan los rendimientos financieros con las puntuaciones ASG. Cada uno de estos puntos representa un activo que contiene, por un lado retorno monetario (eje Y del plano) y, por el otro una puntuación ASG (eje X del plano). A cada uno de estos puntos se le asignará una alternativa para que el tomador de decisión seleccione cuál de aquellas prefiere (la que le trae mayor bienestar). Esta comparación visual directa ayuda a los participantes a realizar elecciones informadas, basadas en sus preferencias personales por rendimientos financieros versus impactos ASG.
 
-Durante todo el experimento se utilizará un sistema de seguimiento ocular, también conocido como \textit{eye-tracker}. La finalidad de esto es tener los datos de la dilatación pupilar del individuo y la posición de la mirada mientras se recolectan los datos.
+Durante todo el experimento se utilizará un sistema de seguimiento ocular, también conocido como \textit{eye-tracker}. La finalidad de esto es disponer de los datos de la dilatación pupilar del individuo y la posición de la mirada mientras se recolectan los datos.
 
 
 
@@ -1048,7 +1070,7 @@ En el piloto de este experimento participaron \Sexpr{count_participantes} person
     \label{fig:edadGenero}
 \end{figure}
 
-Asimismo, los participes se identificaron con tres niveles distintos de estudios; universitario y posgrado. Esto lo hicieron con la distribución que muestra la Figura~\ref{fig:nivelEdu}.
+Asimismo, los participes se identificaron con dos niveles distintos de estudios; universitario y posgrado. Esto lo hicieron con la distribución que muestra la Figura~\ref{fig:nivelEdu}.
 
 \begin{figure}[H]
     \centering
@@ -1075,7 +1097,7 @@ Asimismo, los participes se identificaron con tres niveles distintos de estudios
     \label{fig:nivelEdu}
 \end{figure}
 
-En términos de ocupación, se estuvieron presente solo tres de las opciones presentadas; estudiante y empleado/a, la frecuencia de estas se detallaen la Figura~\ref{fig:ocupacion}.
+En términos de ocupación, se estuvieron presente solo dos de las opciones presentadas; estudiante y empleado/a, la frecuencia de estas se detallaen la Figura~\ref{fig:ocupacion}.
 
 \begin{figure}[H]
     \centering
@@ -1090,7 +1112,7 @@ En términos de ocupación, se estuvieron presente solo tres de las opciones pre
         ocupacion <- ggplot(frecuencia_ocupacion, aes(x = ocupacion, y = frecuencia, fill = ocupacion)) +
           geom_bar(stat = "identity") +
           labs(
-               x = "Ocupacion",
+               x = "Ocupación",
                y = "Frecuencia") +
           theme_minimal() +
           scale_fill_manual(values = c("#468189", "#77ACA2")) +
@@ -1228,10 +1250,10 @@ En el experimento se realizaron dos tipos de valorizaciones contingentes a los p
 
 En el primer caso, se les planteó la siguiente pregunta; ¿Crees que puedes ganar un 0,6\% de retorno monetario por aumentar en un 1\% el retorno ASG?, \Sexpr{count_mayor_media_first_si} respondieron 'si, hasta un 0,6\%', mientras que \Sexpr{count_mayor_media_first_no} respondieron 'no, más de un 0,6\%'. A estos últimos se les preguntó; ¿Hasta cuánto esperarías que aumente el retorno monetario con un aumento del 1\% de retorno ASG?, cuyas respuestas fueron:  0,7\%; 1,5\% y 10\%.
 
-En el segundo caso, donde respondieron 'Menor a la media del mercado' en la pregunta inicial se siguió un procedimiento equivalente pero presentandole un costo de cambio. La primera pregunta de la valorización continte fue; ¿Estarías dispuesto a perder un 12,3\% de rentabilidad monetaria a cambio de un 44\% adicional de retorno ASG?, a lo que \Sexpr{count_menor_media_first_si} respindió que sí estaría dispuesto, mientras que \Sexpr{count_menor_media_first_no}, respondió que no estaría dispuesto. A estos últimos se les preguntó; ¿Cuánto retorno monetario estarías dispuesto a perder a cambio de aumentar en el mismo 44\% el retorno ASG?, respondiendo: 0\%; 0,2\%; 3\%, 5\%, 5\% y 10\%.
+En el segundo caso, donde respondieron 'Menor a la media del mercado' en la pregunta inicial se siguió un procedimiento equivalente pero presentándole un costo de cambio. La primera pregunta de la valorización contingente fue; ¿Estarías dispuesto a perder un 12,3\% de rentabilidad monetaria a cambio de un 44\% adicional de retorno ASG?, a lo que \Sexpr{count_menor_media_first_si} respondió que sí estaría dispuesto, mientras que \Sexpr{count_menor_media_first_no}, respondió que no estaría dispuesto. A estos últimos se les preguntó; ¿Cuánto retorno monetario estarías dispuesto a perder a cambio de aumentar en el mismo 44\% el retorno ASG?, respondiendo: 0\%; 0,2\%; 3\%, 5\%, 5\% y 10\%.
 
 \subsection{Test de Reflexión Cognitiva}
-En el test de reflexión cognitiva (CRT) llevado a cabo en el experimento se le hicieron tres preguntas concecutivas a los participantes:
+En el test de reflexión cognitiva (CRT) llevado a cabo en el experimento se le hicieron tres preguntas consecutivas a los participantes:
 
 \begin{enumerate}
     \item\label{ch:crt1} Un bate y una pelota cuestan \$1.10 en total. El bate cuesta \$1.00 más que la pelota. ¿Cuánto cuesta la pelota? \_\_\_\_\_ centavos.
@@ -1362,8 +1384,569 @@ Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según 
     kable(tabla, format = "latex", booktabs = TRUE, col.names = col_names)
     @
     \caption{Resultados test de Reflexión Cognitiva}
-    Elaboración propia
+    Fuente: Elaboración propia
 \end{table}
+
+\subsection{Decisiones de los Participantes}
+
+Para una mejor interpretación de los resultados se dividirán los escenarios en dos; los casos en donde la decisión de inversión tiene una respuesta racional clara (mejor tanto en rentabilidad monetaria como en características ASG) y los demás, donde los participantes tienen que tomar una decisión según su criterio.
+
+\subsubsection{Casos con Respuesta Racional Definida}
+El experimento tuvo tres casos en donde existía una respuesta racional definida, lo que se puede ver en las gráficas; \hyperref[fig:1YTD_S&P]{1 año (S\&P)}, \hyperref[fig:2YTD_S&P]{2 años (S\&P)}y \hyperref[fig:3YTD_S&P]{3 años (S\&P)}.  
+
+En el primer caso, las decisiones de los participantes fueron las siguientes:
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plots[['1YTD']])
+          @
+    \caption{1 año (S\&P)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_1YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_1YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_1YTD <- dataCuestionario %>%
+          mutate(plot_1YTD = ifelse(plot_1YTD == 'p', 'SQM', ifelse(plot_1YTD == 'q', 'ITUB4', plot_1YTD))) %>%
+          group_by(plot_1YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_1YTD$plot_1YTD <- factor(frecuencia_plot_1YTD$plot_1YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_1YTD_response <- ggplot(frecuencia_plot_1YTD, aes(x = plot_1YTD, y = frecuencia, fill = plot_1YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_1YTD_response)
+          @
+    \caption{Respuestas para gráfico a 1 año (S\&P)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_1YTD_response}
+\end{minipage}
+\end{figure}
+
+Para el segundo caso, los individuos eligieron lo siguiente:
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plots[['2YTD']])
+          @
+    \caption{2 años (S\&P)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_2YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_2YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_2YTD <- dataCuestionario %>%
+          mutate(plot_2YTD = ifelse(plot_2YTD == 'p', 'SQM', ifelse(plot_2YTD == 'q', 'ITUB4', plot_2YTD))) %>%
+          group_by(plot_2YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_2YTD$plot_2YTD <- factor(frecuencia_plot_2YTD$plot_2YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_2YTD_response <- ggplot(frecuencia_plot_2YTD, aes(x = plot_2YTD, y = frecuencia, fill = plot_2YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_2YTD_response)
+          @
+    \caption{Respuestas para gráfico a 2 años (S\&P)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_2YTD_response}
+\end{minipage}
+\end{figure}
+
+Por último, las respuestas para el caso a 3 años (S\&P) fueron:
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plots[['3YTD']])
+          @
+    \caption{3 años (S\&P)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_3YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_3YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_3YTD <- dataCuestionario %>%
+          mutate(plot_3YTD = ifelse(plot_3YTD == 'p', 'SQM', ifelse(plot_3YTD == 'q', 'ITUB4', plot_3YTD))) %>%
+          group_by(plot_3YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_3YTD$plot_3YTD <- factor(frecuencia_plot_3YTD$plot_3YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_3YTD_response <- ggplot(frecuencia_plot_3YTD, aes(x = plot_3YTD, y = frecuencia, fill = plot_3YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_3YTD_response)
+          @
+    \caption{Respuestas para gráfico a 3 años (S\&P)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_3YTD_response}
+\end{minipage}
+\end{figure}
+
+En las tres instancias ITUB4 era la decisión racional correcta. Los resultados muestran que en la mayoría de los casos los participantes se inclinaron hacia esa respuesta, sin embargo, hubieron algunos que escogieron SQM, lo que puede deberse a una falta de atención del individuo en el ensayo o a una interpretación errónea del ejercicio.
+
+\subsubsection{Casos con Respuestas con Costos de Cambio}
+El experimento tuvo 11 casos en donde existía un \textit{trade off} entre un activo u el otro. Las respuestas de estos casos se encuentran a continuación:
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plots[['4YTD']])
+          @
+    \caption{4 años (S\&P)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_4YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_4YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_4YTD <- dataCuestionario %>%
+          mutate(plot_4YTD = ifelse(plot_4YTD == 'p', 'SQM', ifelse(plot_4YTD == 'q', 'ITUB4', plot_4YTD))) %>%
+          group_by(plot_4YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_4YTD$plot_4YTD <- factor(frecuencia_plot_4YTD$plot_4YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_4YTD_response <- ggplot(frecuencia_plot_4YTD, aes(x = plot_4YTD, y = frecuencia, fill = plot_4YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_4YTD_response)
+          @
+    \caption{Respuestas para gráfico a 4 años (S\&P)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_4YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plots[['5YTD']])
+          @
+    \caption{5 años (S\&P)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_5YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_5YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_5YTD <- dataCuestionario %>%
+          mutate(plot_5YTD = ifelse(plot_5YTD == 'p', 'SQM', ifelse(plot_5YTD == 'q', 'ITUB4', plot_5YTD))) %>%
+          group_by(plot_5YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_5YTD$plot_5YTD <- factor(frecuencia_plot_5YTD$plot_5YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_5YTD_response <- ggplot(frecuencia_plot_5YTD, aes(x = plot_5YTD, y = frecuencia, fill = plot_5YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_5YTD_response)
+          @
+    \caption{Respuestas para gráfico a 5 años (S\&P)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_5YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plots[['6YTD']])
+          @
+    \caption{6 años (S\&P)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_6YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_6YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_6YTD <- dataCuestionario %>%
+          mutate(plot_6YTD = ifelse(plot_6YTD == 'p', 'SQM', ifelse(plot_6YTD == 'q', 'ITUB4', plot_6YTD))) %>%
+          group_by(plot_6YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_6YTD$plot_6YTD <- factor(frecuencia_plot_6YTD$plot_6YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_6YTD_response <- ggplot(frecuencia_plot_6YTD, aes(x = plot_6YTD, y = frecuencia, fill = plot_6YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_6YTD_response)
+          @
+    \caption{Respuestas para gráfico a 6 años (S\&P)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_6YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plots[['7YTD']])
+          @
+    \caption{7 años (S\&P)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_7YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_7YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_7YTD <- dataCuestionario %>%
+          mutate(plot_7YTD = ifelse(plot_7YTD == 'p', 'SQM', ifelse(plot_7YTD == 'q', 'ITUB4', plot_7YTD))) %>%
+          group_by(plot_7YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_7YTD$plot_7YTD <- factor(frecuencia_plot_7YTD$plot_7YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_7YTD_response <- ggplot(frecuencia_plot_7YTD, aes(x = plot_7YTD, y = frecuencia, fill = plot_7YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_7YTD_response)
+          @
+    \caption{Respuestas para gráfico a 7 años (S\&P)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_7YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plotsCombined[['1YTD']])
+          @
+    \caption{1 año (S\&P y Bloomberg)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_1YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_combined_1YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_combined_1YTD <- dataCuestionario %>%
+          mutate(plot_combined_1YTD = ifelse(plot_combined_1YTD == 'p', 'SQM', ifelse(plot_combined_1YTD == 'q', 'ITUB4', plot_combined_1YTD))) %>%
+          group_by(plot_combined_1YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_combined_1YTD$plot_combined_1YTD <- factor(frecuencia_plot_combined_1YTD$plot_combined_1YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_combined_1YTD_response <- ggplot(frecuencia_plot_combined_1YTD, aes(x = plot_combined_1YTD, y = frecuencia, fill = plot_combined_1YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_combined_1YTD_response)
+          @
+    \caption{Respuestas para gráfico a 1 año (S\&P y Bloomberg)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_1YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plotsCombined[['2YTD']])
+          @
+    \caption{2 años (S\&P y Bloomberg)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_2YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_combined_2YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_combined_2YTD <- dataCuestionario %>%
+          mutate(plot_combined_2YTD = ifelse(plot_combined_2YTD == 'p', 'SQM', ifelse(plot_combined_2YTD == 'q', 'ITUB4', plot_combined_2YTD))) %>%
+          group_by(plot_combined_2YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_combined_2YTD$plot_combined_2YTD <- factor(frecuencia_plot_combined_2YTD$plot_combined_2YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_combined_2YTD_response <- ggplot(frecuencia_plot_combined_2YTD, aes(x = plot_combined_2YTD, y = frecuencia, fill = plot_combined_2YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_combined_2YTD_response)
+          @
+    \caption{Respuestas para gráfico a 2 años (S\&P y Bloomberg)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_2YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plotsCombined[['3YTD']])
+          @
+    \caption{3 años (S\&P y Bloomberg)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_3YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_combined_3YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_combined_3YTD <- dataCuestionario %>%
+          mutate(plot_combined_3YTD = ifelse(plot_combined_3YTD == 'p', 'SQM', ifelse(plot_combined_3YTD == 'q', 'ITUB4', plot_combined_3YTD))) %>%
+          group_by(plot_combined_3YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_combined_3YTD$plot_combined_3YTD <- factor(frecuencia_plot_combined_3YTD$plot_combined_3YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_combined_3YTD_response <- ggplot(frecuencia_plot_combined_3YTD, aes(x = plot_combined_3YTD, y = frecuencia, fill = plot_combined_3YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_combined_3YTD_response)
+          @
+    \caption{Respuestas para gráfico a 3 años (S\&P y Bloomberg)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_3YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plotsCombined[['4YTD']])
+          @
+    \caption{4 años (S\&P y Bloomberg)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_4YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_combined_4YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_combined_4YTD <- dataCuestionario %>%
+          mutate(plot_combined_4YTD = ifelse(plot_combined_4YTD == 'p', 'SQM', ifelse(plot_combined_4YTD == 'q', 'ITUB4', plot_combined_4YTD))) %>%
+          group_by(plot_combined_4YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_combined_4YTD$plot_combined_4YTD <- factor(frecuencia_plot_combined_4YTD$plot_combined_4YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_combined_4YTD_response <- ggplot(frecuencia_plot_combined_4YTD, aes(x = plot_combined_4YTD, y = frecuencia, fill = plot_combined_4YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_combined_4YTD_response)
+          @
+    \caption{Respuestas para gráfico a 4 años (S\&P y Bloomberg)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_4YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plotsCombined[['5YTD']])
+          @
+    \caption{5 años (S\&P y Bloomberg)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_5YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_combined_5YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_combined_5YTD <- dataCuestionario %>%
+          mutate(plot_combined_5YTD = ifelse(plot_combined_5YTD == 'p', 'SQM', ifelse(plot_combined_5YTD == 'q', 'ITUB4', plot_combined_5YTD))) %>%
+          group_by(plot_combined_5YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_combined_5YTD$plot_combined_5YTD <- factor(frecuencia_plot_combined_5YTD$plot_combined_5YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_combined_5YTD_response <- ggplot(frecuencia_plot_combined_5YTD, aes(x = plot_combined_5YTD, y = frecuencia, fill = plot_combined_5YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_combined_5YTD_response)
+          @
+    \caption{Respuestas para gráfico a 5 años (S\&P y Bloomberg)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_5YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plotsCombined[['6YTD']])
+          @
+    \caption{6 años (S\&P y Bloomberg)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_6YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_combined_6YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_combined_6YTD <- dataCuestionario %>%
+          mutate(plot_combined_6YTD = ifelse(plot_combined_6YTD == 'p', 'SQM', ifelse(plot_combined_6YTD == 'q', 'ITUB4', plot_combined_6YTD))) %>%
+          group_by(plot_combined_6YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_combined_6YTD$plot_combined_6YTD <- factor(frecuencia_plot_combined_6YTD$plot_combined_6YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_combined_6YTD_response <- ggplot(frecuencia_plot_combined_6YTD, aes(x = plot_combined_6YTD, y = frecuencia, fill = plot_combined_6YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_combined_6YTD_response)
+          @
+    \caption{Respuestas para gráfico a 6 años (S\&P y Bloomberg)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_6YTD_response}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+            print(plotsCombined[['7YTD']])
+          @
+    \caption{7 años (S\&P y Bloomberg)} 
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_7YTD_2}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+  \centering
+        <<plot_combined_7YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+
+        frecuencia_plot_combined_7YTD <- dataCuestionario %>%
+          mutate(plot_combined_7YTD = ifelse(plot_combined_7YTD == 'p', 'SQM', ifelse(plot_combined_7YTD == 'q', 'ITUB4', plot_combined_7YTD))) %>%
+          group_by(plot_combined_7YTD) %>%
+          summarise(frecuencia = n())
+
+        frecuencia_plot_combined_7YTD$plot_combined_7YTD <- factor(frecuencia_plot_combined_7YTD$plot_combined_7YTD, levels = c('SQM','ITUB4'))
+        
+        # Crea el gráfico de barras
+        plot_combined_7YTD_response <- ggplot(frecuencia_plot_combined_7YTD, aes(x = plot_combined_7YTD, y = frecuencia, fill = plot_combined_7YTD)) +
+          geom_bar(stat = "identity") +
+          labs(
+               x = "Respuestas",
+               y = "Frecuencia") +
+          theme_minimal() +
+          scale_fill_manual(values = c("#468189", "#77ACA2")) +
+          theme(legend.position = "none")
+          print(plot_combined_7YTD_response)
+          @
+    \caption{Respuestas para gráfico a 7 años (S\&P y Bloomberg)}
+    Fuente: Elaboración Propia
+    \label{fig:plot_combined_7YTD_response}
+\end{minipage}
+\end{figure}
 
 
 \section{Conclusiones}
@@ -1381,7 +1964,7 @@ Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según 
 
 \section{Apéndice}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/apendix/ACAMCAC_ESG.png}
   \caption{Resumen ASG fondo Santander Acciones Chilenas ESG}
@@ -1389,7 +1972,7 @@ Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según 
   \label{fig:image6}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{docs/images/apendix/EAESLEA_ESG.png}
   \caption{Resumen ASG fondo ESG Latam Fund Class Zurich}
@@ -1400,6 +1983,9 @@ Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según 
 \subsection{Consentimiento Informado}
 \label{sec:consentimiento}
 \includepdf[pages=-]{data/consentimiento_informado.pdf}
+
+\subsection{Código del Experimento}
+
 
 
 \vspace{3cm}
