@@ -41,11 +41,19 @@ library(knitr)
 library(readxl)
 library(dplyr)
 library(ggplot2)
+library(readr)
+library(tidyverse)
+library(zoo)
+library(tidyr)
+library(gridExtra)
+library(grid)
+load("../data/pupilData/baseline_pupil.RData")
 
 data <- read_excel("../data/filteredData.xlsx", sheet = "Analysis (2)")
 dataSQM <- read_excel("../data/filteredData.xlsx", sheet = "SQM")
 dataITUB4 <- read_excel("../data/filteredData.xlsx", sheet = "ITUB4")
 dataCuestionario <- read_excel("../data/respuestasCuestionario.xlsx", sheet = "data")
+
 
 create_plot <- function(df, period) {
   filtered_data <- df[df$Period == period,]
@@ -70,8 +78,6 @@ create_plot <- function(df, period) {
   }
 }
 
-
-
 create_plot_combined <- function(df, period) {
   filtered_data <- df[df$Period == period,]
   
@@ -93,6 +99,13 @@ create_plot_combined <- function(df, period) {
   } else {
     return(NULL)
   }
+}
+
+create_plot_pupil <- function(data, trial_name, main_title) {
+  trial_data <- filter(data, trial == trial_name)$pup_interp
+  smoothingSpline <- smooth.spline(trial_data, spar = 0.4)
+  plot(trial_data, cex = 0.2, type = 'l', col = '#468189', xlab = 'Tiempo', ylab = 'Tamaño Pupila', main = main_title)
+  lines(smoothingSpline, col = 'red')
 }
 
 periods <- unique(data$Period)
@@ -2047,6 +2060,7 @@ Por otro lado, es posible comparar estos resultados con la valoración contingen
 En el experimento, se recolectaron los datos de posición de la mirada y la dilatación de la pupila para todos los participantes durante sus tomas de decisiones (gráficas). Estos antecedentes se preprocesaron para trabajar y obtener resultados de ellos.
 
 \subsubsection{Preprocesamiento de Datos}
+
 Para preprocesar los datos, se utilizó la librería GazeR, disponible en el lenguaje de programación R. En este entorno, se cargaron los datos de todos los participantes y se combinaron a un solo marco de datos  (\textit{dataframe}).
 
 Posteriormente, los datos se convirtieron en una base de datos de GazeR, en el cual se especifican qué columnas tienen los datos que se utilizarán en el ensayo. Estas columnas son las siguientes: ID del participante, tiempo, media de tamaño pupilar entre ambos ojos, posición de la mirada en coordenadas (x,y) y ensayo (gráfico) al que está realizando realizando el individuo en ese momento.
@@ -2056,8 +2070,53 @@ Con estos datos, se procedió a interpolar para calcular valores faltantes, que 
 
 Por último, se aplica una función que comúnmente es usada en datos de dilatación pupilar: \textit{baseline}. El objetivo de esta es similar a una normalización, en que se toman los primeros $n$ datos, en este caso 100,  de cada participante y se calcula el promedio de dilatación. Este promedio se usa como base para ese participante, y convierte en relevante la comparación entre individuos. Esto es fundamental debido a que el tamaño de la pupila de los participantes puede cambiar (encontrándose ambos en el mismo estado).
 
+\subsubsection{Resultados de Datos Pupilares}
 
+\begin{figure}[H]
+    \centering
+        <<pupilGraph1, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='500px', out.height='500px'>>=
 
+            par(mfrow = c(4, 2), mar = c(4, 4, 2, 1))
+            
+            # Create and plot the graphs
+            create_plot_pupil(baseline_pupil, "1 año (S&P)", "Tamaño Pupila 1 año (S&P)")
+            create_plot_pupil(baseline_pupil, "2 años (S&P)", "Tamaño Pupila 2 años (S&P)")
+            create_plot_pupil(baseline_pupil, "3 años (S&P)", "Tamaño Pupila 3 años (S&P)")
+            create_plot_pupil(baseline_pupil, "4 años (S&P)", "Tamaño Pupila 4 años (S&P)")
+            create_plot_pupil(baseline_pupil, "5 años (S&P)", "Tamaño Pupila 5 años (S&P)")
+            create_plot_pupil(baseline_pupil, "6 años (S&P)", "Tamaño Pupila 6 años (S&P)")
+            create_plot_pupil(baseline_pupil, "7 años (S&P)", "Tamaño Pupila 7 años (S&P)")
+            
+            # Reset the layout
+            par(mfrow = c(1, 1))
+            @
+    \caption{Comparación Tamaño de Pupila en Ensayos con S\&P}
+    Fuente: Elaboración propia
+    \label{fig:comp_pupil_sizeSP}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+        <<pupilGraph2, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='500px', out.height='500px'>>=
+
+            par(mfrow = c(4, 2), mar = c(4, 4, 2, 1))
+            
+            # Create and plot the graphs
+            create_plot_pupil(baseline_pupil, "1 año (S&P y Bloomberg)", "Tamaño Pupila 1 año (S&P y Bloomberg)")
+            create_plot_pupil(baseline_pupil, "2 años (S&P y Bloomberg)", "Tamaño Pupila 2 años (S&P y Bloomberg)")
+            create_plot_pupil(baseline_pupil, "3 años (S&P y Bloomberg)", "Tamaño Pupila 3 años (S&P y Bloomberg)")
+            create_plot_pupil(baseline_pupil, "4 años (S&P y Bloomberg)", "Tamaño Pupila 4 años (S&P y Bloomberg)")
+            create_plot_pupil(baseline_pupil, "5 años (S&P y Bloomberg)", "Tamaño Pupila 5 años (S&P y Bloomberg)")
+            create_plot_pupil(baseline_pupil, "6 años (S&P y Bloomberg)", "Tamaño Pupila 6 años (S&P y Bloomberg)")
+            create_plot_pupil(baseline_pupil, "7 años (S&P y Bloomberg)", "Tamaño Pupila 7 años (S&P y Bloomberg)")
+            
+            # Reset the layout
+            par(mfrow = c(1, 1))
+            @
+    \caption{Comparación Tamaño de Pupila en Ensayos con S\&P y Bloomberg}
+    Fuente: Elaboración propia
+    \label{fig:comp_pupil_sizeSPyB}
+\end{figure}
 
 \section{Conclusiones}
 
