@@ -59,12 +59,12 @@ library(zoo)
 library(tidyr)
 library(gridExtra)
 library(grid)
-load("../data/pupilData/baseline_pupil.RData")
+load("../../pupilProcessing/output/baseline_pupil.RData")
 
-data <- read_excel("../data/filteredData.xlsx", sheet = "Analysis (2)")
-dataSQM <- read_excel("../data/filteredData.xlsx", sheet = "SQM")
-dataITUB4 <- read_excel("../data/filteredData.xlsx", sheet = "ITUB4")
-dataCuestionario <- read_excel("../data/respuestasCuestionario.xlsx", sheet = "data")
+data <- read_excel("../../pupilProcessing/Data/filteredData.xlsx", sheet = "Analysis (2)")
+dataSQM <- read_excel("../../pupilProcessing/Data/filteredData.xlsx", sheet = "SQM")
+dataITUB4 <- read_excel("../../pupilProcessing/Data/filteredData.xlsx", sheet = "ITUB4")
+dataCuestionario <- read_excel("../../pupilProcessing/Data/respuestasCuestionario.xlsx", sheet = "data")
 
 
 create_plot <- function(df, period) {
@@ -2458,7 +2458,7 @@ En que:
 
 \subsection{Consentimiento Informado}
 \label{sec:consentimiento}
-\includepdf[pages=-]{data/consentimiento_informado.pdf}
+\includepdf[pages=-]{consentimiento_informado.pdf}
 
 \subsection{Código del Experimento}
 
