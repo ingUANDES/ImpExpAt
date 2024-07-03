@@ -11,17 +11,27 @@
 \usepackage{float}
 \usepackage{mathrsfs} 
 \usepackage{minted}
-\usepackage{hyperref}
 \usepackage{newapa}
 \usepackage{booktabs}
 \usepackage[utf8]{inputenc}
 \usepackage[table]{xcolor}
 \usepackage{tikz}
 \usepackage{listings}
+\usepackage[toc]{glossaries}
+
 \usetikzlibrary{fadings}
 \usetikzlibrary{patterns}
 \usetikzlibrary{shadows.blur}
 \usetikzlibrary{shapes}
+\addto\captionsspanish{
+  \renewcommand{\tablename}{Tabla}
+  \renewcommand{\listtablename}{Índice de tablas}
+}
+
+\makeglossaries
+\newacronym{gcd}{GCD}{Greatest Common Divisor}
+\newacronym{lcm}{LCM}{Least Common Multiple}
+\newacronym{crt}{CRT}{\textit{Cognitive Reglexion Test}}
 
 
 \let\oldsection\section
@@ -33,8 +43,10 @@
 \input{common.tex}
 \renewcommand{\baselinestretch}{1.5}
 
+
 \pagestyle{fancy}
 \begin{document}
+
 
 <<plots,echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE>>=
 library(knitr)
@@ -162,6 +174,7 @@ names(plotsCombined) <- periods
 @
 
 
+
 %% COMIENZO PORTADA-----------------------------------------
 
 \begin{titlepage}
@@ -169,7 +182,7 @@ names(plotsCombined) <- periods
 \begin{center}
 \includegraphics[scale=0.3]{Log.png}\\
 % Incrementamos el interlineado:
-\vspace{1.0cm} {\LARGE Implementación de Experimento de Atención Racional con Métricas de Dilatación Pupilar en Decisiones Financieras
+\vspace{1.0cm} {\LARGE Implementación de Experimento de Atención Racional con Métricas de Dilatación Pupilar en Decisiones Financieras Sostenibles
 \newline
 \\Ingeniería Civil Industrial UANDES}\\
 Universidad de los Andes
@@ -191,6 +204,8 @@ Universidad de los Andes
     \section*{Resumen}
 \end{center}
 
+\printglossary[type=\acronymtype]
+
 \tableofcontents
 \newpage
 
@@ -203,11 +218,11 @@ Universidad de los Andes
 \section{Introducción}
 El ámbito financiero ha sido testigo de una transformación significativa a lo largo de los años, especialmente en el último siglo, impulsada por el rápido avance de la digitalización, nuevas preocupaciones, y nuevos enfoques. Esta evolución ha llevado a una creciente disponibilidad y accesibilidad de la información, lo cual ha cambiado la forma en que los inversionistas toman sus decisiones. En un entorno tan dinámico, para tomar decisiones financieras informadas, los inversionistas deben considerar una multitud de factores. Entre estos factores se encuentran: el ROI (\textit{Return on Investment}), ROE (\textit{Return on Equity}), EBIT (\textit{Earnings Before Interest and Taxes}), y EBITDA (\textit{Earnings Before Interests, Taxes, Depreciation and Amortization}), entre muchos otros.
 
-La capacidad de analizar y entender en profundidad toda esta información es una tarea compleja y requiere una inversión considerable de tiempo y recursos. Los inversionistas, quienes se enfrentan a esta abundancia de datos, deben seleccionar y centrarse en las métricas que consideran más relevantes para sus objetivos y estrategias de inversión. Esta necesidad de priorizar ciertas métricas sobre otras introduce un elemento crítico en el proceso de toma de decisiones: la inatención racional.
+La capacidad de analizar y entender en profundidad toda esta información es una tarea compleja y requiere una inversión considerable de tiempo y recursos. Los inversionistas, quienes se enfrentan a esta abundancia de datos, deben seleccionar y centrarse en las métricas que consideran más relevantes para sus objetivos y estrategias de inversión. Esta necesidad de priorizar ciertas métricas sobre otras introduce un elemento crítico en el proceso de toma de decisiones: la atención racional.
 
-\subsection{Inatención Racional}
+\subsection{Atención Racional}
 
-La inatención racional se estudia desde el punto de vista de la economía conductual y la psicología cognitiva. Se sustenta en la teoría de que frente a la abundancia de información disponible, los individuos son selectivos en cuanto a qué datos se les presta atención mediante una elección estratégica y deliberada, tomando en consideración solo algunos de los factores disponibles. Por lo tanto, se requiere evaluar los costos involucrados en la obtención y procesamiento de información adicional frente a los posibles beneficios que esta pueda proporcionar. Asimismo, se basa en la noción de que un individuo tiene una capacidad cognitiva limitada, por lo tanto no puede procesar toda la información existente en su totalidad. Por consiguiente, las personas eligen poner atención a ciertos aspectos que consideran más relevantes o cruciales para lograr maximizar su beneficio.
+La atención racional se estudia desde el punto de vista de la economía conductual y la psicología cognitiva. Se sustenta en la teoría de que frente a la abundancia de información disponible, los individuos son selectivos en cuanto a qué datos se les presta atención mediante una elección estratégica y deliberada, tomando en consideración solo algunos de los factores disponibles. Por lo tanto, se requiere evaluar los costos involucrados en la obtención y procesamiento de información adicional frente a los posibles beneficios que esta pueda proporcionar. Asimismo, se basa en la noción de que un individuo tiene una capacidad cognitiva limitada, por lo tanto no puede procesar toda la información existente en su totalidad. Por consiguiente, las personas eligen poner atención a ciertos aspectos que consideran más relevantes o cruciales para lograr maximizar su beneficio.
 
 Por ejemplo, un inversionista puede decidir enfocarse únicamente en los datos de rendimiento financiero de una empresa, como sus ingresos y beneficios netos, y desestimar otros factores importantes como la sostenibilidad ambiental o las prácticas laborales, esto debido a la cantidad limitada de tiempo y recursos disponibles para analizar toda la información.
 
@@ -246,7 +261,6 @@ Es importante entender cómo estos criterios ASG influyen en el comportamiento d
 La motivación subyacente en este experimento se centra en la intersección de dos temáticas de interés personal: las finanzas y la racionalidad en la toma de decisiones. Abordar estos dos tópicos desde una perspectiva de finanzas responsables permite poder relacionar las dos áreas en un ambiente en el que los inversionistas cada vez se encuentran más preocupados por el impacto de sus decisiones en la sostenibilidad. La interpretación de los indicadores medioambientales, sociales y de gobernanza requiere un análisis detallado, lo cual puede resultar complejo debido a la cantidad y diversidad de la información disponible. Sin embargo, esta complejidad también puede proporcionar una oportunidad tanto a corto como a largo plazo, por lo que abordar este tópico con un enfoque de inatención racional agrega valor a la investigación.
 
 El problema que aborda esta tesis radica en la necesidad de entender cómo los inversionistas utilizan la información ASG disponible y cómo un factor no pecuniario influye en sus decisiones, especialmente en un ecosistema en el que el compromiso con la inversión ética y sostenible ha aumentado significativamente en la última década. Los diferentes estándares en las métricas ASG hacen que la información disponible sobre estos criterios sea difícil de procesar. Por ello, se presentará a los individuos un escenario sencillo y claro para que puedan tomar una decisión sin que la interpretación de las métricas se vea afectada. La implementación de eyetracker lleva esta investigación un paso más allá, teniendo como objetivo, mediante la dilatación pupilar, conocer el grado de atención que realmente le dan los tomadores de decisión a los criterios ASG al momento de compararlo con el retorno del activo.
-
 
 \section{Marco Teórico}
 
@@ -306,13 +320,13 @@ La curva de indiferencia muestra las combinaciones entre la dimensión 1 y la 2 
 % Text Node
 \draw (105.3,43) node [anchor=north west][inner sep=0.75pt]    {$\ell _{j}$};
 % Text Node
-\draw (123.2,-14.4) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {.};
+\draw (126.8, 23.4) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {.};
 % Text Node
-\draw (240.8,128.8) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {.};
+\draw (240.8,171.4) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {.};
 % Text Node
-\draw (91.6,20.4) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {.};
+\draw (94.6,53) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {.};
 % Text Node
-\draw (222.8,180.8) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {.};
+\draw (222.8,221.8) node [anchor=north west][inner sep=0.75pt]  [font=\fontsize{3em}{3.6em}\selectfont,color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {.};
 % Text Node
 \draw (250.5,145.4) node [anchor=north west][inner sep=0.75pt]    {$\ell '_{j}$};
 % Text Node
@@ -322,9 +336,9 @@ La curva de indiferencia muestra las combinaciones entre la dimensión 1 y la 2 
 
 
 \end{tikzpicture}
-    \caption{Caption}
+    \caption{Ejemplo curva de indiferencia para dos individuos ($i, j$)}
     Fuente: Elaboración propia
-    \label{fig:enter-label}
+    \label{fig:indif-curve}
 \end{figure}
 
 Imaginemos que un inversionista tiene que elegir entre dos acciones: una que ofrece un alto rendimiento financiero pero bajo puntaje ASG, y otra con un menor rendimiento financiero pero un alto puntaje ASG. La preferencia del inversionista dependerá de cómo valora cada uno de estos aspectos en su función de bienestar.
@@ -826,6 +840,7 @@ Luego, se crearon los gráficos que se presentarán a los individuos para que to
 @
     \caption{Ejemplo de ponderación SQM para horizonte de 3 años}
     \label{fig:ejemplo_ponderaciones}
+    Fuente: Elaboración propia
 \end{figure}
 
 Donde, cada punto señalado con su año corresponde al dato anual del activo que, para efectos de este experimento, son equiprobables, lo que, siguiendo la notación de la Figura~\ref{fig:enter-label2}, significa que $\pi_{2021} = \pi_{2022} = \pi_{2023} = 0,33$. El punto que se le mostrará a los participantes es el que se identifica con el \textit{ticker} del activo, en este caso, SQM. Siendo consistente con el Marco Teórico planteado anteriormente, las coordenadas son calculadas de la siguiente manera: $\pi_{2021}*(ASG_{2021}, \$_{2021}) + \pi_{2022}*(ASG_{2022}, \$_{2022}) + \pi_{2023}*(ASG_{2023}, \$_{2023}) = (ASG_{SQM}, \$_{SQM})$. El tamaño del punto varía según la desviación estándar de la medida ASG, mientras que su color varía según la desviación estándar del retorno. Este procedimiento es aplicado de la misma manera para el activo ITUB4.
@@ -1043,7 +1058,7 @@ En el primer caso, se evidencia una correlación positiva fuerte, lo que signifi
 En el caso de SQM, la fuerte correlación puede resultar en que las decisiones de inversión basadas en las puntuaciones ASG de uno de los proveedores, probablemente, no cambien si se utilizara el otro proveedor. No obstante, en la situación de Itaú Unibanco, es más probable una discrepancia entre decisiones de inversión si se considera uno u otro proveedor.
 
 \subsection{Prueba de Reflexión Cognitiva}
-La Prueba de Reflexión Cognitiva, más conocida inglés como \emph{Cognitive Reflection Test} (CRT, por sus siglas), mide la solución entregada por un individuo tomador de decisiones ante una respuesta intuitiva pero incorrecta y, al mismo tiempo, este participa en una reflexión cognitiva al resolver el conjunto de problemas matemáticos presentados \cite{frederick_cognitive_2005}.
+La Prueba de Reflexión Cognitiva, más conocida inglés como \acrlong{crt} (\acrshort{crt}, por sus siglas), mide la solución entregada por un individuo tomador de decisiones ante una respuesta intuitiva pero incorrecta y, al mismo tiempo, este participa en una reflexión cognitiva al resolver el conjunto de problemas matemáticos presentados \cite{frederick_cognitive_2005}.
 
 En el test de reflexión cognitiva (CRT) se les presentan tres interrogantes a los participantes:
 
@@ -1357,7 +1372,7 @@ Con respecto a la pregunta~\ref{ch:crt2}, los participantes respondieron según 
           print(crt2)
           @
     \caption{Respuestas Test de Reflexión Cognitiva: Pregunta~\ref{ch:crt2}}
-    Elaboración Propia
+    Fuente: Elaboración propia
     \label{fig:crt2}
 \end{figure}
 
@@ -1385,7 +1400,7 @@ Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según 
           print(crt3)
           @
     \caption{Respuestas Test de Reflexión Cognitiva: Pregunta~\ref{ch:crt3}}
-    Elaboración Propia
+    Fuente: Elaboración propia
     \label{fig:crt3}
 
 \end{figure}
@@ -2272,17 +2287,16 @@ Otra desagregación relevante en este caso es de aquellos que en el cuestionario
         <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
             print(plots[['7YTD']])
           @
-    Fuente: Elaboración propia
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
         <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
             create_plot_pupil_interest(baseline_pupil, "4 años (S&P)", "")
           @
-    Fuente: Elaboración propia
 \end{minipage}
     \label{fig:pupil_esg_inv7YTD}
     \caption{Comparación según Interés en Inversión ASG (7 años (S\&P))} 
+    Fuente: Elaboración propia
 \end{figure}
 
 De la figura anterior se percibe que aquellos participantes que muestran un alto interés en inversiones en empresas que siguen prácticas ASG (de color azul) tardan más tiempo en responder al ensayo que los con menor interés.
@@ -2294,17 +2308,16 @@ De la figura anterior se percibe que aquellos participantes que muestran un alto
         <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
             print(plots[['6YTD']])
           @
-    Fuente: Elaboración propia
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
         <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
             create_plot_pupil_interest(baseline_pupil, "6 años (S&P)", "")
           @
-    Fuente: Elaboración propia
 \end{minipage}
     \label{fig:pupil_esg_inv6YTD}
     \caption{Comparación según Interés en Inversión ASG (6 años (S\&P))} 
+    Fuente: Elaboración propia
 \end{figure}
 
 En la Figura~\ref{fig:pupil_esg_inv6YTD} ocurre algo parecido a lo mostrado en la Figura~\ref{fig:pupil_esg_inv7YTD}, en el cual los más interesados por empresas con prácticas ASG tardan mayor tiempo en tomar su decisión. 
@@ -2316,17 +2329,16 @@ En la Figura~\ref{fig:pupil_esg_inv6YTD} ocurre algo parecido a lo mostrado en l
         <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
             print(plots[['5YTD']])
           @
-    Fuente: Elaboración propia
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
         <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
             create_plot_pupil_interest(baseline_pupil, "5 años (S&P)", "")
           @
-    Fuente: Elaboración propia
 \end{minipage}
     \label{fig:pupil_esg_inv5YTD}
     \caption{Comparación según Interés en Inversión ASG (5 años (S\&P))} 
+    Fuente: Elaboración propia
 \end{figure}
 
 \begin{figure}[H]
@@ -2336,22 +2348,33 @@ En la Figura~\ref{fig:pupil_esg_inv6YTD} ocurre algo parecido a lo mostrado en l
         <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
             print(plots[['4YTD']])
           @
-    Fuente: Elaboración propia
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
   \centering
         <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
             create_plot_pupil_interest(baseline_pupil, "4 años (S&P)", "")
           @
-    Fuente: Elaboración propia
 \end{minipage}
     \label{fig:pupil_esg_inv4YTD}
     \caption{Comparación según Interés en Inversión ASG (4 años (S\&P))} 
+    Fuente: Elaboración propia
 \end{figure}
+
+
 \section{Conclusiones}
 
+Hoy en día, inversionistas no solo toman en consideración factores monetarios a la hora de tomar una decisión de inversión. Estos, dependiendo de sus metodologías, creencias y valores, incluyen asimismo métricas no pecuniarias de activos, lo que en cierta medida, les genera un beneficio. Ese beneficio,que puede ser tanto una contribución sostenible con la sociedad como un bienestar personal, usualmente considera un costo en términos monetarios. Por lo que este estudio se centró en lograr una mejor comprensión sobre cómo estos factores de sostenibilidad influyen en la toma de decisión de los individuos.
 
+En el experimento, los individuos demostraron que no solo se limitan a métricas financieras tradicionales, como el retorno histórico del activo, sino que también consideran factores de SRI como los criterios ASG. Sin embargo, no era de esperarse que los participantes valoraran de igual manera un retorno monetario de un activo que uno no monetario, lo que quiere decir que el \textit{trade off} no es $1:1$. A través de los cálculos del WTP, realizados con la metodología de \textit{Dichotomus Choice Test}, se pudo determinar ese factor, el cual, sin dudas, considera el retorno monetario un factor mas influyente en la toma de decisiones de los individuos, sin embargo, los factores ASG pueden desempeñar un factor crucial en la maximización del bienestar individual de cada persona.
 
+No obstante, el análisis de decisiones de inversión realizado a los participantes reveló que, a pesar de la complejidad y diversidad de información ASG, los individuos muestran una preferencia por activos que destacan en estos criterios. Esto es aun más evidente en situaciones en que dos activos tienen retornos monetarios similares y difieren en sus puntuaciones de sostenibilidad, en cual los inversionistas prefieren el activo con mayor medida ASG.
+
+En términos de atención cognitiva con medidas de dilatación pupilar, los hallazgos no son claros. No se encontraron patrones que muestren que, un grupo en particular, sea más atento que otro. Entre participantes las dilatación de pupila oscilan de manera tal que no entregan información adicional a los resultados del experimento.
+
+\subsection{Futuras Mejoras a la Investigación}
+El diseño del experimento, si bien incluyó varias metodologías de validación, como el CRT, no aportó valor a las mediciones pupilares en las gráficas. Esto debido a que a los individuos en la recolección de datos se les presentó toda la información en el mismo instante, lo que genera un estimulo inicial en la atención, pero no genera estímulos durante el resto del ensayo. Para una futura investigación usando esta metodología se debe mejorar en este aspecto y volver a analizar los datos de dilatación, ya que, entregando información progresivamente, los individuos pueden, a través de su dilatación de pupila, mostrar que estímulo le genera cada agregado de información, lo que representaría de manera más clara la atención racional de los inversionistas ante la información presentada.
+
+Además, el no limitar el tiempo en que se muestra la información, resulta en disparidad de los datos, lo que significa una dificultad adicional a la hora de comparar los resultados. Debido a esto, fijar un tiempo para todos los individuos es lo óptimo en este tipo de experimento y una consideración adicional a la hora de replicarlo.
 
 %\section{Bibliografía}
 
