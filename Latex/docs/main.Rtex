@@ -548,7 +548,7 @@ Posteriormente, a través de la Terminal Bloomberg, se recopilaron las carteras 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{docs/images/ACAMCAC.png}
+  \includegraphics[width=0.8\textwidth]{../docs/images/ACAMCAC.png}
   \caption{Cartera fondo Santander Acciones Chilenas ESG}
   Fuente: Bloomberg (2024)
   \label{fig:image1}
@@ -556,7 +556,7 @@ Posteriormente, a través de la Terminal Bloomberg, se recopilaron las carteras 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{docs/images/EAESLEA.png}
+  \includegraphics[width=0.8\textwidth]{../docs/images/EAESLEA.png}
   \caption{Cartera fondo ESG Latam Fund Class Zurich}
   Fuente: Bloomberg (2024)
   \label{fig:image2}
@@ -566,7 +566,7 @@ Con esta información se observó una posición en común de ambos fondos; Socie
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\textwidth]{docs/images/compFondos.png}
+  \includegraphics[width=1\textwidth]{../docs/images/compFondos.png}
   \caption{Comparación de carteras de ambos fondos}
   Fuente: Bloomberg (2024)
   \label{fig:image3}
@@ -575,7 +575,7 @@ Con esta información se observó una posición en común de ambos fondos; Socie
 El activo en común, abreviado SQM, fue escogido por su representatividad en el mercado ASG y su frecuente inclusión en las carteras de fondos nacionales. A continuación, se presenta los antecedentes resumidos y preliminares que otorga el Terminal Bloomberg para este activo en materia de ASG:
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{docs/images/SQM_ESG.png}
+  \includegraphics[width=0.8\textwidth]{../docs/images/SQM_ESG.png}
   \caption{Información ASG SQM}
   Fuente: Bloomberg (2024)
   \label{fig:image4}
@@ -584,7 +584,7 @@ El activo en común, abreviado SQM, fue escogido por su representatividad en el 
 Por otro lado, el activo elegido que no comparten es Itaú Unibanco Holding, banca establecida en Brasil y el principal activo del fondo de Zurich. La información resumida y preliminar entregada por el Terminal Bloomberg para este activo es la siguiente:
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{docs/images/ITAU_ESG.png}
+  \includegraphics[width=0.8\textwidth]{../docs/images/ITAU_ESG.png}
   \caption{Información ASG Itaú Unibanco Holding}
   Fuente: Bloomberg (2024)
   \label{fig:image5}
@@ -2427,7 +2427,7 @@ El análisis revela que el costo percibido al agregar restricciones SRI depende 
 \subsection{Información de Fondos ESG Investigados}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{docs/images/apendix/ACAMCAC_ESG.png}
+  \includegraphics[width=0.8\textwidth]{../docs/images/apendix/ACAMCAC_ESG.png}
   \caption{Resumen ASG fondo Santander Acciones Chilenas ESG}
   Fuente: Bloomberg
   \label{fig:image6}
@@ -2435,7 +2435,7 @@ El análisis revela que el costo percibido al agregar restricciones SRI depende 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{docs/images/apendix/EAESLEA_ESG.png}
+  \includegraphics[width=0.8\textwidth]{../docs/images/apendix/EAESLEA_ESG.png}
   \caption{Resumen ASG fondo ESG Latam Fund Class Zurich}
   Fuente: Bloomberg
   \label{fig:image7}
