@@ -1,9 +1,10 @@
+source('Rfiles/pre-run.R')
 library(readxl)
 library(DCchoice)
 library(tidyr)
 library(detectseparation)
 
-DCchoice <- data.frame(subject = respuestasCuestionario$subject)
+DCchoice <- data.frame(subject = respuestasCuestionario$ID)
 
 DCchoice$WTP <- ifelse(respuestasCuestionario$rentabilidad_asg == "Menor que la media del mercado", "Si", 
                        ifelse(respuestasCuestionario$rentabilidad_asg == "Mayor que la media del mercado", "No", NA))
