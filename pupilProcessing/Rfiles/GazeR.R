@@ -1,4 +1,4 @@
-source('pre-run.R')
+source('Rfiles/pre-run.R')
 library(tidyverse)
 library(gazer)
 library(zoo)
@@ -61,7 +61,7 @@ print(puphist)
 baseline_pupil <- pup_missing %>%
 dplyr::filter(baselinecorrectedp >= -5, baselinecorrectedp <= 5) 
 
-
+save(baseline_pupil, file = "output/baseline_pupil.RData")
 
 create_plot_pupil <- function(data, trial_name, main_title) {
     trial_data <- filter(data, trial == trial_name) %>%
@@ -143,8 +143,6 @@ create_plot_pupil(baseline_pupil, "7 años (S&P y Bloomberg)", "Pupil Size for 7
 # Reset the layout
 par(mfrow = c(1, 1))
 
-# Save baseline data
-save(baseline_pupil, file = "baseline_pupil.RData")
 
 create_plot_pupil2(baseline_pupil %>% filter(baseline_pupil$crt == 2 | baseline_pupil$crt == 3), "Pupil Size for 1 año (S&P) Good CRT")
 create_plot_pupil2(baseline_pupil %>% filter(baseline_pupil$crt == 1 | baseline_pupil$crt == 0), "Pupil Size for 1 año (S&P) Bad CRT")
