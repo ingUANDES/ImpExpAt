@@ -122,18 +122,29 @@ create_plot_combined <- function(df, period) {
 
 
 create_plot_pupil <- function(data, trial_name, main_title) {
-  trial_data <- filter(data, trial == trial_name) %>%
+    trial_data <- filter(data, trial == trial_name) %>%
                   arrange(time)
+    
+    # Calcular la media y desviación estándar en cada instante de tiempo
+    summary_data <- trial_data %>%
+      group_by(time) %>%
+      summarise(mean_pupil = mean(baselinecorrectedp, na.rm = TRUE),
+                sd_pupil = sd(baselinecorrectedp, na.rm = TRUE)) %>%
+      na.omit() # Eliminar filas con valores NA
 
     
     #smoothingSpline <- smooth.spline(trial_data, spar = 0.4)
-    #plot(trial_data, cex = 0.2, type = 'l', col = '#468189', xlab = 'Time', ylab = 'Pupil Size', main = main_title)
-    #lines(smoothingSpline, col = 'red')
-    
     smoothingSpline1 <- smooth.spline(x = trial_data$time, y = trial_data$baselinecorrectedp, spar = 0.4)
-    plot(1, type = 'n', xlim = c(1, max(max(trial_data$time), max(trial_data$time))), ylim = c(min(baseline_pupil$baselinecorrectedp), max(baseline_pupil$baselinecorrectedp)),
-         xlab = 'Tiempo (s)', ylab = 'Tamaño Pupila Base', main = main_title)
+    smoothingSpline_plus_sd <- smooth.spline(x = summary_data$time, y = summary_data$mean_pupil + summary_data$sd_pupil, spar = 0.4)
+    smoothingSpline_minus_sd <- smooth.spline(x = summary_data$time, y = summary_data$mean_pupil - summary_data$sd_pupil, spar = 0.4)
+    plot(x = trial_data$time, y = trial_data$baselinecorrectedp, cex = 0.2, type = 'l', col = '#468189', xlab = 'Time', ylab = 'Pupil Size', main = main_title)
+    #lines(smoothingSpline, col = 'red')
+  
+    #plot(trial_data$baselinecorrectedp, type = 'p', xlim = c(1, max(max(trial_data$time), max(trial_data$time))), ylim = c(min(baseline_pupil$baselinecorrectedp), max(baseline_pupil$baselinecorrectedp)),
+    #     xlab = 'Time', ylab = 'Pupil Size', main = main_title)
     lines(smoothingSpline1, col = 'red')
+    lines(smoothingSpline_plus_sd, col = 'blue')
+    lines(smoothingSpline_minus_sd, col = 'blue')
   }
 
 create_plot_pupilCRT <- function(data, trial_name, main_title) {
@@ -265,6 +276,8 @@ Es importante entender cómo estos criterios ASG influyen en el comportamiento d
 La motivación subyacente en este experimento se centra en la intersección de dos temáticas de interés personal: las finanzas y la racionalidad en la toma de decisiones. Abordar estos dos tópicos desde una perspectiva de finanzas responsables permite poder relacionar las dos áreas en un ambiente en el que los inversionistas cada vez se encuentran más preocupados por el impacto de sus decisiones en la sostenibilidad. La interpretación de los indicadores medioambientales, sociales y de gobernanza requiere un análisis detallado, lo cual puede resultar complejo debido a la cantidad y diversidad de la información disponible. Sin embargo, esta complejidad también puede proporcionar una oportunidad tanto a corto como a largo plazo, por lo que abordar este tópico con un enfoque de inatención racional agrega valor a la investigación.
 
 El problema que aborda esta tesis radica en la necesidad de entender cómo los inversionistas utilizan la información ASG disponible y cómo un factor no pecuniario influye en sus decisiones, especialmente en un ecosistema en el que el compromiso con la inversión ética y sostenible ha aumentado significativamente en la última década. Los diferentes estándares en las métricas ASG hacen que la información disponible sobre estos criterios sea difícil de procesar. Por ello, se presentará a los individuos un escenario sencillo y claro para que puedan tomar una decisión sin que la interpretación de las métricas se vea afectada. La implementación de eyetracker lleva esta investigación un paso más allá, teniendo como objetivo, mediante la dilatación pupilar, conocer el grado de atención que realmente le dan los tomadores de decisión a los criterios ASG al momento de compararlo con el retorno del activo.
+
+En adelante se presentará el marco teórico, el cual aborda los aspectos más relevantes de este trabajo y se presenta la literatura guía que se utiliza. Posteriormente se expone el diseño del experimento para luego dar a conocer sus resultados y finalizar con las conclusiones, hallazgos y recomendaciones a futuro.
 
 \section{Marco Teórico}
 
@@ -1417,6 +1430,8 @@ Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según 
 
 \end{figure}
 
+Con los datos de las tres preguntas se agruparon los participantes según la cantidad de respuestas correctas y se calculó su distribución, lo que se presenta en la siguiente tabla:
+
 \begin{table}[H]
 \centering
 \caption{Resultados test de Reflexión Cognitiva}
@@ -1454,6 +1469,8 @@ Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según 
     $\,$\\
     Fuente: Elaboración propia
 \end{table}
+
+\citeA{frederick_cognitive_2005} realizó un \textit{ranking} de grupos pertenecientes a distintas universidades y centros de estudios que participaron en un CRT, ubicando la muestra del experimento realizado en este trabajo entre \textit{Bowling Green University}, la cual tiene una puntuación de $0,87$, y la universidad \textit{Web-based studies}, la que tiene una puntuación de $1,10$.
 
 \subsection{Decisiones de los Participantes}
 
