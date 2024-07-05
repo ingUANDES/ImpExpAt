@@ -5,6 +5,9 @@
 \usepackage{multirow} 
 \usepackage{multicol} 
 \usepackage{subfig}
+\usepackage{subfig}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{amsmath} % for \text{}
 \usepackage{amssymb}
 \usepackage{textcomp, gensymb}
@@ -18,6 +21,7 @@
 \usepackage{tikz}
 \usepackage{listings}
 \usepackage[toc]{glossaries}
+\usepackage{fix-cm}
 
 \usetikzlibrary{fadings}
 \usetikzlibrary{patterns}
@@ -43,6 +47,8 @@
 \input{common.tex}
 \renewcommand{\baselinestretch}{1.5}
 
+\setlength{\headheight}{55.34956pt}
+\addtolength{\topmargin}{-3.51588pt}
 
 \pagestyle{fancy}
 \begin{document}
@@ -203,8 +209,6 @@ Universidad de los Andes
 \begin{center}
     \section*{Resumen}
 \end{center}
-
-\printglossary[type=\acronymtype]
 
 \tableofcontents
 \newpage
@@ -625,6 +629,7 @@ La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
+    $\,$\\
     Fuente: Bloomberg
 \end{table}
 
@@ -664,6 +669,7 @@ La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
+    $\,$\\
     Fuente: Bloomberg
 \end{table}
 
@@ -696,6 +702,7 @@ En la tabla 2, se puede observar que muchos datos aparecen como $N/A$, lo cual s
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
+    $\,$\\
     Fuente: Bloomberg
 \end{table}
 
@@ -725,6 +732,7 @@ En la tabla 2, se puede observar que muchos datos aparecen como $N/A$, lo cual s
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
+    $\,$\\
     Fuente: Bloomberg
 \end{table}
 
@@ -747,6 +755,7 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, por esta
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
     @
+    $\,$\\
     Fuente: Elaboración propia
 \end{table}
 
@@ -770,6 +779,7 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, por esta
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
     @
+    $\,$\\
     Fuente: Elaboración propia
 \end{table}
 
@@ -802,6 +812,7 @@ Con estos datos, se procedió a calcular el retorno, promedio y desviación est�
     kable(data_summary, format = "latex", booktabs = TRUE, 
           col.names = col_names, escape = FALSE)
     @
+    $\,$\\
     Fuente: Elaboración propia
 \end{table}
 
@@ -948,6 +959,7 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
     kable(data_summary, format = "latex", booktabs = TRUE,
           col.names = col_names, escape = FALSE)
     @
+    $\,$\\
     Fuente: Elaboración propia
 \end{table}
 
@@ -1439,6 +1451,7 @@ Con respecto a la pregunta~\ref{ch:crt3}, los participantes respondieron según 
     # Output the table
     kable(tabla, format = "latex", booktabs = TRUE, col.names = col_names)
     @
+    $\,$\\
     Fuente: Elaboración propia
 \end{table}
 
@@ -2104,15 +2117,22 @@ En el experimento, se recolectaron los datos de posición de la mirada y la dila
 
 \subsubsection{Preprocesamiento de Datos}
 
-Para preprocesar los datos, se utilizó la librería GazeR, disponible en el lenguaje de programación R. En este entorno, se cargaron los datos de todos los participantes y se combinaron a un solo marco de datos  (\textit{dataframe}).
+Para el prepreprocesmiento de los datos, se siguió la metodología utilizada por \citeA{geller_gazer_2020}. Para esto se utilizó la librería GazeR, disponible en el lenguaje de programación R. En este entorno, se cargaron los datos de todos los participantes y se combinaron a un solo marco de datos  (\textit{dataframe}).
 
 Posteriormente, los datos se convirtieron en una base de datos de GazeR, en el cual se especifican qué columnas tienen los datos que se utilizarán en el ensayo. Estas columnas son las siguientes: ID del participante, tiempo, media de tamaño pupilar entre ambos ojos, posición de la mirada en coordenadas (x, y) y ensayo (gráfico) al que está realizando realizando el individuo en ese momento.
 
 
 Con estos datos, se procedió a interpolar para calcular valores faltantes, que se produjeron, posiblemente, por errores de lecturas del dispositivo, pestañeos de los individuos o que estos se hayan salido del cuadro.
 
-Por último, se aplica una función que comúnmente es usada en datos de dilatación pupilar: \textit{baseline}. El objetivo de esta es similar a una normalización, en que se toman los primeros $n$ datos, en este caso 100,  de cada participante y se calcula el promedio de dilatación. Este promedio se usa como base para ese participante, y convierte en relevante la comparación entre individuos. Esto es fundamental debido a que el tamaño de la pupila de los participantes puede cambiar (encontrándose ambos en el mismo estado).
+Por último, se aplica una función que comúnmente es usada en datos de dilatación pupilar: \textit{baseline}. El objetivo de esta es controlar la variabilidad general presente en el tamaño de pupila que surge de un estado de excitación no relacionado a la tarea. Comúnmente, al aplicar esta función, se elige una de las dos siguientes maneras: sustractiva o divisiva. La primera se calcula como: $( \text{tamaño pupila} - \text{baseline} )$; mientras que la segunda: $\left( \frac{\text{variación tamaño pupila} - \text{baseline}}{\text{baseline}} \right)$. En este caso, se utilizó la forma sustractiva, que en general es la mas utilizada en la literatura \cite{geller_gazer_2020}.
 
+Para poder realizar comparaciones entre individuos, se reescalaron los datos. Esto se realizó mediante la función \textit{scale}, la cual transforma los valores \textit{Z-score} con la siguiente función:
+
+$$
+Z = \frac{x-\mu}{\sigma}
+$$
+
+Siendo $x$ el valor del tamaño de pupila del individuo, $\mu$ la media del tamaño pupilar del individuo en un determinado ensayo y $\sigma$ la desviación estandar.
 \subsubsection{Resultados de Datos Pupilares}
 
 \begin{figure}[H]
@@ -2136,6 +2156,10 @@ Por último, se aplica una función que comúnmente es usada en datos de dilatac
     \label{fig:comp_pupil_sizeSP}
 \end{figure}
 
+De la figura anterior se pude notar, en primer lugar, que los tiempos de respuestas varían significativamente entre ensayos. En los casos en que los tiempos de tomas de decisión son cortos, como en la Figura~\ref{fig:1YTD_S&P}, se exponen 'decisiones sencillas', lo que usualmente significa un alto costo por un pequeño aumento en ASG. Es en esos casos que los participantes toman una posición rápido y sin mucho razonamiento. Por otro lado, en los que el tiempo es alto, como en la Figura~\ref{fig:5YTD_S&P}, se presenta una situación que requiere un razonamiento más profundo para tomar la decisión. 
+
+En términos de dilatación pupilar, los participantes comienzan con una dilatación pupilar elevada, lo que puede ser resultado de la nueva información (gráfica) que se les presenta. Durante el trayecto del ensayo, las dilataciones oscilan de manera similar para todos los casos, es decir, sin un patrón especifico.
+
 \begin{figure}[H]
     \centering
         <<pupilGraph2, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE,  out.width='500px', out.height='500px'>>=
@@ -2157,6 +2181,8 @@ Por último, se aplica una función que comúnmente es usada en datos de dilatac
     \label{fig:comp_pupil_sizeSPyB}
 \end{figure}
 
+Similar a lo expuesto para la Figura~\ref{fig:comp_pupil_sizeSP}, nuevamente el ensayo con un horizonte a 1 año es el de menor duración. Esto se debe, al igual que en el caso anterior, por una 'decisión sencilla'. Sin embargo, en general, los ensayos que incluían dos proveedores de información ASG les tomó a los participantes más tiempo en decidir una posición entre los dos activos, lo que indica que el agregar más información sí tiene un efecto en el participante.
+
 \begin{table}[H]
     \centering
     \caption{Tabla de Resumen Estadístico de Datos Pupilares}
@@ -2175,6 +2201,7 @@ Por último, se aplica una función que comúnmente es usada en datos de dilatac
             kable(summary_table, format = 'latex', booktabs = TRUE)
             @
     \label{tab:resumen_est}
+    $\,$\\
     Fuente: Elaboración propia
 \end{table}
 Desagregando la información obtenida, se separaron los individuos en dos grupos; aquellos con resultado sobre la media en el \textit{Cognitive Reflexion Test}, es decir, participantes con dos o tres respuestas correctas en la prueba, y los que obtuvieron un menor resultado, dicho de otro modo, individuos que respondieron ninguna o una respuesta correcta.
@@ -2272,6 +2299,7 @@ En la Figura~\ref{fig:comp_pupil_CRTSP} y \ref{fig:comp_pupil_CRTSPyB} se repres
              
             kable(t_test_summary, format= 'latex', booktabs = TRUE, col.names = col_names)
             @
+    $\,$\\
     Fuente: Elaboración propia
     \label{fig:test_media_crt_tiempo}
 \end{table}
@@ -2294,30 +2322,30 @@ Otra desagregación relevante en este caso es de aquellos que en el cuestionario
             create_plot_pupil_interest(baseline_pupil, "4 años (S&P)", "")
           @
 \end{minipage}
-    \label{fig:pupil_esg_inv7YTD}
     \caption{Comparación según Interés en Inversión ASG (7 años (S\&P))} 
     Fuente: Elaboración propia
+    \label{fig:pupil_esg_inv7YTD}
 \end{figure}
 
 De la figura anterior se percibe que aquellos participantes que muestran un alto interés en inversiones en empresas que siguen prácticas ASG (de color azul) tardan más tiempo en responder al ensayo que los con menor interés.
 
 \begin{figure}[H]
-\centering
-\begin{minipage}{0.5\textwidth}
-  \centering
-        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
-            print(plots[['6YTD']])
-          @
-\end{minipage}%
-\begin{minipage}{0.5\textwidth}
-  \centering
-        <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
-            create_plot_pupil_interest(baseline_pupil, "6 años (S&P)", "")
-          @
-\end{minipage}
-    \label{fig:pupil_esg_inv6YTD}
-    \caption{Comparación según Interés en Inversión ASG (6 años (S\&P))} 
-    Fuente: Elaboración propia
+    \centering
+    \begin{minipage}{0.5\textwidth}
+      \centering
+            <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+                print(plots[['6YTD']])
+              @
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+      \centering
+            <<echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
+                create_plot_pupil_interest(baseline_pupil, "6 años (S&P)", "")
+              @
+    \end{minipage}
+        \caption{Comparación según Interés en Inversión ASG (6 años (S\&P))} 
+        Fuente: Elaboración propia
+        \label{fig:pupil_esg_inv6YTD}
 \end{figure}
 
 En la Figura~\ref{fig:pupil_esg_inv6YTD} ocurre algo parecido a lo mostrado en la Figura~\ref{fig:pupil_esg_inv7YTD}, en el cual los más interesados por empresas con prácticas ASG tardan mayor tiempo en tomar su decisión. 
@@ -2336,9 +2364,9 @@ En la Figura~\ref{fig:pupil_esg_inv6YTD} ocurre algo parecido a lo mostrado en l
             create_plot_pupil_interest(baseline_pupil, "5 años (S&P)", "")
           @
 \end{minipage}
-    \label{fig:pupil_esg_inv5YTD}
     \caption{Comparación según Interés en Inversión ASG (5 años (S\&P))} 
     Fuente: Elaboración propia
+    \label{fig:pupil_esg_inv5YTD}
 \end{figure}
 
 \begin{figure}[H]
@@ -2355,9 +2383,9 @@ En la Figura~\ref{fig:pupil_esg_inv6YTD} ocurre algo parecido a lo mostrado en l
             create_plot_pupil_interest(baseline_pupil, "4 años (S&P)", "")
           @
 \end{minipage}
-    \label{fig:pupil_esg_inv4YTD}
     \caption{Comparación según Interés en Inversión ASG (4 años (S\&P))} 
     Fuente: Elaboración propia
+    \label{fig:pupil_esg_inv4YTD}
 \end{figure}
 
 
@@ -2365,17 +2393,16 @@ En la Figura~\ref{fig:pupil_esg_inv6YTD} ocurre algo parecido a lo mostrado en l
 
 Hoy en día, inversionistas no solo toman en consideración factores monetarios a la hora de tomar una decisión de inversión. Estos, dependiendo de sus metodologías, creencias y valores, incluyen asimismo métricas no pecuniarias de activos, lo que en cierta medida, les genera un beneficio. Ese beneficio,que puede ser tanto una contribución sostenible con la sociedad como un bienestar personal, usualmente considera un costo en términos monetarios. Por lo que este estudio se centró en lograr una mejor comprensión sobre cómo estos factores de sostenibilidad influyen en la toma de decisión de los individuos.
 
-En el experimento, los individuos demostraron que no solo se limitan a métricas financieras tradicionales, como el retorno histórico del activo, sino que también consideran factores de SRI como los criterios ASG. Sin embargo, no era de esperarse que los participantes valoraran de igual manera un retorno monetario de un activo que uno no monetario, lo que quiere decir que el \textit{trade off} no es $1:1$. A través de los cálculos del WTP, realizados con la metodología de \textit{Dichotomus Choice Test}, se pudo determinar ese factor, el cual, sin dudas, considera el retorno monetario un factor mas influyente en la toma de decisiones de los individuos, sin embargo, los factores ASG pueden desempeñar un factor crucial en la maximización del bienestar individual de cada persona.
+En el experimento, los individuos demostraron que no solo se limitan a métricas financieras tradicionales, como el retorno histórico del activo, sino que también consideran factores de SRI como los criterios ASG. Sin embargo, no era de esperarse que los participantes valoraran de igual manera un retorno monetario de un activo que uno no monetario, lo que quiere decir que el \textit{trade off} no es $1:1$. A través de la metodología \textit{Dichotomus Choice Test} aplicada, se pudo determinar que, sin dudas, los participantes consideran el retorno monetario un factor mas influyente en la toma de decisiones de los individuos, sin embargo, los factores ASG pueden desempeñar un factor crucial en la maximización del bienestar individual de cada persona. Por otro lado, si bien no se calculó la disposición a pagar exacta de la muestra debido al bajo universo de participantes, si es relevante al escalar el experimento a un universo más grande.
 
 No obstante, el análisis de decisiones de inversión realizado a los participantes reveló que, a pesar de la complejidad y diversidad de información ASG, los individuos muestran una preferencia por activos que destacan en estos criterios. Esto es aun más evidente en situaciones en que dos activos tienen retornos monetarios similares y difieren en sus puntuaciones de sostenibilidad, en cual los inversionistas prefieren el activo con mayor medida ASG.
 
 En términos de atención cognitiva con medidas de dilatación pupilar, los hallazgos no son claros. No se encontraron patrones que muestren que, un grupo en particular, sea más atento que otro. Entre participantes las dilatación de pupila oscilan de manera tal que no entregan información adicional a los resultados del experimento.
 
 \subsection{Futuras Mejoras a la Investigación}
-El diseño del experimento, si bien incluyó varias metodologías de validación, como el CRT, no aportó valor a las mediciones pupilares en las gráficas. Esto debido a que a los individuos en la recolección de datos se les presentó toda la información en el mismo instante, lo que genera un estimulo inicial en la atención, pero no genera estímulos durante el resto del ensayo. Para una futura investigación usando esta metodología se debe mejorar en este aspecto y volver a analizar los datos de dilatación, ya que, entregando información progresivamente, los individuos pueden, a través de su dilatación de pupila, mostrar que estímulo le genera cada agregado de información, lo que representaría de manera más clara la atención racional de los inversionistas ante la información presentada.
+El diseño del experimento, si bien incluyó varias metodologías de validación, como el CRT, las mediciones pupilares en las gráficas no aportaron un valor significativo como se esperaba. Esto debido a que a los individuos en la recolección de datos se les presentó toda la información en el mismo instante, lo que genera un estimulo inicial en la atención, pero no genera estímulos durante el resto del ensayo. Para una futura investigación usando esta metodología se debe mejorar en este aspecto y volver a analizar los datos de dilatación, ya que, entregando información progresivamente, los individuos pueden, a través de su dilatación de pupila, mostrar que estímulo le genera cada agregado de información, lo que representaría de manera más clara la atención racional de los inversionistas ante la información presentada.
 
-Además, el no limitar el tiempo en que se muestra la información, resulta en disparidad de los datos, lo que significa una dificultad adicional a la hora de comparar los resultados. Debido a esto, fijar un tiempo para todos los individuos es lo óptimo en este tipo de experimento y una consideración adicional a la hora de replicarlo.
-
+Además, el no limitar el tiempo en que se muestra la información, resulta en disparidad de los datos, lo que significa una dificultad adicional a la hora de comparar los resultados. Debido a esto, fijar un tiempo para todos los individuos es lo óptimo en este tipo de experimento y una consideración adicional a la hora de replicarlo. Sin embargo, la realización de este experimento sin limite de tiempo es un aporte para la replicación del experimento, ya que con esto se conoce el tiempo que necesitan los individuos para tomar una decisión de estas características.
 %\section{Bibliografía}
 
 \bibliographystyle{newapa}
@@ -2460,8 +2487,9 @@ En que:
 \label{sec:consentimiento}
 \includepdf[pages=-]{consentimiento_informado.pdf}
 
-\subsection{Código del Experimento}
 
+\printglossary[type=\acronymtype]
+\printglossary
 
 
 \vspace{3cm}
