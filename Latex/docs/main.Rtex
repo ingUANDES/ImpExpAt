@@ -1620,22 +1620,33 @@ El experimento tuvo 11 casos en los cuales existía un \textit{trade off} entre 
         <<plot_4YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_4YTD <- dataCuestionario %>%
-          mutate(plot_4YTD = ifelse(plot_4YTD == 'p', 'SQM', ifelse(plot_4YTD == 'q', 'ITUB4', plot_4YTD))) %>%
-          group_by(plot_4YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_4YTD$plot_4YTD <- factor(frecuencia_plot_4YTD$plot_4YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_4YTD_response <- ggplot(frecuencia_plot_4YTD, aes(x = plot_4YTD, y = frecuencia, fill = plot_4YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_4YTD_response)
+              mutate(
+                plot_4YTD = ifelse(plot_4YTD == 'p', 'SQM', ifelse(plot_4YTD == 'q', 'ITUB4', plot_4YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_4YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_5YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_4YTD$plot_4YTD <- factor(frecuencia_plot_4YTD$plot_4YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_4YTD_response <- ggplot(frecuencia_plot_4YTD, aes(x = plot_4YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_4YTD_response)
           @
     \caption{Respuestas para gráfico a 4 años (S\&P)}
     Fuente: Elaboración propia
@@ -1665,22 +1676,33 @@ En la figura anterior se observa que el activo SQM fue escogido por la gran mayo
         <<plot_5YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_5YTD <- dataCuestionario %>%
-          mutate(plot_5YTD = ifelse(plot_5YTD == 'p', 'SQM', ifelse(plot_5YTD == 'q', 'ITUB4', plot_5YTD))) %>%
-          group_by(plot_5YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_5YTD$plot_5YTD <- factor(frecuencia_plot_5YTD$plot_5YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_5YTD_response <- ggplot(frecuencia_plot_5YTD, aes(x = plot_5YTD, y = frecuencia, fill = plot_5YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_5YTD_response)
+              mutate(
+                plot_5YTD = ifelse(plot_5YTD == 'p', 'SQM', ifelse(plot_5YTD == 'q', 'ITUB4', plot_5YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_5YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_5YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_5YTD$plot_5YTD <- factor(frecuencia_plot_5YTD$plot_5YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_5YTD_response <- ggplot(frecuencia_plot_5YTD, aes(x = plot_5YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_5YTD_response)
           @
     \caption{Respuestas para gráfico a 5 años (S\&P)}
     Fuente: Elaboración propia
@@ -1712,22 +1734,33 @@ individuo que no respondió este escenario, marcando su respuesta como $N/A$.
         <<plot_6YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_6YTD <- dataCuestionario %>%
-          mutate(plot_6YTD = ifelse(plot_6YTD == 'p', 'SQM', ifelse(plot_6YTD == 'q', 'ITUB4', plot_6YTD))) %>%
-          group_by(plot_6YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_6YTD$plot_6YTD <- factor(frecuencia_plot_6YTD$plot_6YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_6YTD_response <- ggplot(frecuencia_plot_6YTD, aes(x = plot_6YTD, y = frecuencia, fill = plot_6YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_6YTD_response)
+              mutate(
+                plot_6YTD = ifelse(plot_6YTD == 'p', 'SQM', ifelse(plot_6YTD == 'q', 'ITUB4', plot_6YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_6YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_6YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_6YTD$plot_6YTD <- factor(frecuencia_plot_6YTD$plot_6YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_6YTD_response <- ggplot(frecuencia_plot_6YTD, aes(x = plot_6YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_6YTD_response)
           @
     \caption{Respuestas para gráfico a 6 años (S\&P)}
     Fuente: Elaboración propia
@@ -1757,22 +1790,33 @@ En este caso en particular, la mayoría de los participantes, al elegir ITUB4, a
         <<plot_7YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_7YTD <- dataCuestionario %>%
-          mutate(plot_7YTD = ifelse(plot_7YTD == 'p', 'SQM', ifelse(plot_7YTD == 'q', 'ITUB4', plot_7YTD))) %>%
-          group_by(plot_7YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_7YTD$plot_7YTD <- factor(frecuencia_plot_7YTD$plot_7YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_7YTD_response <- ggplot(frecuencia_plot_7YTD, aes(x = plot_7YTD, y = frecuencia, fill = plot_7YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_7YTD_response)
+              mutate(
+                plot_7YTD = ifelse(plot_7YTD == 'p', 'SQM', ifelse(plot_7YTD == 'q', 'ITUB4', plot_7YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_7YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_7YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_7YTD$plot_7YTD <- factor(frecuencia_plot_7YTD$plot_7YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_7YTD_response <- ggplot(frecuencia_plot_7YTD, aes(x = plot_7YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_7YTD_response)
           @
     \caption{Respuestas para gráfico a 7 años (S\&P)}
     Fuente: Elaboración propia
@@ -1806,22 +1850,33 @@ Las gráficas que se mostrarán a continuación corresponden a las que se utiliz
         <<plot_combined_1YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_combined_1YTD <- dataCuestionario %>%
-          mutate(plot_combined_1YTD = ifelse(plot_combined_1YTD == 'p', 'SQM', ifelse(plot_combined_1YTD == 'q', 'ITUB4', plot_combined_1YTD))) %>%
-          group_by(plot_combined_1YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_combined_1YTD$plot_combined_1YTD <- factor(frecuencia_plot_combined_1YTD$plot_combined_1YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_combined_1YTD_response <- ggplot(frecuencia_plot_combined_1YTD, aes(x = plot_combined_1YTD, y = frecuencia, fill = plot_combined_1YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_combined_1YTD_response)
+              mutate(
+                plot_combined_1YTD = ifelse(plot_combined_1YTD == 'p', 'SQM', ifelse(plot_combined_1YTD == 'q', 'ITUB4', plot_combined_1YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_combined_1YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_combined_1YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_combined_1YTD$plot_combined_1YTD <- factor(frecuencia_plot_combined_1YTD$plot_combined_1YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_combined_1YTD_response <- ggplot(frecuencia_plot_combined_1YTD, aes(x = plot_combined_1YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_combined_1YTD_response)
           @
     \caption{Respuestas para gráfico a 1 año (S\&P y Bloomberg)}
     Fuente: Elaboración propia
@@ -1853,22 +1908,33 @@ mientras que el aumento de la medida ASG es de solo \Sexpr{cambioPond %>% filter
         <<plot_combined_2YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_combined_2YTD <- dataCuestionario %>%
-          mutate(plot_combined_2YTD = ifelse(plot_combined_2YTD == 'p', 'SQM', ifelse(plot_combined_2YTD == 'q', 'ITUB4', plot_combined_2YTD))) %>%
-          group_by(plot_combined_2YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_combined_2YTD$plot_combined_2YTD <- factor(frecuencia_plot_combined_2YTD$plot_combined_2YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_combined_2YTD_response <- ggplot(frecuencia_plot_combined_2YTD, aes(x = plot_combined_2YTD, y = frecuencia, fill = plot_combined_2YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_combined_2YTD_response)
+              mutate(
+                plot_combined_2YTD = ifelse(plot_combined_2YTD == 'p', 'SQM', ifelse(plot_combined_2YTD == 'q', 'ITUB4', plot_combined_2YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_combined_2YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_combined_2YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_combined_2YTD$plot_combined_2YTD <- factor(frecuencia_plot_combined_2YTD$plot_combined_2YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_combined_2YTD_response <- ggplot(frecuencia_plot_combined_2YTD, aes(x = plot_combined_2YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_combined_2YTD_response)
           @
     \caption{Respuestas para gráfico a 2 años (S\&P y Bloomberg)}
     Fuente: Elaboración propia
@@ -1898,22 +1964,33 @@ participantes, mientras que el SQM por solo \Sexpr{dataCuestionario %>% filter(p
         <<plot_combined_3YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_combined_3YTD <- dataCuestionario %>%
-          mutate(plot_combined_3YTD = ifelse(plot_combined_3YTD == 'p', 'SQM', ifelse(plot_combined_3YTD == 'q', 'ITUB4', plot_combined_3YTD))) %>%
-          group_by(plot_combined_3YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_combined_3YTD$plot_combined_3YTD <- factor(frecuencia_plot_combined_3YTD$plot_combined_3YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_combined_3YTD_response <- ggplot(frecuencia_plot_combined_3YTD, aes(x = plot_combined_3YTD, y = frecuencia, fill = plot_combined_3YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_combined_3YTD_response)
+              mutate(
+                plot_combined_3YTD = ifelse(plot_combined_3YTD == 'p', 'SQM', ifelse(plot_combined_3YTD == 'q', 'ITUB4', plot_combined_3YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_combined_3YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_combined_3YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_combined_3YTD$plot_combined_3YTD <- factor(frecuencia_plot_combined_3YTD$plot_combined_3YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_combined_3YTD_response <- ggplot(frecuencia_plot_combined_3YTD, aes(x = plot_combined_3YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_combined_3YTD_response)
           @
     \caption{Respuestas para gráfico a 3 años (S\&P y Bloomberg)}
     Fuente: Elaboración propia
@@ -1943,22 +2020,33 @@ el ITUB4. El mayor balance de las elecciones puede ser debido a que ambos activo
         <<plot_combined_4YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_combined_4YTD <- dataCuestionario %>%
-          mutate(plot_combined_4YTD = ifelse(plot_combined_4YTD == 'p', 'SQM', ifelse(plot_combined_4YTD == 'q', 'ITUB4', plot_combined_4YTD))) %>%
-          group_by(plot_combined_4YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_combined_4YTD$plot_combined_4YTD <- factor(frecuencia_plot_combined_4YTD$plot_combined_4YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_combined_4YTD_response <- ggplot(frecuencia_plot_combined_4YTD, aes(x = plot_combined_4YTD, y = frecuencia, fill = plot_combined_4YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_combined_4YTD_response)
+              mutate(
+                plot_combined_4YTD = ifelse(plot_combined_4YTD == 'p', 'SQM', ifelse(plot_combined_4YTD == 'q', 'ITUB4', plot_combined_4YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_combined_4YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_combined_4YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_combined_4YTD$plot_combined_4YTD <- factor(frecuencia_plot_combined_4YTD$plot_combined_4YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_combined_4YTD_response <- ggplot(frecuencia_plot_combined_4YTD, aes(x = plot_combined_4YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_combined_4YTD_response)
           @
     \caption{Respuestas para gráfico a 4 años (S\&P y Bloomberg)}
     Fuente: Elaboración propia
@@ -1989,22 +2077,33 @@ si lo hicieron.
         <<plot_combined_5YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_combined_5YTD <- dataCuestionario %>%
-          mutate(plot_combined_5YTD = ifelse(plot_combined_5YTD == 'p', 'SQM', ifelse(plot_combined_5YTD == 'q', 'ITUB4', plot_combined_5YTD))) %>%
-          group_by(plot_combined_5YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_combined_5YTD$plot_combined_5YTD <- factor(frecuencia_plot_combined_5YTD$plot_combined_5YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_combined_5YTD_response <- ggplot(frecuencia_plot_combined_5YTD, aes(x = plot_combined_5YTD, y = frecuencia, fill = plot_combined_5YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_combined_5YTD_response)
+              mutate(
+                plot_combined_5YTD = ifelse(plot_combined_5YTD == 'p', 'SQM', ifelse(plot_combined_5YTD == 'q', 'ITUB4', plot_combined_5YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_combined_5YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_combined_5YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_combined_5YTD$plot_combined_5YTD <- factor(frecuencia_plot_combined_5YTD$plot_combined_5YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_combined_5YTD_response <- ggplot(frecuencia_plot_combined_5YTD, aes(x = plot_combined_5YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_combined_5YTD_response)
           @
     \caption{Respuestas para gráfico a 5 años (S\&P y Bloomberg)}
     Fuente: Elaboración propia
@@ -2032,22 +2131,33 @@ En las gráficas anteriores, la totalidad de los participantes escogieron el act
         <<plot_combined_6YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_combined_6YTD <- dataCuestionario %>%
-          mutate(plot_combined_6YTD = ifelse(plot_combined_6YTD == 'p', 'SQM', ifelse(plot_combined_6YTD == 'q', 'ITUB4', plot_combined_6YTD))) %>%
-          group_by(plot_combined_6YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_combined_6YTD$plot_combined_6YTD <- factor(frecuencia_plot_combined_6YTD$plot_combined_6YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_combined_6YTD_response <- ggplot(frecuencia_plot_combined_6YTD, aes(x = plot_combined_6YTD, y = frecuencia, fill = plot_combined_6YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_combined_6YTD_response)
+              mutate(
+                plot_combined_6YTD = ifelse(plot_combined_6YTD == 'p', 'SQM', ifelse(plot_combined_6YTD == 'q', 'ITUB4', plot_combined_6YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_combined_6YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_combined_6YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_combined_6YTD$plot_combined_6YTD <- factor(frecuencia_plot_combined_6YTD$plot_combined_6YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_combined_6YTD_response <- ggplot(frecuencia_plot_combined_6YTD, aes(x = plot_combined_6YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_combined_6YTD_response)
           @
     \caption{Respuestas para gráfico a 6 años (S\&P y Bloomberg)}
     Fuente: Elaboración propia
@@ -2078,22 +2188,33 @@ En este caso, al igual que en el presentado por la Figura~\ref{fig:plot_6YTD_2},
         <<plot_combined_7YTD_response, echo=FALSE, cache=FALSE, message=FALSE, warning=FALSE, out.width='225px', out.height='225px'>>=
 
         frecuencia_plot_combined_7YTD <- dataCuestionario %>%
-          mutate(plot_combined_7YTD = ifelse(plot_combined_7YTD == 'p', 'SQM', ifelse(plot_combined_7YTD == 'q', 'ITUB4', plot_combined_7YTD))) %>%
-          group_by(plot_combined_7YTD) %>%
-          summarise(frecuencia = n())
-
-        frecuencia_plot_combined_7YTD$plot_combined_7YTD <- factor(frecuencia_plot_combined_7YTD$plot_combined_7YTD, levels = c('SQM','ITUB4'))
-        
-        # Crea el gráfico de barras
-        plot_combined_7YTD_response <- ggplot(frecuencia_plot_combined_7YTD, aes(x = plot_combined_7YTD, y = frecuencia, fill = plot_combined_7YTD)) +
-          geom_bar(stat = "identity") +
-          labs(
-               x = "Respuestas",
-               y = "Frecuencia") +
-          theme_minimal() +
-          scale_fill_manual(values = c("#468189", "#77ACA2")) +
-          theme(legend.position = "none")
-          print(plot_combined_7YTD_response)
+              mutate(
+                plot_combined_7YTD = ifelse(plot_combined_7YTD == 'p', 'SQM', ifelse(plot_combined_7YTD == 'q', 'ITUB4', plot_combined_7YTD)),
+                interes_categoria = ifelse(interes_empresas_asg %in% c('Muy interesado/a', 'Algo interesado/a'), 
+                                           'Interesado/a', 
+                                           'No interesado/a')
+              ) %>%
+              group_by(plot_combined_7YTD, interes_categoria) %>%
+              summarise(frecuencia = n()) %>%
+              ungroup()
+            
+            # Reordenar los niveles de 'plot_combined_7YTD' para asegurar el orden correcto en el gráfico
+            frecuencia_plot_combined_7YTD$plot_combined_7YTD <- factor(frecuencia_plot_combined_7YTD$plot_combined_7YTD, levels = c('SQM', 'ITUB4'))
+            
+            # Crear el gráfico de barras con la nueva dimensión
+            plot_combined_7YTD_response <- ggplot(frecuencia_plot_combined_7YTD, aes(x = plot_combined_7YTD, y = frecuencia, fill = interes_categoria)) +
+              geom_bar(stat = "identity", position = "stack") +
+              labs(
+                x = "Respuestas",
+                y = "Frecuencia",
+                fill = "Interés en Empresas ASG"
+              ) +
+              theme_minimal() +
+              scale_fill_manual(values = c("#468189", "#77ACA2")) +
+              theme(legend.position = "top")
+            
+            # Imprimir el gráfico
+            print(plot_combined_7YTD_response)
           @
     \caption{Respuestas para gráfico a 7 años (S\&P y Bloomberg)}
     Fuente: Elaboración propia
