@@ -38,7 +38,7 @@ NPsb <- sbchoice(fmsb, DCchoice)
 summary(NPsb)
 NPsb
 bootCI(NPsb)
-summary(NPsb$glm.out)
+summary(NPsb)$meanWTP
 coefficients(NPsb$glm.out)
 
 #addThis

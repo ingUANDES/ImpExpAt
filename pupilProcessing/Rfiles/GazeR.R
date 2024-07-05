@@ -66,16 +66,27 @@ save(baseline_pupil, file = "output/baseline_pupil.RData")
 create_plot_pupil <- function(data, trial_name, main_title) {
     trial_data <- filter(data, trial == trial_name) %>%
                   arrange(time)
+    
+    # Calcular la media y desviación estándar en cada instante de tiempo
+    summary_data <- trial_data %>%
+      group_by(time) %>%
+      summarise(mean_pupil = mean(baselinecorrectedp, na.rm = TRUE),
+                sd_pupil = sd(baselinecorrectedp, na.rm = TRUE)) %>%
+      na.omit() # Eliminar filas con valores NA
 
     
     #smoothingSpline <- smooth.spline(trial_data, spar = 0.4)
-    #plot(trial_data, cex = 0.2, type = 'l', col = '#468189', xlab = 'Time', ylab = 'Pupil Size', main = main_title)
-    #lines(smoothingSpline, col = 'red')
-    
     smoothingSpline1 <- smooth.spline(x = trial_data$time, y = trial_data$baselinecorrectedp, spar = 0.4)
-    plot(1, type = 'n', xlim = c(1, max(max(trial_data$time), max(trial_data$time))), ylim = c(min(baseline_pupil$baselinecorrectedp), max(baseline_pupil$baselinecorrectedp)),
-         xlab = 'Time', ylab = 'Pupil Size', main = main_title)
+    smoothingSpline_plus_sd <- smooth.spline(x = summary_data$time, y = summary_data$mean_pupil + summary_data$sd_pupil, spar = 0.4)
+    smoothingSpline_minus_sd <- smooth.spline(x = summary_data$time, y = summary_data$mean_pupil - summary_data$sd_pupil, spar = 0.4)
+    plot(x = trial_data$time, y = trial_data$baselinecorrectedp, cex = 0.2, type = 'l', col = '#468189', xlab = 'Time', ylab = 'Pupil Size', main = main_title)
+    #lines(smoothingSpline, col = 'red')
+  
+    #plot(trial_data$baselinecorrectedp, type = 'p', xlim = c(1, max(max(trial_data$time), max(trial_data$time))), ylim = c(min(baseline_pupil$baselinecorrectedp), max(baseline_pupil$baselinecorrectedp)),
+    #     xlab = 'Time', ylab = 'Pupil Size', main = main_title)
     lines(smoothingSpline1, col = 'red')
+    lines(smoothingSpline_plus_sd, col = 'blue')
+    lines(smoothingSpline_minus_sd, col = 'blue')
   }
 
 create_plot_pupil2 <- function(data, main_title) {
