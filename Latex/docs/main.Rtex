@@ -5,7 +5,6 @@
 \usepackage{multirow} 
 \usepackage{multicol} 
 \usepackage{subfig}
-\usepackage{subfig}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{amsmath} % for \text{}
@@ -20,7 +19,7 @@
 \usepackage[table]{xcolor}
 \usepackage{tikz}
 \usepackage{listings}
-\usepackage[toc]{glossaries}
+\usepackage[acronym]{glossaries}
 \usepackage{fix-cm}
 
 \usetikzlibrary{fadings}
@@ -32,10 +31,15 @@
   \renewcommand{\listtablename}{Índice de tablas}
 }
 
-\makeglossaries
-\newacronym{gcd}{GCD}{Greatest Common Divisor}
-\newacronym{lcm}{LCM}{Least Common Multiple}
+\makenoidxglossaries
+\newacronym{asg}{ASG}{Ambiental, Social y Gobernanza}
+\newacronym{sri}{SRI}{\textit{Socially Responsible Investments}}
+\newacronym{sp}{S\&P}{Standard \& Poor’s}
 \newacronym{crt}{CRT}{\textit{Cognitive Reglexion Test}}
+\newacronym{dccv}{DCCV}{\textit{Dichotomous Choice Contingent Valuation}}
+\newacronym{sqm}{SQM}{Sociedad Química y Minera de Chile}
+\newacronym{itub4}{ITUB4}{\textit{Itau Unibanco Holding SA}}
+\newacronym{capm}{CAPM}{\textit{Capital Asset Pricing Model}}
 
 
 \let\oldsection\section
@@ -51,8 +55,6 @@
 \addtolength{\topmargin}{-3.51588pt}
 
 \pagestyle{fancy}
-\begin{document}
-
 
 <<plots,echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE>>=
 library(knitr)
@@ -191,35 +193,47 @@ names(plotsCombined) <- periods
 @
 
 
+\begin{document}
+
 
 %% COMIENZO PORTADA-----------------------------------------
 
 \begin{titlepage}
-
-\begin{center}
-\includegraphics[scale=0.3]{Log.png}\\
-% Incrementamos el interlineado:
-\vspace{1.0cm} {\LARGE Implementación de Experimento de Atención Racional con Métricas de Dilatación Pupilar en Decisiones Financieras Sostenibles
-\newline
-\\Ingeniería Civil Industrial UANDES}\\
-Universidad de los Andes
-
-\vspace{1.5cm} \LARGE{Por:\\ Vicente Tejero \\ Guía: \\ Sebastián Cea}
-
-\vspace{2.3cm}
-
-\vspace{.5cm} \today
-
-\end{center}
+    \begin{center}
+    \includegraphics[scale=0.3]{Log.png}\\
+    % Incrementamos el interlineado:
+    \vspace{1.0cm} {\LARGE Implementación de Experimento de Atención Racional con Métricas de Dilatación Pupilar en Decisiones Financieras Sostenibles
+    \newline
+    \\Ingeniería Civil Industrial UANDES}\\
+    Universidad de los Andes
+    
+    \vspace{1.5cm} \LARGE{Por:\\ Vicente Tejero \\ Guía: \\ Sebastián Cea}
+    
+    \vspace{2.3cm}
+    
+    \vspace{.5cm} \today
+    
+    \end{center}
 \end{titlepage}
  %%%% FIN PORTADA ------------------------------------------
-\begin{center}
-    \section*{Agradecimientos}
-\end{center}
+ 
+\section*{\centering Agradecimientos}
 
-\begin{center}
-    \section*{Resumen}
-\end{center}
+\printnoidxglossary[type=acronym]
+\printacronyms
+
+\section*{\centering Resumen}
+
+En el contexto de la creciente digitalización y aumento significativo de la disponibilidad de información, este trabajo explora cómo un grupo de tomadores de decisión utilizan métricas \acrfull{asg} en sus decisiones financieras. La investigación se centra en la atención racional, un concepto de la economía conductual y psicología cognitiva que expone que los individuos, ante una sobrecarga de información, son selectivos y estratégicos en la información que utilizan para tomar decisiones.
+
+La finalidad de este trabajo es crear un piloto de experimento que, de cierta manera, estime el grado de atención que los individuos prestan a las métricas ASG al tomar decisiones financieras y si estas afectan dependiendo de la información presentada. Para validar los resultados, se recabaron datos de dilatación pupilar.
+
+Para la construcción del experimento se siguió la metodología expuesta por \citeA{chan_cost-effective_2024}. Asimismo se aplicaron distintos test de validación, como el \acrfull{crt} presentado por \citeA{frederick_cognitive_2005} y el \acrfull{dccv} expuesto por \citeA{cooper_one-and-one-half-bound_2002}.
+
+Los datos, presentados de manera gráfica a los participantes, fueron recolectados del Terminal Bloomberg. Estos correspondían a dos activos: \acrfull{sqm} y \acrfull{itub4}; para 7 años, desde 2018 a 2023. Por otro lado, y recabados de la misma manera, para cada activo se obtuvieron puntuaciones ASG de dos proveedores: \acrfull{sp} y Bloomberg.
+
+Los resultados mostraron que una mejor puntuación ASG si le otorga un beneficio a los participantes, sin embargo, existe un costo de cambio entre retorno financiero y métrica ASG. 
+
 
 \tableofcontents
 \newpage
@@ -363,7 +377,7 @@ Imaginemos que un inversionista tiene que elegir entre dos acciones: una que ofr
 Cabe notar que cada individuo puede tener distintas valoraciones de las dimensiones, porque cada una representa las preferencias individuales. Por ejemplo, un tomador de decisión puede valorar más la sostenibilidad que otro, lo que significa que estaría dispuesto a sacrificar más retorno monetario por retorno ASG que un tomador de decisión que solo busca rentabilidad monetaria. Esta variabilidad de las valoraciones complica la interpretación y comparación entre individuos, por lo que, en muchos casos, se utiliza una función de valoración común en el experimento de \citeA{decancq_chapter_2015}, que es lo que se hará en este caso.
 
 \subsection{Costo de Cambio}
-Si un inversionista considera cambiar de un fondo mutuo tradicional a uno socialmente responsable, podría enfrentar un costo de cambio en términos de una menor rentabilidad financiera. Por ejemplo, si el fondo tradicional ofrece un retorno anual del 8\% y el fondo socialmente responsable ofrece un 6\%, el inversionista debe decidir si el beneficio adicional de invertir en sostenibilidad justifica ese 2\% de diferencia en el retorno. \citeA{geczy_investing_2021} tratan este tema en específico con fondos mutuos, en los que se consideran distintos fondos con objetivos que incluyen inversiones \textit{SRI}. Según estos autores, el costo de una inversión socialmente responsable depende de manera principal de las opiniones del inversor sobre los modelos de valoración de activos y de las habilidades de selección de activos de los administradores del fondo. Por ejemplo, para un tomador de decisión que cree firmemente en el uso del modelo de CAPM (\textit{Capital Asset Pricing Model}) el costo de una inversión sostenible es solo de unos pocos puntos base por mes. No así con modelos que cuentan con factores de \textit{momentum}, tamaños y valor como Fama-French de tres factores o el modelo Carhart, en el que una inversión de este tipo es mucho más costosa, esto es de, por lo menos, 30 puntos base por mes.
+Si un inversionista considera cambiar de un fondo mutuo tradicional a uno socialmente responsable, podría enfrentar un costo de cambio en términos de una menor rentabilidad financiera. Por ejemplo, si el fondo tradicional ofrece un retorno anual del 8\% y el fondo socialmente responsable ofrece un 6\%, el inversionista debe decidir si el beneficio adicional de invertir en sostenibilidad justifica ese 2\% de diferencia en el retorno. \citeA{geczy_investing_2021} tratan este tema en específico con fondos mutuos, en los que se consideran distintos fondos con objetivos que incluyen inversiones \textit{SRI}. Según estos autores, el costo de una inversión socialmente responsable depende de manera principal de las opiniones del inversor sobre los modelos de valoración de activos y de las habilidades de selección de activos de los administradores del fondo. Por ejemplo, para un tomador de decisión que cree firmemente en el uso del \acrfull{capm} el costo de una inversión sostenible es solo de unos pocos puntos base por mes. No así con modelos que cuentan con factores de \textit{momentum}, tamaños y valor como Fama-French de tres factores o el modelo Carhart, en el que una inversión de este tipo es mucho más costosa, esto es de, por lo menos, 30 puntos base por mes.
 
 
 \subsection{Implementación del Marco Teórico en Elección de Activos con Información ASG}
@@ -766,7 +780,7 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, por esta
      data_summary$Dates <- format(as.Date(data_summary$Dates, format="%Y-%m-%d"), "%d/%m/%Y")
     # Output the table
     kable(data_summary, format = "latex", booktabs = TRUE, 
-          col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
+          col.names = c("Fecha", "Bloomberg", "Standard & Poor's (S&P)", "Precio"))
     @
     $\,$\\
     Fuente: Elaboración propia
@@ -790,7 +804,7 @@ Cabe notar que cada proveedor de puntuación ASG usa distintas escalas, por esta
         
     data_summary$Dates <- format(as.Date(data_summary$Dates, format="%Y-%m-%d"), "%d/%m/%Y")
     kable(data_summary, format = "latex", booktabs = TRUE, 
-          col.names = c("Fecha", "Bloomberg", "Standard & Poor's", "Precio"))
+          col.names = c("Fecha", "Bloomberg", "Standard & Poor's (S&P)", "Precio"))
     @
     $\,$\\
     Fuente: Elaboración propia
@@ -976,7 +990,7 @@ Por otro lado, para agregar más información al experimento, se agregó una seg
     Fuente: Elaboración propia
 \end{table}
 
-En donde $Noralizado Combinado = 0,5*NormalizadoBloomberg + 0,5*NormalizadoS\&P$.
+El valor combinado se calcula de la siguiente manera: $Noralizado Combinado = 0,5*NormalizadoBloomberg + 0,5*NormalizadoS\&P$.
 
 
 \begin{figure}[H]
@@ -1106,7 +1120,7 @@ Existen 3 maneras discutidas por \citeA{sirota_effect_2018}  de realizar este te
 
 \subsection{Diseño Experimental}
 
-Siguiendo el diseño de \citeA{chan_cost-effective_2024}, a cada individuo se le entregará una ficha de \hyperref[sec:consentimiento]{consentimiento informado} previo al inicio del experimento, que debe leer y devolver firmado. Posteriormente, proceden a responder un cuestionario en el que entregan información sobre datos básicos (edad, sexo, etc.), de experiencia o conocimiento financiero, un test de atención tipo \emph{Cognitive Reflection} y una valorización contingente sobre un determinado porcentaje de retorno ASG. Este paso se realizará con el propósito de contextualizar los resultados del estudio y con el fin de explorar de qué manera diferentes perfiles demográficos y distintos niveles de experiencia reaccionan con las opciones de inversión presentadas. La Prueba de Reflexión Cognitiva autorreportada permitirá medir el nivel de atención del individuo para compararlo con lo que se observe en el comportamiento revelado durante las tareas del experimento.
+Siguiendo el diseño de \citeA{chan_cost-effective_2024}, a cada individuo se le entregará una ficha de \hyperref[sec:consentimiento]{consentimiento informado} previo al inicio del experimento, que debe leer y devolver firmado. Posteriormente, a través del programa Opensesame, proceden a responder un cuestionario en el que entregan información sobre datos básicos (edad, sexo, etc.), de experiencia o conocimiento financiero, un test de atención tipo \emph{Cognitive Reflection} y una valorización contingente sobre un determinado porcentaje de retorno ASG. Este paso se realizará con el propósito de contextualizar los resultados del estudio y con el fin de explorar de qué manera diferentes perfiles demográficos y distintos niveles de experiencia reaccionan con las opciones de inversión presentadas. La Prueba de Reflexión Cognitiva autorreportada permitirá medir el nivel de atención del individuo para compararlo con lo que se observe en el comportamiento revelado durante las tareas del experimento.
 
 La valorización contingente o Elección Dicotómica Doble se utiliza para evaluar las preferencias de los participantes entre activos con diferentes rendimientos e impactos ASG. Esta metodología permite entender las compensaciones que los individuos están dispuestos a hacer entre el retorno financiero y el beneficio ASG. Siguiendo la pregunta realizada por \citeA{chalmer_economic_2021} ``\textit{Are you willing to accept a lower rate of return in exchange for societal or environmental benefit}", se le interrogará al participante si está dispuesto a aceptar un porcentaje menor de retorno monetario a cambio de un aumento en la puntuación ASG; si responde de manera afirmativa, se sigue a la experiencia Bloomberg; en caso negativo, se le formula la siguiente pregunta: ¿cuánto porcentaje de retorno monetario estarías dispuesto a perder por aumentar la puntuación ASG de un activo?
 
@@ -2640,61 +2654,6 @@ Observaciones
 
 
 \centering Firma Guía
-
-
-
-    
-
-
-
-
-
-
-\newpage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%ejemplo Plantilla
 
 
 
