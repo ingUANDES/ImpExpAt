@@ -142,11 +142,11 @@ create_plot_pupil <- function(data, trial_name, main_title) {
     smoothingSpline1 <- smooth.spline(x = trial_data$time, y = trial_data$baselinecorrectedp, spar = 0.4)
     smoothingSpline_plus_sd <- smooth.spline(x = summary_data$time, y = summary_data$mean_pupil + summary_data$sd_pupil, spar = 0.4)
     smoothingSpline_minus_sd <- smooth.spline(x = summary_data$time, y = summary_data$mean_pupil - summary_data$sd_pupil, spar = 0.4)
-    plot(x = trial_data$time, y = trial_data$baselinecorrectedp, cex = 0.2, type = 'l', col = '#468189', xlab = 'Time', ylab = 'Pupil Size', main = main_title)
+    plot(x = trial_data$time, y = trial_data$baselinecorrectedp, cex = 0.2, type = 'l', col = '#468189', xlab = 'Tiempo', ylab = 'Pupil Size', main = main_title)
     #lines(smoothingSpline, col = 'red')
   
     #plot(trial_data$baselinecorrectedp, type = 'p', xlim = c(1, max(max(trial_data$time), max(trial_data$time))), ylim = c(min(baseline_pupil$baselinecorrectedp), max(baseline_pupil$baselinecorrectedp)),
-    #     xlab = 'Time', ylab = 'Pupil Size', main = main_title)
+    #     xlab = 'Tiempo', ylab = 'Pupil Size', main = main_title)
     lines(smoothingSpline1, col = 'red')
     lines(smoothingSpline_plus_sd, col = 'blue')
     lines(smoothingSpline_minus_sd, col = 'blue')
@@ -179,7 +179,7 @@ create_plot_pupil_interest <- function(data, trial_name, main_title) {
     arrange(time)
   
   plot(1, type = "n", xlim = c(0, max(max(subset_1$time), max(subset_2$time))), ylim = c(min(baseline_pupil$baselinecorrectedp), max(baseline_pupil$baselinecorrectedp)),
-       xlab = 'Time', ylab = 'Pupil Size', main = main_title)
+       xlab = 'Tiempo', ylab = 'Pupil Size', main = main_title)
   
   smoothingSpline1 <- smooth.spline(x = subset_1$time, y = subset_1$baselinecorrectedp, spar = 0.4)
   lines(smoothingSpline1, col = 'red')
@@ -385,6 +385,8 @@ Cabe notar que cada individuo puede tener distintas valoraciones de las dimensio
 
 \subsection{Costo de Cambio y Disposición a Pagar}
 Si un inversionista considera cambiar de un fondo mutuo tradicional a uno socialmente responsable, podría enfrentar un costo de cambio en términos de una menor rentabilidad financiera. Por ejemplo, si el fondo tradicional ofrece un retorno anual del 8\% y el fondo socialmente responsable ofrece un 6\%, el inversionista debe decidir si el beneficio adicional de invertir en sostenibilidad justifica ese 2\% de diferencia en el retorno. \citeA{geczy_investing_2021} tratan este tema en específico con fondos mutuos, en los que se consideran distintos fondos con objetivos que incluyen inversiones \textit{SRI}. Según estos autores, el costo de una inversión socialmente responsable depende de manera principal de las opiniones del inversor sobre los modelos de valoración de activos y de las habilidades de selección de activos de los administradores del fondo. Por ejemplo, para un tomador de decisión que cree firmemente en el uso del \acrfull{capm} el costo de una inversión sostenible es solo de unos pocos puntos base por mes. No así con modelos que cuentan con factores de \textit{momentum}, tamaños y valor como Fama-French de tres factores o el modelo Carhart, en el que una inversión de este tipo es mucho más costosa, esto es de, por lo menos, 30 puntos base por mes.
+
+Siguiendo lo planteado por \citeA{cooper_one-and-one-half-bound_2002}, el costo de cambio puede ser tratado cómo la disposición a pagar, por ejemplo, si un inversionista acepta perder un 2\% de rentabilidad monetaria por aumentar su retorno sostenible significa que el individuo está dispuesto a pagar por lo menos con un 2\% de rentabilidad pecuniaria.
 
 
 \subsection{Implementación del Marco Teórico en Elección de Activos con Información ASG en un Contexto de Incertidumbre}
@@ -2213,6 +2215,8 @@ A continuación se presentan las gráficas con los datos de dilatación pupilar,
             create_plot_pupil(baseline_pupil, "5 años (S&P)", "Tamaño Pupila 5 años (S&P)")
             create_plot_pupil(baseline_pupil, "6 años (S&P)", "Tamaño Pupila 6 años (S&P)")
             create_plot_pupil(baseline_pupil, "7 años (S&P)", "Tamaño Pupila 7 años (S&P)")
+            plot.new()
+            legend("center", legend = c("Promedio Suavizado", "+- Desviación Estándar"), col = c("red", "blue"), lty = 1, cex = 1.5)
 
             par(mfrow = c(1, 1))
             @
@@ -2238,6 +2242,9 @@ En términos de dilatación pupilar, los participantes comienzan con una dilatac
             create_plot_pupil(baseline_pupil, "5 años (S&P y Bloomberg)", "Tamaño Pupila 5 años (S&P y Bloomberg)")
             create_plot_pupil(baseline_pupil, "6 años (S&P y Bloomberg)", "Tamaño Pupila 6 años (S&P y Bloomberg)")
             create_plot_pupil(baseline_pupil, "7 años (S&P y Bloomberg)", "Tamaño Pupila 7 años (S&P y Bloomberg)")
+            plot.new()
+            legend("center", legend = c("Promedio Suavizado", "+- Desviación Estándar"), col = c("red", "blue"), lty = 1, cex = 1.5)
+            par(mfrow = c(1, 1))
 
             par(mfrow = c(1, 1))
             @
@@ -2287,7 +2294,8 @@ A continuación se presentan las gráficas haciendo distinción en ambos grupos:
             create_plot_pupilCRT(baseline_pupil, "5 años (S&P)", "Pupil Size for 5 años (S&P)")
             create_plot_pupilCRT(baseline_pupil, "6 años (S&P)", "Pupil Size for 6 años (S&P)")
             create_plot_pupilCRT(baseline_pupil, "7 años (S&P)", "Pupil Size for 7 años (S&P)")
-            
+            plot.new()
+            legend("center", legend = c("G1 (Bajo rendimiento en CRT)", "G2 (Alto rendimiento en CRT)"), col = c("red", "blue"), lty = 1, cex = 1.5)
             par(mfrow = c(1, 1))
             @
     \caption{Comparación Tamaño de Pupila según rendimiento en CRT para datos ASG de S\&P}
@@ -2309,6 +2317,9 @@ A continuación se presentan las gráficas haciendo distinción en ambos grupos:
             create_plot_pupilCRT(baseline_pupil, "5 años (S&P y Bloomberg)", "Pupil Size for 5 años (S&P y Bloomberg)")
             create_plot_pupilCRT(baseline_pupil, "6 años (S&P y Bloomberg)", "Pupil Size for 6 años (S&P y Bloomberg)")
             create_plot_pupilCRT(baseline_pupil, "7 años (S&P y Bloomberg)", "Pupil Size for 7 años (S&P y Bloomberg)")
+            plot.new()
+            legend("center", legend = c("G1 (Bajo rendimiento en CRT)", "G2 (Alto rendimiento en CRT)"), col = c("red", "blue"), lty = 1, cex = 1.5)
+
             
             par(mfrow = c(1, 1))
             @
@@ -2317,7 +2328,7 @@ A continuación se presentan las gráficas haciendo distinción en ambos grupos:
     \label{fig:comp_pupil_CRTSPyB}
 \end{figure}
 
-En la Figura~\ref{fig:comp_pupil_CRTSP} y \ref{fig:comp_pupil_CRTSPyB} se representa en color azul aquellos participantes con un alto rendimiento en el CRT, denominados ''G2", por otro lado, de color rojo se encuentran los con rendimiento bajo la media, denominadoa ''G1". A simple vista, se observa que el individuo con la mejor puntuación en el test de reflexión cognitiva y que más tiempo dedica al experimento tarda menos en decidir su respuesta en los ensayos, en comparación con los participantes con puntuaciones CRT por debajo de la media. Para interpretar y ver si existe alguna relación con las medias de tiempo de ambos grupos se realiza un test de medias:
+En la Figura~\ref{fig:comp_pupil_CRTSP} y \ref{fig:comp_pupil_CRTSPyB} se representa en color azul aquellos participantes con un alto rendimiento en el CRT, denominados ''G2", por otro lado, de color rojo se encuentran los con rendimiento bajo la media, denominados ''G1". A simple vista, se observa que el individuo con la mejor puntuación en el test de reflexión cognitiva y que más tiempo dedica al experimento tarda menos en decidir su respuesta en los ensayos, en comparación con los participantes con puntuaciones CRT por debajo de la media. Para interpretar y ver si existe alguna relación con las medias de tiempo de ambos grupos se realiza un test de medias:
 
 \begin{table}[H]
     \centering
@@ -2467,7 +2478,7 @@ No obstante, el análisis de decisiones de inversión realizado a los participan
 En términos de atención cognitiva con medidas de dilatación pupilar, los hallazgos no son claros. No se encontraron patrones que muestren que, un grupo en particular, sea más atento que otro. Entre participantes las dilatación de pupila oscilan de manera tal que no entregan información adicional a los resultados del experimento.
 
 \subsection{Futuras Mejoras a la Investigación}
-El diseño del experimento, si bien incluyó varias metodologías de validación, como el CRT, las mediciones pupilares en las gráficas no aportaron un valor significativo como se esperaba, aunque la muestra piloto haya sido muy pequeña. Esto debido a que a los individuos en la recolección de datos se les presentó toda la información en el mismo instante, lo que genera un estimulo inicial en la atención, pero no permite distinguir la heterogeneidad de estímulos. Para una futura investigación usando esta metodología se debe mejorar en este aspecto y volver a analizar los datos de dilatación, ya que, entregando información progresivamente, los individuos pueden, a través de su dilatación de pupila, mostrar que estímulo le genera cada agregado de información, lo que representaría de manera más clara la atención racional de los inversionistas ante la información presentada. Manteniendo el diseño original se pudiese analizar mapas de calor para determinar en que parte de las gráficas los individuos prestan más atención, y así saber en que información les es más relevante.
+El diseño del experimento, si bien incluyó varias metodologías de validación, como el CRT, las mediciones pupilares en las gráficas no aportaron un valor significativo como se esperaba, aunque la muestra piloto haya sido muy pequeña. Esto debido a que a los individuos en la recolección de datos se les presentó toda la información en el mismo instante, lo que genera un estimulo inicial en la atención, pero no permite distinguir la heterogeneidad de estímulos. Para una futura investigación usando esta metodología se debe mejorar en este aspecto y volver a analizar los datos de dilatación, ya que, entregando información progresivamente, los individuos pueden, a través de su dilatación de pupila, mostrar que estímulo le genera cada agregado de información, lo que representaría de manera más clara la atención racional de los inversionistas ante la información presentada. Manteniendo el diseño original se pudiese analizar mapas de calor (Figura~\ref{fig:mapa_calor}) para determinar en que parte de las gráficas los individuos prestan más atención, y así saber en que información les es más relevante. Sin embargo, debido al limitado tiempo, no se siguió con esta metodología.
 
 Además, el no limitar el tiempo en que se muestra la información, resulta en disparidad de los datos, lo que significa una dificultad adicional a la hora de comparar los resultados. Debido a esto, fijar un tiempo para todos los individuos es lo óptimo en este tipo de experimento y una consideración adicional a la hora de replicarlo. Sin embargo, la realización de este experimento sin limite de tiempo es un aporte para la replicación del experimento, ya que con esto se conoce el tiempo que necesitan los individuos para tomar una decisión de estas características.
 
@@ -2486,9 +2497,26 @@ Por último, comparar más proveedores de información ASG, como Sustainalytics 
 \section{Apéndice}
 
 \subsection{Proyecto en Github}
-\href{https://github.com/ingUANDES/ImpExpAt}{Link}
+
+La estructura del \href{https://github.com/ingUANDES/ImpExpAt}{repositorio} es la siguiente:
+
+\begin{itemize}
+    \item ESG\_exp: Se encuentra el experimento realizado en Opensesame con las gráficas utilizadas y modelo de consentimiento.
+    \item Latex: Se encuentra todos los archivos usados para construir este documento en formato LaTex.
+    \item pupilProcessing: Dentro de esta carpeta se encuentra el proyecto en lenguaje R con el que se trabajaron los datos. Los datos se encuentran en la carpeta ''Data", en el directorio ''Rfiles" se encuentran todos los códigos utilizados para trabajar los datos y en la carpeta ''Output" se encuentran los archivos de salida, los que son utilizados para crear este documento. 
+\end{itemize}
 
 \subsection{Mapas de Calor}
+
+Se indagó en mapas de calor para la visualización de los datos, a continuación uno de los resultados:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{../docs/images/apendix/mapa_calor.jpeg}
+  \caption{Prueba con mapas de calor}
+  Fuente: Elaboración propia
+  \label{fig:mapa_calor}
+\end{figure}
 
 \subsection{Información de Fondos ESG Investigados}
 \begin{figure}[H]
