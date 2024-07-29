@@ -150,7 +150,6 @@ create_plot_pupil(baseline_pupil, "4 años (S&P y Bloomberg)", "Pupil Size for 4
 create_plot_pupil(baseline_pupil, "5 años (S&P y Bloomberg)", "Pupil Size for 5 años (S&P y Bloomberg)")
 create_plot_pupil(baseline_pupil, "6 años (S&P y Bloomberg)", "Pupil Size for 6 años (S&P y Bloomberg)")
 create_plot_pupil(baseline_pupil, "7 años (S&P y Bloomberg)", "Pupil Size for 7 años (S&P y Bloomberg)")
-
 # Reset the layout
 par(mfrow = c(1, 1))
 
@@ -176,7 +175,8 @@ create_plot_pupilCRT(baseline_pupil, "4 años (S&P y Bloomberg)", "Pupil Size fo
 create_plot_pupilCRT(baseline_pupil, "5 años (S&P y Bloomberg)", "Pupil Size for 5 años (S&P y Bloomberg)")
 create_plot_pupilCRT(baseline_pupil, "6 años (S&P y Bloomberg)", "Pupil Size for 6 años (S&P y Bloomberg)")
 create_plot_pupilCRT(baseline_pupil, "7 años (S&P y Bloomberg)", "Pupil Size for 7 años (S&P y Bloomberg)")
-
+plot.new()
+legend("center", legend = c("G1", "G2"), col = c("red", "blue"), lty = 1, cex = 1.5)
 
 par(mfrow = c(1, 1))
 
