@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 ImpExpAt.Rproj
-ESG_Exp/user/*.avi
+*.avi
+
