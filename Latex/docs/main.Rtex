@@ -21,7 +21,6 @@
 \usepackage{listings}
 \usepackage[acronym]{glossaries}
 \usepackage{fix-cm}
-
 \usetikzlibrary{fadings}
 \usetikzlibrary{patterns}
 \usetikzlibrary{shadows.blur}
@@ -67,8 +66,6 @@ library(zoo)
 library(tidyr)
 library(gridExtra)
 library(grid)
-
-Sys.setlocale("LC_NUMERIC", "es_ES")
 
 load("../../pupilProcessing/output/baseline_pupil.RData")
 
@@ -206,13 +203,12 @@ names(plotsCombined) <- periods
     \includegraphics[scale=0.3]{Log.png}\\
     % Incrementamos el interlineado:
     \vspace{1.0cm} {\LARGE Implementación de un experimento en decisiones financieras sostenibles bajo un marco de inatención racional y monitoreo de información pupilar
-    \newline
-    \\Ingeniería Civil Industrial UANDES}\\
+    \vspace{1.0cm}
+    \\Ingeniería Civil Industrial}\\
     Universidad de los Andes
     
     \vspace{1.5cm} \LARGE{Por:\\ Vicente Tejero \\ Guía: \\ Sebastián Cea}
     
-    \vspace{2.3cm}
     
     \vspace{.5cm} \today
     
@@ -224,7 +220,7 @@ names(plotsCombined) <- periods
 
 En primer lugar me gustaría agradecer a mi familia por el apoyo incondicional que me brindaron, no sólo estando en la universidad, sino que a lo largo de toda mi vida. Su constante aliento y motivación sin duda fue un gran factor para estar donde estoy hoy.
 
-Asimismo quiero agradecer a mi profesor guía, Sebastián Cea, quien me dedicó incontables horas para resolver dudas, guiarme y ayudarme durante todo este proceso. Sebastián no sólo me a brindado apoyo, sino que también diversas oportunidades y conocimiento, lo cual agradezco enormemente. Por otro lado quiero agradecer a Camila Hinojosa y al profesor Jorge Gomez por su disposición a ayudar en la programación y recolección de métricas pupilares.
+Asimismo quiero agradecer a mi profesor guía, Sebastián Cea, quien me dedicó incontables horas para resolver dudas, guiarme y ayudarme durante todo este proceso. Sebastián no sólo me ha brindado apoyo, sino que también diversas oportunidades y conocimiento, lo cual agradezco enormemente. Por otro lado quiero agradecer a Camila Hinojosa y al profesor Jorge Gomez por su disposición a ayudar en la programación y recolección de métricas pupilares.
 
 \printnoidxglossary[type=acronym]
 \printacronyms
@@ -233,11 +229,11 @@ Asimismo quiero agradecer a mi profesor guía, Sebastián Cea, quien me dedicó 
 
 En el contexto de la creciente digitalización y aumento significativo de la disponibilidad de información, este trabajo explora cómo un grupo de tomadores de decisión utilizan métricas relacionadas a temas Ambientales, Sociales y de Gobernanza en un proceso experimental de análisis financiero entre 2 activos. La investigación se centra en la atención racional, un concepto de la economía conductual y psicología cognitiva que postula que los individuos, ante una sobrecarga de información, son selectivos y estratégicos en la información que utilizan para tomar decisiones.
 
-La finalidad de este trabajo es crear un piloto de experimento que, de cierta manera, estime el grado de atención que los individuos prestan a las métricas ASG al tomar decisiones financieras. Adicionalmente, evaluar cómo la forma de presentación de la información puede afectar también la toma de decisiones. Para validar los resultados, se recabaron datos pupilares como dilatación y posición de la mirada en la pantalla..
+La finalidad de este trabajo es crear un piloto de experimento que, de cierta manera, estime el grado de atención que los individuos prestan a las métricas ASG al tomar decisiones financieras. Adicionalmente, se busca evaluar cómo la forma de presentación de la información puede afectar también la toma de decisiones. Para validar los resultados, se recabaron datos pupilares como dilatación y posición de la mirada en la pantalla.
 
 Para la construcción del experimento se siguió la metodología expuesta por \citeA{chan_cost-effective_2024}. Asimismo se recolectaron instrumentos para validar niveles de atención y disposición a pagar por retorno no monetario, como el \acrfull{crt} presentado por \citeA{frederick_cognitive_2005} y el \acrfull{dccv} expuesto por \citeA{cooper_one-and-one-half-bound_2002}.
 
-Los datos, presentados de manera gráfica a los participantes, fueron recolectados del Terminal Bloomberg. Estos correspondían a dos activos: \acrfull{sqm} y \acrfull{itub4}; para 7 años, desde 2017 a 2023. Por otro lado, y recabados de la misma manera, para cada activo se obtuvieron puntuaciones ASG de dos proveedores: \acrfull{sp} y Bloomberg.
+Los datos, presentados de manera gráfica a los participantes, fueron recolectados del Terminal Bloomberg. Estos correspondían a dos activos: \acrfull{sqm} y \acrfull{itub4}; para 7 años, desde 2017 a 2023. Por otro lado, y recabados de la misma manera, se obtuvieron puntuaciones ASG para cada activo de dos proveedores distintos: \acrfull{sp} y Bloomberg.
 
 Los resultados mostraron que una mejor puntuación ASG sí le trae un beneficio a los participantes. Sin embargo, existe un costo de cambio entre retorno financiero y métrica ASG. La manera en la que fue presentada la información a los participantes limitó el aporte de las medidas pupilares, por lo que se proponen mejoras para una futura implementación.
 
@@ -252,7 +248,7 @@ Los resultados mostraron que una mejor puntuación ASG sí le trae un beneficio 
 \newpage
 
 \section{Introducción}
-El ámbito financiero ha sido testigo de una transformación significativa a lo largo de los años, especialmente en el último siglo, impulsada por el rápido avance de la digitalización, nuevas preocupaciones, y nuevos enfoques. Esta evolución ha llevado a una creciente disponibilidad y accesibilidad de la información, lo cual ha cambiado la forma en que los inversionistas toman sus decisiones. En un entorno tan dinámico, para tomar decisiones financieras informadas, los inversionistas deben considerar una multitud de factores. Entre estos factores se encuentran: el ROI (\textit{Return on Investment}), ROE (\textit{Return on Equity}), EBIT (\textit{Earnings Before Interest and Taxes}), y EBITDA (\textit{Earnings Before Interests, Taxes, Depreciation and Amortization}) y, más recientemente, factores \acrfull{asg}.
+El ámbito financiero ha sido testigo de una transformación significativa a lo largo de los años, especialmente en el último siglo, impulsada por el rápido avance de la digitalización, nuevas preocupaciones y nuevos enfoques. Esta evolución ha llevado a una creciente disponibilidad y accesibilidad de la información, lo cual ha cambiado la forma en que los inversionistas toman sus decisiones. En un entorno tan dinámico, para tomar decisiones financieras informadas, los inversionistas deben considerar una multitud de factores. Entre los más populares se encuentran: el ROI (\textit{Return on Investment}), ROE (\textit{Return on Equity}), EBIT (\textit{Earnings Before Interest and Taxes}), y EBITDA (\textit{Earnings Before Interests, Taxes, Depreciation and Amortization}) y, más recientemente, factores \acrfull{asg}.
 
 La capacidad de analizar y entender en profundidad toda esta información es una tarea compleja y requiere una inversión considerable de tiempo y recursos. Los inversionistas, quienes se enfrentan a esta abundancia de datos, deben seleccionar y centrarse en las métricas que consideran más relevantes para sus objetivos y estrategias de inversión. Esta necesidad de priorizar ciertas métricas sobre otras introduce un elemento crítico en el proceso de toma de decisiones: cómo elegir la cantidad y fuentes de información a procesar. En este trabajo, esta disyuntiva se aborda desde la literatura de (in)atención racional.
 
@@ -288,7 +284,7 @@ La importancia de este criterio radica en su capacidad de expresar cómo una org
 \subsubsection{Criterio Gobernanza (G)}
 La forma en que una empresa se gobierna, sus prácticas empresariales y su impacto en los accionistas y demás partes interesadas son abordados por el componente final de los criterios ASG denominado gobernanza. Se deben tener en cuenta componentes tales como un diseño organizacional paritario e inclusivo, las directrices éticas transparentes, la estructura organizacional, las remuneraciones justas, además  de resguardar adecuados derechos de todos quienes posean acciones. La relevancia de este factor reside en su impacto en la durabilidad y los resultados futuros que obtenga una organización. Un buen gobierno corporativo basado en principios fuertes que garanticen transparencia es capaz, no sólo de generar seguridad para posibles inversores, sino también de prevenir situaciones no deseadas; asimismo, ayuda a lograr un mejor enlace por parte del equipo directivo, tanto con las metas empresariales como con aquellos que poseen acciones. Cuando las empresas incorporan prácticas fuertes de gobernanza, se perciben como más confiables y responsables, aspectos que pueden impactar positivamente su posición competitiva en el mercado e incrementar la disposición para invertir en ellas.
 
-Sin embargo, el estudio \textit{Sustainable Signals: Understanding Corporates Sustainability Priorities and Challenges} \cite{morgan_stanley_sustainable_2024} revela que las principales razones por la que las organizaciones adoptan prácticas sostenibles no es sólo por mejorar su funcionamiento en sí, sino por crear valor para la empresa (50\%), cumplir con las normativas gubernamentales (48\%) y la obligación moral de hacer lo correcto para las personas y el planeta (47\%). Sólo en el cuarto lugar, con un 46\%, se menciona lo siguiente: ``la sostenibilidad es un reto importante para nuestro modelo de negocio, por lo que tenemos que reaccionar (p.4)''.
+Sin embargo, el estudio \textit{Sustainable Signals: Understanding Corporates Sustainability Priorities and Challenges} \cite{morgan_stanley_sustainable_2024} revela que las principales razones por la que las organizaciones adoptan prácticas sostenibles no es sólo por mejorar su funcionamiento en sí, sino por crear valor para la empresa (50\%), cumplir con las normativas gubernamentales (48\%) y la obligación moral de hacer lo correcto para las personas y el planeta (47\%). Sólo en el cuarto lugar, con un 46\%, se menciona lo siguiente: ``la sostenibilidad es un reto importante para nuestro modelo de negocio, por lo que tenemos que reaccionar (p.4)".
 
 Es importante entender cómo estos criterios ASG influyen en el comportamiento de los inversionistas y cómo se relacionan con la teoría de la inatención racional.
 
@@ -714,7 +710,7 @@ La recolección de datos fue tomada del Terminal Bloomberg con su herramienta de
 \end{table}
 
 
-En la tabla 2, se puede observar que muchos datos aparecen como $N/A$, lo cual se debe a que las métricas ASG no son calculadas diariamente, sino cada cierto tiempo. Por este motivo, se procedió a modificar los datos de manera que los valores desconocidos fueran cambiados por su valor más reciente, es decir, a la última medición ASG que hubiera disponible; de esta manera, las tablas quedaron de la siguiente manera:
+En la tabla 1 y 2, se puede observar que muchos datos aparecen como $N/A$, lo cual se debe a que las métricas ASG no son calculadas diariamente, sino cada cierto tiempo. Por este motivo, se procedió a modificar los datos de manera que los valores desconocidos fueran cambiados por su valor más reciente, es decir, a la última medición ASG que hubiera disponible; de esta manera, las tablas quedaron de la siguiente forma:
 
 \begin{table}[H]
     \caption{Solución al Problema de Continuidad de los Datos ASG para SQM}
@@ -964,7 +960,7 @@ La siguiente figura muestra un ejemplo de estas nuevas gráficas:
 \subsubsection{Análisis Previo al Experimento}
 
 \paragraph{Análisis de Datos}
-De las figuras presentadas anteriormente, se pueden observan algunos escenarios relevantes por analizar y que, además, se cruzan con lo revisado en el Marco Teórico de este trabajo.
+De los datos presentados anteriormente, se pueden observan algunos escenarios relevantes por analizar y que, además, se cruzan con lo revisado en el Marco Teórico de este trabajo.
 
 Por ejemplo, en la Figura~\ref{fig:Elección-racional} se mostraba el caso de una decisión correcta, es decir, un caso en el que tanto la medida ASG como el retorno monetario, eran mayor en un activo que en el otro. Es en este escenario donde un tomador de decisión racional preferiría, con la información presentada, un activo con un beneficio más alto. Este caso también se ve reflejado en algunos casos mostrados en la tabla~\ref{tabla_datos} de la sección anterior como, por ejemplo, para un periodo de 2 años con la medida ASG de S\&P, en la cual la elección por el activo ITUB4 sería la correcta y con un mayor beneficio sobre SQM.
 
@@ -988,7 +984,7 @@ En el primer caso, se evidencia una correlación positiva fuerte, entonces la in
 En el caso de SQM, la fuerte correlación puede resultar en que las decisiones de inversión basadas en las puntuaciones ASG de uno de los proveedores, probablemente, no cambien si se utilizara el otro proveedor. No obstante, en la situación de Itaú Unibanco, es más probable una discrepancia entre decisiones de inversión si se considera uno u otro proveedor.
 
 \subsection{Prueba de Reflexión Cognitiva}
-La Prueba de Reflexión Cognitiva, más conocida inglés como \acrlong{crt} (\acrshort{crt}, por sus siglas), mide la solución entregada por un individuo tomador de decisiones ante una respuesta intuitiva pero incorrecta y, al mismo tiempo, este participa en una reflexión cognitiva al resolver el conjunto de problemas matemáticos presentados \cite{frederick_cognitive_2005}.
+La Prueba de Reflexión Cognitiva, más conocida en inglés como \acrlong{crt} (\acrshort{crt}, por sus siglas), mide la solución entregada por un individuo tomador de decisiones ante una respuesta intuitiva pero incorrecta y, al mismo tiempo, este participa en una reflexión cognitiva al resolver el conjunto de problemas matemáticos presentados \cite{frederick_cognitive_2005}.
 
 En el test de reflexión cognitiva (CRT) se les presentan tres interrogantes a los participantes:
 
@@ -999,14 +995,14 @@ En el test de reflexión cognitiva (CRT) se les presentan tres interrogantes a l
 \end{enumerate}
 
 Para la primera pregunta, la respuesta intuitiva es 10 centavos, sin embargo, la respuesta correcta es 5 centavos debido a que con ese precio, el bate costaría \$1,05, siendo \$1,00 más caro que la pelota.
-En la segunda pregunta, la primera respuesta que se viene a la mente es 100 minutos, sin embargo, la respuesta correcta es 5 minutos, esto debido a que cada máquina se tarda 5 minutos en fabricar 1 \textit{widget}, por lo que 100 máquinas tardarían 5 minutos en fabricar 100 \textit{widgets} (1 \textit{widget} por máquina).
+En la segunda pregunta, la primera respuesta que se viene a la mente es 100 minutos, sin embargo, la respuesta correcta es 5 minutos, esto debido a que cada máquina se tarda 5 minutos en fabricar 1 \textit{widget}, por lo que 100 máquinas tardarían los mismos 5 minutos en fabricar 100 \textit{widgets} (1 \textit{widget} por máquina).
 Por último, la respuesta correcta de la pregunta final es 47 días, ya que, al duplicar su tamaño diariamente, el parche de lirios crece exponencialmente, no obstante, la respuesta intuitiva, en este caso, es 24 días.
 
 Existen 3 maneras discutidas por \citeA{sirota_effect_2018}  de realizar este test: la primera llamada \textit{open-ended}, la segunda \textit{two-option} y, la última, \textit{four-option}. En el primer caso, el tomador de decisión ingresa de manera manual el resultado que él cree correcto, es decir, sin alternativas. En los otros dos casos al tomador de decisión se le presentan dos y cuatro alternativas respectivamente.
 
 \citeA{sirota_effect_2018} no encontraron evidencia, lo que favorece a la hipótesis de equivalencia entre las tres maneras estudiadas de llevar a cabo la prueba. En el experimento de este trabajo se utiliza la primera, \emph{open-ended}.
 
-El objetivo de implementar este test en el experimento es validar los marcadores biométricos de atención obtenidos con un autoreporte de atención, el cual se puede llevar acabo con untest de este tipo.
+El objetivo de implementar este test en el experimento es validar los marcadores biométricos de atención obtenidos con un autoreporte de atención, el cual se puede llevar acabo con un test de este tipo.
 
 
 \section{Experimento}
@@ -1015,13 +1011,13 @@ El objetivo de implementar este test en el experimento es validar los marcadores
 
 Siguiendo el diseño de \citeA{chan_cost-effective_2024}, a cada individuo se le entregará una ficha de \hyperref[sec:consentimiento]{consentimiento informado} previo al inicio del experimento, que debe leer y devolver firmado.\footnote{Se tuvo una reunión con el Comité de Ética de la Universidad de Los Andes para evaluar la validación del consentimiento.} Posteriormente, a través del programa Opensesame\footnote{OpenSesame es un programa para crear experimentos para psicología, neurociencia y economía experimental. Este programa permite recolectar datos integrando dispositivos de medición ocular en un ecosistema abierto otorgando un \textit{front-end} amigable tanto para el investigador, como para los sujetos de estudio.}, proceden a responder un cuestionario en el que entregan información sobre datos básicos (edad, sexo, etc.), de experiencia o conocimiento financiero, un test de atención tipo \emph{Cognitive Reflection} y una valorización contingente sobre un determinado porcentaje de retorno ASG. Este paso se realizará con el propósito de contextualizar los resultados del estudio y con el fin de explorar de qué manera diferentes perfiles demográficos y distintos niveles de experiencia reaccionan con las opciones de inversión presentadas. La Prueba de Reflexión Cognitiva autorreportada permitirá medir el nivel de atención del individuo para compararlo con lo que se observe en el comportamiento revelado durante las tareas del experimento.
 
-Dentro del cuestionario inicial incorporamos la valorización contingente o Elección Dicotómica Doble que se utiliza para evaluar las preferencias de los participantes entre activos con diferentes rendimientos e impactos ASG o, en otras palabras, el costo de cambio. Esta metodología permite entender las compensaciones que los individuos están dispuestos a hacer entre el retorno financiero y el beneficio ASG. Siguiendo la pregunta realizada por \citeA{chalmer_economic_2021} ``\textit{Are you willing to accept a lower rate of return in exchange for societal or environmental benefit}", se le interrogará al participante si está dispuesto a aceptar un porcentaje menor de retorno monetario a cambio de un aumento en la puntuación ASG; si responde de manera afirmativa, se sigue a la experiencia Bloomberg; en caso negativo, se le formula la siguiente pregunta: ¿cuánto porcentaje de retorno monetario estarías dispuesto a perder por aumentar la puntuación ASG de un activo?
+Dentro del cuestionario inicial incorporamos la valorización contingente o Elección Dicotómica Doble que se utiliza para evaluar las preferencias de los participantes entre activos con diferentes rendimientos e impactos ASG o, en otras palabras, el costo de cambio. Esta metodología permite entender las compensaciones que los individuos están dispuestos a hacer entre el retorno financiero y el beneficio ASG. Siguiendo la pregunta realizada por \citeA{chalmer_economic_2021} ``\textit{Are you willing to accept a lower rate of return in exchange for societal or environmental benefit}", se le interrogará al participante si está dispuesto a aceptar un porcentaje menor de retorno monetario a cambio de un aumento en la puntuación ASG; dependiendo de su respuesta se le formula la siguiente pregunta: ¿cuánto porcentaje de retorno monetario estarías dispuesto a perder por aumentar la puntuación ASG de un activo?
 
-En concreto, los participantes deberán responder 20 preguntas de información básica en formato de alternativas y texto, y 17 preguntas de decisión. Asimismo, no recibirán beneficios monetarios por la realización del experimento.
+En concreto, los participantes deberán responder 20 preguntas de información básica en formato de alternativas y texto y 17 preguntas de decisión. Asimismo, no recibirán beneficios monetarios por la realización del experimento.
 
 En las preguntas de decisión, se presentarán pares de activos en un plano cartesiano, en que los participantes evalúan las alternativas de inversión representadas en él, y se contrastan los rendimientos financieros con las puntuaciones ASG. Cada uno de estos puntos representa un activo, que, siguiendo la configuración de las figura \ref{fig:Elección-racional} y \ref{fig:7YTD_S&P} en el Marco Teórico, contiene por un lado retorno monetario (eje Y del plano) y, por el otro una puntuación ASG (eje X del plano). A cada uno de estos puntos se le asignará una alternativa para que el tomador de decisión seleccione cuál de aquellas prefiere (la que le trae mayor bienestar). Esta comparación visual directa ayuda a los participantes a realizar elecciones informadas, basadas en sus preferencias personales por rendimientos financieros versus impactos ASG.
 
-Durante todo el experimento se utilizará un sistema de seguimiento ocular, también conocido como \textit{eye-tracker}. Este dispositivo fue configurado para este experimento en particular, modificando sus parametros, posición con respecto a la pantalla entre otros. La finalidad de esto es disponer de los datos de la dilatación pupilar del individuo y la posición de la mirada de la manera más precisa posible mientras se recolectan los datos de sus decisiones. En el siguiente \href{https://youtu.be/QGjEs2Rd3M4?si=Kh0J2boCWEVm3PY_&t=22}{video} se muestra el procedimiento de toma del experimento.
+Durante todo el experimento se utilizará un sistema de seguimiento ocular, también conocido como \textit{eye-tracker}. Este dispositivo fue configurado para este experimento en particular, modificando sus parametros, posición con respecto a la pantalla, entre otros aspectos. La finalidad de esto es disponer de los datos de la dilatación pupilar del individuo y la posición de la mirada de la manera más precisa posible mientras se recolectan los datos de sus decisiones. En el siguiente \href{https://youtu.be/QGjEs2Rd3M4?si=Kh0J2boCWEVm3PY_&t=22}{video} se muestra el procedimiento de toma del experimento completo.
 
 
 \section{Resultados}
@@ -1214,7 +1210,7 @@ count_poco_importante_asg <- dataCuestionario %>%
 
 Por último, se les preguntó a los participantes, en una escala de Likert de muy importante a nada importante, si consideraban las prácticas ASG importantes tanto para el futuro de la economía como para el futuro de la sociedad; \Sexpr{format(round(count_muy_importante_asg * 100 / count_total, 2), nsmall = 2) %>% gsub("\\.", ",", .)}
 \% respondió 'muy importantes', \Sexpr{format(round(count_algo_importante_asg * 100 / count_total, 2), nsmall = 2) %>% gsub("\\.", ",", .)}
-\% respondió 'algo importantes', \Sexpr{count_poco_importante_asg}\& respondió 'poco importantes' y \Sexpr{count_nada_importante_asg}\% respondió 'nada importantes'.
+\% respondió 'algo importantes', \Sexpr{count_poco_importante_asg}\% respondió 'poco importantes' y \Sexpr{count_nada_importante_asg}\% respondió 'nada importantes'.
 
 De acuerdo con lo anterior, los participantes, mayoritariamente, tenían un conocimiento básico sobre ASG, y manifestaron, en gran medida, tener una grado de familiarización con estos. Por otro lado, y luego de presentarles una descripción de los factores de sostenibilidad, los encuestados afirmaron un interés alto en empresas que cumplen objetivos de estas características, lo que es fundamental contrastarlo con los datos de pupila y analizar la siguiente pregunta retórica: ¿Quienes manifiestan más preocupación tienen mayores niveles de dilatación pupilar en el experimento?
 
@@ -1768,7 +1764,7 @@ En este caso en particular, la mayoría de los participantes, al elegir ITUB4, a
 \end{minipage}
 \end{figure}
 
-En las figuras mostradas anteriormente, se presenta un costo de \Sexpr{cambioReturn %>% filter(Period == "7YTD") %>% pull(cambioReturn)}
+En las figuras mostradas anteriormente, se presenta un costo de \Sexpr{cambioReturn %>% filter(Period == "7YTD") %>% pull(cambioReturn) %>% sub("^-", "", .) %>% gsub("\\.", ",", .)}
 \% monetario a cambio un aumento de \Sexpr{cambioNormSP %>% filter(Period == "7YTD") %>% pull(cambioNormSP) %>% sub("^-", "", .) %>% gsub("\\.", ",", .)}
 \% en el factor ASG.
 En esta ocasión, SQM fue elegido por \Sexpr{dataCuestionario %>% filter(plot_7YTD == "p") %>% summarise(count = n()) %>% pull(count) %>% sub("^-", "", .) %>% gsub("\\.", ",", .)} 
@@ -2000,7 +1996,7 @@ el ITUB4. El mayor balance de las elecciones puede ser debido a que ambos activo
 
 En la Figura~\ref{fig:plot_combined_4YTD_2} se muestra otro ensayo, en el cual las decisiones de los participantes fueron, en su mayoría (\Sexpr{dataCuestionario %>% filter(plot_combined_4YTD == "p") %>% summarise(count = n()) %>% pull(count)} %>% sub("^-", "", .) %>% gsub("\\.", ",", .)},
 por SQM. El resto se inclinó por el otro activo. En otras palabras, \Sexpr{dataCuestionario %>% filter(plot_combined_4YTD == "p") %>% summarise(count = n()) %>% pull(count) %>% gsub("\\.", ",", .)} 
-individuos no aceptaron el costo de \Sexpr{cambioReturn %>% filter(Period == "4YTD") %>% pull(cambioReturn) %>% gsub("\\.", ",", .)}
+individuos no aceptaron el costo de \Sexpr{cambioReturn %>% filter(Period == "4YTD") %>% pull(cambioReturn)  %>% sub("^-", "", .) %>% gsub("\\.", ",", .)}
 \% monetario por aumentar la métrica ASG en \Sexpr{cambioPond %>% filter(Period == "4YTD") %>% pull(cambioPond) %>% gsub("\\.", ",", .)}
 \%, mientras que \Sexpr{dataCuestionario %>% filter(plot_combined_4YTD == "q") %>% summarise(count = n()) %>% pull(count) %>% gsub("\\.", ",", .)}
 si lo hicieron.
@@ -2055,7 +2051,7 @@ si lo hicieron.
 \end{minipage}
 \end{figure}
 
-En las gráficas anteriores, la totalidad de los participantes escogieron el activo SQM, el cual presentaba un costo de \Sexpr{cambioReturn %>% filter(Period == "5YTD") %>% pull(cambioReturn) %>% gsub("\\.", ",", .)}
+En las gráficas anteriores, la totalidad de los participantes escogieron el activo SQM, el cual presentaba un costo de \Sexpr{cambioReturn %>% filter(Period == "5YTD") %>% pull(cambioReturn) %>% sub("^-", "", .) %>% gsub("\\.", ",", .)}
 \% a cambio de \Sexpr{cambioPond %>% filter(Period == "4YTD") %>% pull(cambioPond) %>% gsub("\\.", ",", .)}
 \% adicional de ASG.
 
@@ -2111,7 +2107,7 @@ En las gráficas anteriores, la totalidad de los participantes escogieron el act
 
 En la Figura~\ref{fig:plot_combined_6YTD_2} se muestra un ensayo, cuyas respuestas presentadas en la Figura~\ref{fig:plot_combined_6YTD_response}, exponen una preferencia por el activo ITUB4, el cual fue escogido por \Sexpr{dataCuestionario %>% filter(plot_combined_6YTD == "q") %>% summarise(count = n()) %>% pull(count) %>% gsub("\\.", ",", .)} 
 participantes, mientras que SQM por \Sexpr{dataCuestionario %>% filter(plot_combined_6YTD == "p") %>% summarise(count = n()) %>% pull(count) %>% gsub("\\.", ",", .)}.
-En este caso, al igual que en el presentado por la Figura~\ref{fig:plot_6YTD_2}, la mayoría de los participantes aceptó el costo de cambio, que para esta instancia era de \Sexpr{cambioReturn %>% filter(Period == "6YTD") %>% pull(cambioReturn) %>% gsub("\\.", ",", .)}
+En este caso, al igual que en el presentado por la Figura~\ref{fig:plot_6YTD_2}, la mayoría de los participantes aceptó el costo de cambio, que para esta instancia era de \Sexpr{cambioReturn %>% filter(Period == "6YTD") %>% pull(cambioReturn) %>% sub("^-", "", .) %>% gsub("\\.", ",", .)}
 \% a cambio de un aumento de ASG en \Sexpr{cambioPond %>% filter(Period == "6YTD") %>% pull(cambioPond) %>% gsub("\\.", ",", .)}
 \%.
 
@@ -2168,7 +2164,7 @@ En este caso, al igual que en el presentado por la Figura~\ref{fig:plot_6YTD_2},
 
 En el gráfico que presenta un horizonte a 7 años usando ambos proveedores de información ASG, \Sexpr{dataCuestionario %>% filter(plot_combined_7YTD == "p") %>% summarise(count = n()) %>% pull(count) %>% gsub("\\.", ",", .)} 
 prefirieron SQM y \Sexpr{dataCuestionario %>% filter(plot_combined_7YTD == "q") %>% summarise(count = n()) %>% pull(count) %>% gsub("\\.", ",", .)}
-ITUB4. El costo para este escenario era de \Sexpr{cambioReturn %>% filter(Period == "7YTD") %>% pull(cambioReturn) %>% gsub("\\.", ",", .)}
+ITUB4. El costo para este escenario era de \Sexpr{cambioReturn %>% filter(Period == "7YTD") %>% pull(cambioReturn) %>% sub("^-", "", .) %>% gsub("\\.", ",", .)}
 \% a cambio de aumentar la medida ASG en \Sexpr{cambioPond %>% filter(Period == "7YTD") %>% pull(cambioPond) %>% gsub("\\.", ",", .)}
 \%.
 
@@ -2189,7 +2185,7 @@ Posteriormente, los datos se convirtieron en una base de datos de GazeR, en el c
 
 Con estos datos, se procedió a interpolar para calcular valores faltantes, que se produjeron, posiblemente, por errores de lecturas del dispositivo, pestañeos de los individuos o que estos se hayan salido del cuadro.
 
-Por último, se aplica una función que comúnmente es usada en datos de dilatación pupilar: \textit{baseline}. El objetivo de esta es controlar la variabilidad general presente en el tamaño de pupila que surge de un estado de excitación no relacionado a la tarea. Comúnmente, al aplicar esta función, se elige una de las dos siguientes maneras: sustractiva o divisiva. La primera se calcula como: $( \text{tamaño pupila} - \text{baseline} )$; mientras que la segunda: $\left( \frac{\text{variación tamaño pupila} - \text{baseline}}{\text{baseline}} \right)$. En este caso, se utilizó la forma sustractiva, que en general es la más utilizada en la literatura \cite{geller_gazer_2020}.
+Por último, se aplica una función que comúnmente es usada en datos de dilatación pupilar: \textit{baseline}. El objetivo de esta es controlar la variabilidad general presente en el tamaño de pupila que surge de un estado de excitación no relacionado a la tarea. Usualmente, al aplicar esta función, se elige una de las dos siguientes maneras: sustractiva o divisiva. La primera se calcula como: $( \text{tamaño pupila} - \text{baseline} )$; mientras que la segunda: $\left( \frac{\text{variación tamaño pupila} - \text{baseline}}{\text{baseline}} \right)$. En este caso, se utilizó la forma sustractiva, que en general es la más utilizada en la literatura \cite{geller_gazer_2020}.
 
 Para poder realizar comparaciones entre individuos, se reescalaron los datos. Esto se realizó mediante la función \textit{scale}, la cual transforma los valores \textit{Z-score} con la siguiente función:
 
@@ -2328,7 +2324,7 @@ A continuación se presentan las gráficas haciendo distinción en ambos grupos:
     \label{fig:comp_pupil_CRTSPyB}
 \end{figure}
 
-En la Figura~\ref{fig:comp_pupil_CRTSP} y \ref{fig:comp_pupil_CRTSPyB} se representa en color azul aquellos participantes con un alto rendimiento en el CRT, denominados ''G2", por otro lado, de color rojo se encuentran los con rendimiento bajo la media, denominados ''G1". A simple vista, se observa que el individuo con la mejor puntuación en el test de reflexión cognitiva y que más tiempo dedica al experimento tarda menos en decidir su respuesta en los ensayos, en comparación con los participantes con puntuaciones CRT por debajo de la media. Para interpretar y ver si existe alguna relación con las medias de tiempo de ambos grupos se realiza un test de medias:
+En la Figura~\ref{fig:comp_pupil_CRTSP} y \ref{fig:comp_pupil_CRTSPyB} se representa en color azul aquellos participantes con un alto rendimiento en el CRT, denominados ``G2", por otro lado, de color rojo se encuentran los con rendimiento bajo la media, denominados ``G1". A simple vista, se observa que el individuo con la mejor puntuación en el test de reflexión cognitiva y que más tiempo dedica al experimento tarda menos en decidir su respuesta en los ensayos, en comparación con los participantes con puntuaciones CRT por debajo de la media. Para interpretar y ver si existe alguna relación con las medias de tiempo de ambos grupos se realiza un test de medias:
 
 \begin{table}[H]
     \centering
@@ -2503,7 +2499,7 @@ La estructura del \href{https://github.com/ingUANDES/ImpExpAt}{repositorio} es l
 \begin{itemize}
     \item ESG\_exp: Se encuentra el experimento realizado en Opensesame con las gráficas utilizadas y modelo de consentimiento.
     \item Latex: Se encuentra todos los archivos usados para construir este documento en formato LaTex.
-    \item pupilProcessing: Dentro de esta carpeta se encuentra el proyecto en lenguaje R con el que se trabajaron los datos. Los datos se encuentran en la carpeta ''Data", en el directorio ''Rfiles" se encuentran todos los códigos utilizados para trabajar los datos y en la carpeta ''Output" se encuentran los archivos de salida, los que son utilizados para crear este documento. 
+    \item pupilProcessing: Dentro de esta carpeta se encuentra el proyecto en lenguaje R con el que se trabajaron los datos. Los datos se encuentran en la carpeta ``Data", en el directorio ``Rfiles" se encuentran todos los códigos utilizados para trabajar los datos y en la carpeta ``Output" se encuentran los archivos de salida, los que son utilizados para crear este documento. 
 \end{itemize}
 
 \subsection{Mapas de Calor}
@@ -2549,26 +2545,12 @@ En que:
     \item \(n\) es el número de pares de valores.
 \end{itemize}
 
-
 \subsection{Consentimiento Informado}
 \label{sec:consentimiento}
-\includepdf[pages=-]{consentimiento_informado.pdf}
 
-
-\printglossary[type=\acronymtype]
-\printglossary
-
-
-\vspace{3cm}
-
-
-Nota (escala 1 a 7): 
-\vspace{3cm}
-Observaciones
-
-
-
-\centering Firma Guía
+Para la construcción y validación del consentimiento nos reunimos con el Comité de Ética de la Universidad de Los Andes.
+La ficha de consentimiento se encuentra a continuación:
+\includepdf[pages=-, scale=0.8]{consentimiento_informado.pdf}
 
 
 
